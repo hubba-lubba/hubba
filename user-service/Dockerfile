@@ -2,11 +2,11 @@ FROM python:3.11-bullseye
 
 RUN pip install --upgrade pip
 
-COPY ./api /opt/api
-WORKDIR /opt/api
+COPY ./user-service /opt/user-service
+WORKDIR /opt/user-service
 RUN pip install -r requirements.txt
 
-WORKDIR /opt/api
+WORKDIR /opt/user-service
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "--preload", "-w", "4", "wsgi:app"]
 
 EXPOSE 8000

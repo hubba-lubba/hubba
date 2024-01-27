@@ -1,0 +1,46 @@
+version: "3"
+services:
+  postgres:
+    build:
+      context: .
+    image: postgres:latest
+    container_name: "hubba-db" 
+    environment:
+      POSTGRES_DB: "hubba"
+      POSTGRES_USER: "hubba"
+      POSTGRES_PASSWORD: "hubba" 
+      PGDATA: "/data/hubba"
+    volumes:
+       - hubba-db:/data/hubba
+    networks:
+       - db-subnet 
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+  user-api:
+      build:
+        context: .
+        dockerfile: ./user-service/Dockerfile
+      image: "user-api"
+      container_name: "user-api"
+      environment:
+        DB_HOSTNAME: "hubba-db"
+        DB_USER: "hubba"
+        DB_PASSWORD: "hubba" 
+        DB_PORT: 5432
+        DB_NAME: "hubba"
+      networks:
+         - db-subnet 
+         - external
+      ports:
+        - "8000:8000"
+      restart: unless-stopped
+
+volumes:
+  hubba-db:
+    external: true
+networks:
+  db-subnet:
+    internal: true
+  external:
+    internal: false
