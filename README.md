@@ -1,2 +1,2 @@
 # hubba
-streaming service
+Gaming Streaming Service
