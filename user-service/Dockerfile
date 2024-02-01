@@ -2,7 +2,7 @@ FROM python:3.11-bullseye
 
 RUN pip install --upgrade pip
 
-COPY ./user-service /opt/user-service
+COPY . /opt/user-service
 WORKDIR /opt/user-service
 RUN pip install -r requirements.txt
 
