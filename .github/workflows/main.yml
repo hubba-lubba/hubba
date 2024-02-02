@@ -75,3 +75,26 @@ jobs:
         id: pass-ts
         run: |
           echo "::set-output name=TIMESTAMP::$TIMESTAMP"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build-and-push]
+    steps:
+      - id: "auth"
+        name: "authenticate with google cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+  
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+  
+      - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          project_id: "hubba-411805"
+  
+      - name: Deploy
+        run: |-
+          kubectl set image deployment/user-service user-service=eddisonso/user-service:${{needs.build-and-push.outputs.TIMESTAMP}}
+          kubectl set image deployment/web-service web-service=eddisonso/web-service:${{needs.build-and-push.outputs.TIMESTAMP}}
