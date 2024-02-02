@@ -55,7 +55,7 @@ jobs:
           context: web-service
           platforms: linux/amd64
           push: true
-          tags: eddisonso/web-service:${{ env.TIMESTAMP }}
+          tags: eddisonso/web-service:${{ env.TIMESTAMP }}, eddisonso/web-service:latest
 
       - name: Build and Push user-service
         uses: docker/build-push-action@v5
@@ -63,7 +63,7 @@ jobs:
           context: user-service
           platforms: linux/amd64
           push: true
-          tags: eddisonso/user-service:${{ env.TIMESTAMP }}
+          tags: eddisonso/user-service:${{ env.TIMESTAMP }}, eddisonso/user-service:latest
 
       - name: Pass Timestamp to Deploy Stage
         id: pass-ts
