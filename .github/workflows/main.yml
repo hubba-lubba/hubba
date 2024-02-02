@@ -62,7 +62,7 @@ jobs:
         with:
           build-args: |
             DB_USER: ${{ secrets.USER }}
-            DB_PORT: 5432
+            DB_PORT: "5432"
             DB_NAME: ${{ secrets.DB_NAME }}
             DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
