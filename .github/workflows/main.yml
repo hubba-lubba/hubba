@@ -59,6 +59,12 @@ jobs:
 
       - name: Build and Push user-service
         uses: docker/build-push-action@v5
+        env:
+          DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
+          DB_USER: ${{ secrets.USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: 5432
+          DB_NAME: ${{ secrets.DB_NAME }}
         with:
           context: user-service
           platforms: linux/amd64
