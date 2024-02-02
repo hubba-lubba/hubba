@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 
 healthcheck_blueprint = Blueprint('healthcheck', __name__, url_prefix="/")
-CORS(healthcheck)
+CORS(healthcheck_blueprint)
 
-@healthcheck.route("/")
+@healthcheck_blueprint.route("/")
 def readiness():
     return "Success"

@@ -10,10 +10,6 @@ from routes.utils import require_json_params, require_query_params
 user_blueprint = Blueprint('user_api', __name__, url_prefix="/user_api")
 CORS(user_blueprint)
 
-@user_blueprint.route("/")
-def readiness():
-    return "Success"
-
 @user_blueprint.route("/add_user", methods=["PUT"])
 @require_json_params(["username", "uid"])
 def add_user():
