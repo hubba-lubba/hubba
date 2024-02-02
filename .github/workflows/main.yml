@@ -65,8 +65,8 @@ jobs:
             DB_PORT: 5432
             DB_NAME: ${{ secrets.DB_NAME }}
           secrets: |
-            DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
-            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+            "DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}"
+            "DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
           context: user-service
           platforms: linux/amd64
           push: true
