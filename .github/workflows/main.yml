@@ -61,9 +61,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           build-args: |
-            DB_USER: ${{ secrets.USER }}
-            DB_PORT: ${{ secrets.DB_PORT }}
-            DB_NAME: ${{ secrets.DB_NAME }}
+            DB_USER=${{ secrets.USER }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_NAME=${{ secrets.DB_NAME }}
             DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           context: user-service
