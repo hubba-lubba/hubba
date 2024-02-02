@@ -1,16 +1,19 @@
 FROM python:3.11-bullseye
 
-RUN --mount=type=secret,id=DB_HOSTNAME \
-    export DB_HOSTNAME=$(cat /run/secrets/DB_HOSTNAME)
+ARG DB_HOSTNAME
+ENV DB_HOSTNAME $DB_HOSTNAME
 
-RUN --mount=type=secret,id=DB_PASSWORD \
-    export DB_PASSWORD=$(cat /run/secrets/DB_PASSWORD)
+ARG DB_PASSWORD
+ENV DB_PASSWORD $DB_PASSWORD
 
-RUN export DB_HOSTNAME=test
+ARG DB_USER
+ENV DB_USER $DB_USER
 
-RUN export DB_USER=${DB_USER}
-RUN export DB_PORT=${DB_PORT}
-RUN export DB_NAME=${DB_NAME}
+ARG DB_PORT
+ENV DB_PORT $DB_PORt
+
+ARG DB_NAME
+ENV DB_NAME $DB_NAME
 
 RUN pip install --upgrade pip
 
