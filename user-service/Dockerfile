@@ -6,6 +6,8 @@ RUN --mount=type=secret,id=DB_HOSTNAME \
 RUN --mount=type=secret,id=DB_PASSWORD \
     export DB_PASSWORD=$(cat /run/secrets/DB_PASSWORD)
 
+RUN export DB_HOSTNAME="test"
+
 RUN export DB_USER=${DB_USER}
 RUN export DB_PORT=${DB_PORT}
 RUN export DB_NAME=${DB_NAME}
