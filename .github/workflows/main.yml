@@ -95,7 +95,7 @@ jobs:
         with:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
-          project_id: "hubba-411805"
+          project_id: "hubba-412704"
   
       - name: Deploy
         run: |-
