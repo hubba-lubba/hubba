@@ -13,7 +13,7 @@ CORS(user_blueprint)
 @user_blueprint.route("/")
 def healthcheck():
     result = jsonify({
-        "status:": "success"
+        "status": "success"
     })
     return result
 
