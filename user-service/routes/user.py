@@ -12,7 +12,10 @@ CORS(user_blueprint)
 
 @user_blueprint.route("/")
 def healthcheck():
-    return "success"
+    result = jsonify({
+        "status:": "success"
+    })
+    return result
 
 @user_blueprint.route("/add_user", methods=["PUT"])
 @require_json_params(["username", "uid"])
