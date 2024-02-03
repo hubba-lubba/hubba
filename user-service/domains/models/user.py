@@ -1,32 +1,27 @@
 from domains.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import String
+import uuid
 
 
 class User(Base):
     __tablename__ = "users"
 
-    uid: Mapped[str] = mapped_column(String(64),
-                                     primary_key=True)
+    user_id: Mapped[UUID] = mapped_column(UUID(as_uuid=True),
+                                         primary_key=True,
+                                         default=uuid.uuid4)
 
     username: Mapped[str] = mapped_column(String(64),
                                           nullable=False,
                                           unique=True)
 
-    biography: Mapped[str] = mapped_column(String(512),
-                                           nullable=True)
-
     def get_JSON(self):
-        return {
-                "uid": self.uid,
-                "username": self.username,
-                "biography": self.biography
-                }
+        return User.to_JSON(self)
 
     @staticmethod
     def to_JSON(user):
         return {
-                "uid": user.uid,
-                "username": user.username,
-                "biography": user.biography
+                    "user_id": user.user_id,
+                    "username": user.username,
                 }

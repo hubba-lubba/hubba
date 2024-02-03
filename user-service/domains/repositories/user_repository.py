@@ -22,32 +22,21 @@ class UserRepository:
 
     """
     Description: Adds new User object to be persisted
-    Arguments: uid: str id of new userm, username: str of new user
+    Arguments: username: str of new user
     Returns: User: User of added user data
     """
-    @check_id_not_exists(["uid", "username"])
-    def add_user(self, uid, username):
-        new_user = User(uid=uid, username=username)
+    @check_id_not_exists(["username"])
+    def add_user(self, username):
+        new_user = User(username=username)
         return self._add_user(new_user)
 
     """
     Description: Gets an existing User
-    Arguments: uid: str id of User
+    Arguments: uid: uuidv4 id of User
     Returns: User: user obtained from persisted data
     """
-    @check_id_exists(["uid"])
-    def get_user(self, uid):
-        user = self.session.get(User, uid)
+    @check_id_exists(["user_id"])
+    def get_user(self, user_id):
+        user = self.session.get(User, user_id)
         return user
 
-    """
-    Description: Edits biography of user
-    Arguments: id: uuid of user with biography to be edited
-    Returns: User: User with modified biography
-    """
-    @check_id_exists(["uid"])
-    def edit_biography(self, uid, biography):
-        user = self.session.get(User, uid)
-        user.biography = biography
-        self.session.commit()
-        return user
