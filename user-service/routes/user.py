@@ -23,16 +23,16 @@ def add_user():
     context = request.get_json()
 
     username = context.get("username")
-    uid = context.get("uid")
 
     with Session(engine) as session:
         user_repository = UserRepository(session)
         try:
-            new_user = user_repository.add_user(uid=uid, username=username)
-            return jsonify({
-                    "status": "success",
-                    "uid": new_user.uid
-                })
+            new_user = user_repository.add_user(username=username)
+            response = jsonify({
+                "status": "success",
+                "user": new_user.get_JSON(),
+            })
+            return response
         except (IdExistsException, UsernameExistsException) as e:
             result = jsonify({
                     "status": "failure",
@@ -42,21 +42,21 @@ def add_user():
 
 
 @user_blueprint.route("/get_user", methods=["GET"])
-@require_query_params(["uid"])
+@require_query_params(["user_id"])
 def get_user():
-    uid = request.args.get("uid")
+    user_id = request.args.get("user_id")
     with Session(engine) as session:
         try:
             user_repository = UserRepository(session)
-            user = user_repository.get_user(uid=uid)
+            user = user_repository.get_user(user_id=user_id)
             response = jsonify({
-                        "status": "success",
-                        "user": user.get_JSON(),
-                    })
+                "status": "success",
+                "user": user.get_JSON(),
+            })
             return response
         except IdMissingException as e:
             result = jsonify({
-                    "status": "failure",
-                    "reason": str(e)
-                })
+                "status": "failure",
+                "reason": str(e)
+            })
             return result, 400
