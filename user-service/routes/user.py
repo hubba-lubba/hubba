@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from domains.repositories.user_repository import UserRepository
+from config import VERSION
 from engine import engine
 from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
@@ -14,6 +15,13 @@ CORS(user_blueprint)
 def healthcheck():
     result = jsonify({
         "status": "success"
+    })
+    return result
+
+@user_blueprint.route("/version")
+def healthcheck():
+    result = jsonify({
+        "version": VERSION
     })
     return result
 
