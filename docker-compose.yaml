@@ -13,16 +13,16 @@ services:
     volumes:
        - hubba-db:/data/hubba
     networks:
-       - db-subnet 
+       - hubba-subnet 
     ports:
       - "5432:5432"
     restart: unless-stopped
-  user-api:
+  user-service:
       build:
-        context: .
-        dockerfile: ./user-service/Dockerfile
-      image: "user-api"
-      container_name: "user-api"
+        context: ./user-service
+        dockerfile: ./Dockerfile
+      image: "user-service"
+      container_name: "user-service"
       environment:
         DB_HOSTNAME: "hubba-db"
         DB_USER: "hubba"
@@ -30,17 +30,27 @@ services:
         DB_PORT: 5432
         DB_NAME: "hubba"
       networks:
-         - db-subnet 
-         - external
+         - hubba-subnet
       ports:
         - "8000:8000"
+      restart: unless-stopped
+  web-service:
+      build:
+        context: ./web-service
+        dockerfile: ./Dockerfile
+      image: "web-service"
+      container_name: "web-service"
+      environment:
+        USER_SERVICE_HOSTNAME: "user-service"
+        USER_SERVICE_PORT: 8000
+      networks:
+         - hubba-subnet
+      ports:
+        - "80:80"
       restart: unless-stopped
 
 volumes:
   hubba-db:
     external: true
 networks:
-  db-subnet:
-    internal: true
-  external:
-    internal: false
+  hubba-subnet:
