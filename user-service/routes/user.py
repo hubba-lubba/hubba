@@ -19,7 +19,7 @@ def healthcheck():
     return result
 
 @user_blueprint.route("/version")
-def healthcheck():
+def version():
     result = jsonify({
         "version": VERSION
     })
