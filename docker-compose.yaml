@@ -29,6 +29,7 @@ services:
         DB_PASSWORD: "hubba" 
         DB_PORT: 5432
         DB_NAME: "hubba"
+        VERSION: "DEV"
       networks:
          - hubba-subnet
       ports:
