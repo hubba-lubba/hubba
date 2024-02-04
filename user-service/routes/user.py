@@ -10,7 +10,7 @@ from routes.utils import require_json_params, require_query_params
 user_blueprint = Blueprint('user_api', __name__, url_prefix="/")
 CORS(user_blueprint)
 
-@user_blueprint.route("/")
+@user_blueprint.route("/healthcheck")
 def healthcheck():
     result = jsonify({
         "status": "success"
