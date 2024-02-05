@@ -57,6 +57,10 @@ class UserRepository:
     def add_following(self, user_id, new_following=[]):
         user = self.session.get(User, user_id)
         new_following = list(map(lambda user_id: self.session.get(User, user_id), new_following))
+
+        if user in new_following:
+            raise SelfReferentialFollowException(user.user_id)
+
         user.following.extend(new_following)
         self.session.merge(user)
         self.session.commit()

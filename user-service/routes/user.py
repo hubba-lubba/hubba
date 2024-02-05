@@ -81,7 +81,7 @@ def add_following():
                 "user": user.get_JSON(),
             })
             return response
-        except IdMissingException as e:
+        except (IdMissingException, SelfReferentialFollowException) as e:
             result = jsonify({
                 "status": "failure",
                 "reason": str(e)
