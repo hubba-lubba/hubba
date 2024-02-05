@@ -8,9 +8,9 @@ def check_id_not_exists(ids):
         def returned_func(self, *args, **kwargs):
             for id in ids:
                 match id:
-                    case "uid":
-                        if self.session.get(User, kwargs["uid"]) is not None:
-                            raise IdExistsException(f"User with uid {kwargs['uid']} exists")
+                    case "user_id":
+                        if self.session.get(User, kwargs["user_id"]) is not None:
+                            raise IdExistsException(f"User with user_id {kwargs['user_id']} exists")
                     case "username":
                         if self.session.query(User).filter(User.username == kwargs["username"]).first() is not None:
                             raise UsernameExistsException(f"User with username {kwargs['username']} exists")
@@ -24,9 +24,9 @@ def check_id_exists(ids):
         def returned_func(self, *args, **kwargs):
             for id in ids:
                 match id:
-                    case "uid":
-                        if self.session.get(User, kwargs["uid"]) is None:
-                            raise IdMissingException(f"User with uid {kwargs['uid']} does not exists")
+                    case "user_id":
+                        if self.session.get(User, kwargs["user_id"]) is None:
+                            raise IdMissingException(f"User with user_id {kwargs['user_id']} does not exists")
             return func(self, *args, **kwargs)
         return returned_func
     return decorator
