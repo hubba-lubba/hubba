@@ -15,6 +15,9 @@ ENV DB_PORT 5432
 ARG DB_NAME
 ENV DB_NAME $DB_NAME
 
+ARG VERSION
+ENV VERSION $VERSION
+
 RUN pip install --upgrade pip
 
 COPY . /opt/user-service
