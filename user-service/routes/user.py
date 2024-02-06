@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
 
-from routes.utils import require_json_params, require_query_params
+from routes.utils import ensureUUID, require_json_params, require_query_params
 
 user_blueprint = Blueprint('user_api', __name__, url_prefix="/")
 CORS(user_blueprint)
@@ -54,6 +54,7 @@ def add_user():
 
 @user_blueprint.route("/get_user", methods=["GET"])
 @require_query_params(["user_id"])
+@ensureUUID("user_id")
 def get_user():
     user_id = request.args.get("user_id")
     with Session(engine) as session:
@@ -74,6 +75,7 @@ def get_user():
 
 @user_blueprint.route("/add_following", methods=["POST"])
 @require_json_params(["user_id"])
+@ensureUUID("user_id")
 def add_following():
     context = request.get_json()
 
