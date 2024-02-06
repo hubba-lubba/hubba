@@ -53,10 +53,10 @@ class UserRepository:
     :param new_following: list of uuid of new following users
     :return: User
     """
-    @check_id_exists(["user_id"])
-    def add_following(self, user_id, new_following=[]):
+    @check_id_exists(["user_id", "following"])
+    def add_following(self, user_id, following=[]):
         user = self.session.get(User, user_id)
-        new_following = list(map(lambda user_id: self.session.get(User, user_id), new_following))
+        new_following = list(map(lambda user_id: self.session.get(User, user_id), following))
 
         if user in new_following:
             raise SelfReferentialFollowException(user.user_id)

@@ -74,8 +74,9 @@ def get_user():
             return result, 400
 
 @user_blueprint.route("/add_following", methods=["POST"])
-@require_json_params(["user_id"])
+@require_json_params(["user_id", "following"])
 @ensureUUID("user_id")
+@ensureUUID("following")
 def add_following():
     context = request.get_json()
 
@@ -85,7 +86,7 @@ def add_following():
         try:
             user_repository = UserRepository(session)
             user = user_repository.add_following(user_id=user_id,
-                                                 new_following=new_following)
+                                                 following=new_following)
             response = jsonify({
                 "status": "success",
                 "user": user.get_JSON(),

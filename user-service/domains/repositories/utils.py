@@ -23,10 +23,13 @@ def check_id_exists(ids):
         @wraps(func)
         def returned_func(self, *args, **kwargs):
             for id in ids:
-                match id:
-                    case "user_id":
-                        if self.session.get(User, kwargs["user_id"]) is None:
-                            raise IdMissingException(kwargs["user_id"])
+                if kwargs[id] is list and kwargs[id]:
+                    users = filter(lambda x: self.session.get(User, x) is None, kwargs[id])
+                    if users:
+                        raise IdMissingException(users)
+                else:
+                    if self.session.get(User, kwargs[id]) is None:
+                        raise IdMissingException(kwargs[id])
             return func(self, *args, **kwargs)
         return returned_func
     return decorator

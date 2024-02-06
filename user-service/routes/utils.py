@@ -38,7 +38,10 @@ def ensureUUID(field):
             id = None
             id = request.args.get(field) if request.args.get(field) is not None else request.get_json().get(field)
             try:
-                uuid.UUID(id)
+                if isinstance(id, list):
+                    list(map(lambda x: uuid.UUID(x), id))
+                else:
+                    uuid.UUID(id)
             except ValueError:
                 return jsonify({
                     "status": "failure", 
