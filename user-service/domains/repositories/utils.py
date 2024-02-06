@@ -8,12 +8,12 @@ def check_id_not_exists(ids):
         def returned_func(self, *args, **kwargs):
             for id in ids:
                 match id:
-                    case "uid":
-                        if self.session.get(User, kwargs["uid"]) is not None:
-                            raise IdExistsException(f"User with uid {kwargs['uid']} exists")
+                    case "user_id":
+                        if self.session.get(User, kwargs["user_id"]) is not None:
+                            raise IdExistsException(kwargs["user_id"])
                     case "username":
                         if self.session.query(User).filter(User.username == kwargs["username"]).first() is not None:
-                            raise UsernameExistsException(f"User with username {kwargs['username']} exists")
+                            raise UsernameExistsException(kwargs["username"])
             return func(self, *args, **kwargs)
         return returned_func
     return decorator
@@ -23,10 +23,13 @@ def check_id_exists(ids):
         @wraps(func)
         def returned_func(self, *args, **kwargs):
             for id in ids:
-                match id:
-                    case "uid":
-                        if self.session.get(User, kwargs["uid"]) is None:
-                            raise IdMissingException(f"User with uid {kwargs['uid']} does not exists")
+                if kwargs[id] is list and kwargs[id]:
+                    users = filter(lambda x: self.session.get(User, x) is None, kwargs[id])
+                    if users:
+                        raise IdMissingException(users)
+                else:
+                    if self.session.get(User, kwargs[id]) is None:
+                        raise IdMissingException(kwargs[id])
             return func(self, *args, **kwargs)
         return returned_func
     return decorator
