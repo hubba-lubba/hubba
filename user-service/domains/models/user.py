@@ -61,5 +61,7 @@ class User(Base):
             "username": user.username,
             "streaming_status": user.streaming_status,
             "following": User.get_following(user),
-            "followers": User.get_followers(user)
+            "followers": User.get_followers(user),
+            "num_following": len(user.following),
+            "num_followers": len(user.followers)
         }
