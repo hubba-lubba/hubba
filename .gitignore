@@ -131,3 +131,5 @@ dist
 
 #virtualenv
 .venv/
+./user-service/events/hubba-412704-025c0a022d7e.json
+./events-service/events/hubba-412704-025c0a022d7e.json
