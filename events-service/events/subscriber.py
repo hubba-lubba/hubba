@@ -16,7 +16,7 @@ class EventSubscriber():
         project_id = PROJECT_ID
         subscription_id = EVENTS_EVENT_SUBSCRIPTION_ID
 
-        credentials = service_account.Credentials.from_service_account_file("./events/hubba-412704-025c0a022d7e.json")
+        credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
         subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
         subscription_path = subscriber.subscription_path(project_id, subscription_id)
         self.streaming_pull_future = subscriber.subscribe(subscription_path, callback=self.callback)

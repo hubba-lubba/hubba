@@ -8,7 +8,7 @@ class EventPublisher():
     def __init__(self):
         project_id = "hubba-412704"
         topic_id = "dev-user-event"
-        credentials = service_account.Credentials.from_service_account_file("./hubba-412704-025c0a022d7e.json")
+        credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
         self.publisher_client = pubsub_v1.PublisherClient(credentials=credentials, 
                                                 publisher_options = pubsub_v1.types.PublisherOptions(
                                                 enable_message_ordering=True))
