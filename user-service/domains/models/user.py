@@ -37,12 +37,6 @@ class User(Base):
     streaming_status: Mapped[str] = mapped_column(String(12),
                                                   nullable=True)
 
-    #videos: Mapped[list[UUID]] = relationship(back_populates="videos")
-
-    #events: Mapped[list[UUID]] = relationship(back_populates="events")
-
-    #organizations: Mapped[list[UUID]] = relationship(back_populates="organizations")
-
     def get_JSON(self):
         return User.to_JSON(self)
 
@@ -63,5 +57,5 @@ class User(Base):
             "following": User.get_following(user),
             "followers": User.get_followers(user),
             "num_following": len(user.following),
-            "num_followers": len(user.followers)
+            "num_followers": len(user.followers),
         }

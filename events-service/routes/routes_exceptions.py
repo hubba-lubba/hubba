@@ -1,0 +1,2 @@
+class InvalidUUID(Exception):
+    pass

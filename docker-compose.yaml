@@ -28,12 +28,30 @@ services:
         DB_USER: "hubba"
         DB_PASSWORD: "hubba" 
         DB_PORT: 5432
-        DB_NAME: "hubba"
+        DB_NAME: "hubba-user"
         VERSION: "DEV"
       networks:
          - hubba-subnet
       ports:
         - "8000:8000"
+      restart: unless-stopped
+  events-service:
+      build:
+        context: ./events-service
+        dockerfile: ./Dockerfile
+      image: "events-service"
+      container_name: "events-service"
+      environment:
+        DB_HOSTNAME: "hubba-db"
+        DB_USER: "hubba"
+        DB_PASSWORD: "hubba" 
+        DB_PORT: 5432
+        DB_NAME: "hubba-events"
+        VERSION: "DEV"
+      networks:
+         - hubba-subnet
+      ports:
+        - "8001:8000"
       restart: unless-stopped
   web-service:
       build:
