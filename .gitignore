@@ -132,6 +132,10 @@ dist
 #virtualenv
 .venv/
 
+./user-service/events/hubba-credentials.json
+
 #credentials
 ./user-service/events/hubba-credentials.json
 ./events-service/events/hubba-credentials.json
+./events-service/events/*.json
+./events-service/*
