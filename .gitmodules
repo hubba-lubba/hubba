@@ -1,0 +1,3 @@
+[submodule "hubba-prototype"]
+	path = hubba-prototype
+	url = git@github.com:jingsnx/hubba-prototype.git
