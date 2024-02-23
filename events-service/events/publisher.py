@@ -3,12 +3,16 @@ from google.oauth2 import service_account
 from google.protobuf.json_format import MessageToJson
 #from events.events_pb2 import Event
 from events_pb2 import Event
+from config import *
 
 class EventPublisher():
     def __init__(self):
         project_id = "hubba-412704"
         topic_id = "dev-user-event"
-        credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
+        if SERVICE_ACCOUNT is None:
+            credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
+        else:
+            credentials = service_account.Credentials.from_service_account_info(SERVICE_ACCOUNT)
         self.publisher_client = pubsub_v1.PublisherClient(credentials=credentials, 
                                                 publisher_options = pubsub_v1.types.PublisherOptions(
                                                 enable_message_ordering=True))

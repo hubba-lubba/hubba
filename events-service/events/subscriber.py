@@ -4,7 +4,7 @@ from google.oauth2 import service_account
 from events.protobuf_files.events_pb2 import Event
 from os import getpid
 from logger import LoggerFactory
-from config import EVENTS_EVENT_SUBSCRIPTION_ID, PROJECT_ID
+from config import *
 from engine import engine
 from domains.repositories.user_repository import UserRepository
 from sqlalchemy.orm import Session
@@ -16,7 +16,11 @@ class EventSubscriber():
         project_id = PROJECT_ID
         subscription_id = EVENTS_EVENT_SUBSCRIPTION_ID
 
-        credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
+        if SERVICE_ACCOUNT is None:
+            credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
+        else:
+            credentials = service_account.Credentials.from_service_account_info(SERVICE_ACCOUNT)
+
         subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
         subscription_path = subscriber.subscription_path(project_id, subscription_id)
         self.streaming_pull_future = subscriber.subscribe(subscription_path, callback=self.callback)
