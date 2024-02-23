@@ -1,0 +1,19 @@
+.channelButton {
+    &:hover {
+        background: var(--accent2);
+    }
+
+    .icon {
+        padding-right: 10px;
+        padding-left: 10px;
+        height: 25px;
+    }
+
+    .name {
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        font-size: 16px;
+    }
+}

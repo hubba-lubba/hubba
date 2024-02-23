@@ -1,0 +1,55 @@
+// Text color
+$text: #dad5fd;
+
+// Background color
+$background: #1a1635;
+
+// Primary color
+$primary-100: #dad5fd;
+$primary-200: #a8b0f9;
+$primary-300: #7780f5;
+$primary-400: #5561f3;
+$primary-500: #4b5bc2; // Base primary
+$primary-600: #3f4abf;
+$primary-700: #2f3a9f;
+$primary-800: #1f2a7f;
+$primary-900: #0f1a5f;
+
+// Secondary color
+$secondary-100: #f2e3ff;
+$secondary-200: #d6baff;
+$secondary-300: #b98eff;
+$secondary-400: #a56eff;
+$secondary-500: #bb51e2; // Base secondary
+$secondary-600: #a84ad2;
+$secondary-700: #8c3eb3;
+$secondary-800: #6f3293;
+$secondary-900: #532673;
+
+// Accent color
+$accent-100: #d9f3ff;
+$accent-200: #a6e7ff;
+$accent-300: #73dbff;
+$accent-400: #51d2ff;
+$accent-500: #6ecbf6; // Base accent
+$accent-600: #5db8e2;
+$accent-700: #4b9fc2;
+$accent-800: #3a86a2;
+$accent-900: #295d73;
+
+// Accent 2 color
+$accent2-100: #f2e3ff;
+$accent2-200: #d6baff;
+$accent2-300: #b98eff;
+$accent2-400: #a56eff;
+$accent2-500: #33295d; // Base accent
+$accent2-600: #2a2653;
+$accent2-700: #1f1c43;
+$accent2-800: #141332;
+$accent2-900: #0f0d21;
+
+// Base values
+$primary: $primary-500;
+$secondary: $secondary-500;
+$accent: $accent-500;
+$accent2: $accent2-500;

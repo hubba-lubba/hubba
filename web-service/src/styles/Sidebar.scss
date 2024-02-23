@@ -1,0 +1,22 @@
+.sidebar-container {
+    float: left;
+    border-right: 3px solid var(--accent2);
+    width: 18%;
+    height: calc(100vh - 70px);
+
+    .sidebar-library {
+        padding: 20px;
+    }
+
+    .library-title {
+        font-size: 22px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .section-block {
+        margin-top: 20px;
+    }
+}

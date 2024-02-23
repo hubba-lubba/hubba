@@ -1,3 +1,0 @@
-[submodule "web-service"]
-	path = web-service
-	url = git@github.com:jingsnx/hubba-prototype.git
