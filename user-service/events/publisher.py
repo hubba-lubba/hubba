@@ -17,7 +17,11 @@ class EventPublisher():
         events_topic = EVENTS_EVENT_TOPIC_ID
         organizations_topic = ORGANIZATIONS_EVENT_TOPIC_ID
 
-        credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
+        if SERVICE_ACCOUNT is None:
+            credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
+        else:
+            credentials = service_account.Credentials.from_service_account_info(SERVICE_ACCOUNT)
+
         self.events_publisher_client = pubsub_v1.PublisherClient(credentials=credentials, 
                                                 publisher_options = pubsub_v1.types.PublisherOptions(
                                                 enable_message_ordering=True))
