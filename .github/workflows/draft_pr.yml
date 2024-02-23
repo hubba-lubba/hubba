@@ -1,8 +1,13 @@
-name: Draft PR
+name: draft-pr
 
 on:
   issues:
     types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
 
 jobs:
   create-draft-pr:
