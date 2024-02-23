@@ -60,5 +60,5 @@ jobs:
           ISSUE_BODY: ${{ steps.issue_details.outputs.BODY }}
           BRANCH_NAME: issue-${{ github.event.issue.number }}
         run: |
-          gh pr create --draft --title "${ISSUE_TITLE}" --body "This is an automated draft PR for issue #${ISSUE_NUMBER}\n\nLink to issue: #${ISSUE_NUMBER}\n\nOriginal issue details:\n${ISSUE_BODY}" --base main --head $BRANCH_NAME
+          gh pr create --draft --title "${ISSUE_TITLE}" --body "This is an automated draft PR for issue #${ISSUE_NUMBER}\n\nLink to issue: ${ISSUE_NUMBER}\n\nOriginal issue details:\n${ISSUE_BODY}" --base main --head $BRANCH_NAME
 
