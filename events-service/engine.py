@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from domains.models.user import User
+from domains.models.events import Events
 from domains.models.base import Base
 from sqlalchemy.orm import Session
 from sqlalchemy_utils import database_exists, create_database
