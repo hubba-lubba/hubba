@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/SignupForm.scss';
 
 export default function SignupForm() {
