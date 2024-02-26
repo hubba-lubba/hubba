@@ -1,0 +1,18 @@
+.menuButton {
+    &:hover {
+        background: var(--accent2);
+    }
+
+    .icon {
+        margin-right: 20px;
+        height: 25px;
+    }
+
+    .name {
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        font-size: 16px;
+    }
+}
