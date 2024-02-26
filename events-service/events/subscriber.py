@@ -12,6 +12,9 @@ import json
 
 class EventSubscriber():
     def __init__(self, engine):
+        logger_factory = LoggerFactory()
+        self.logger = logger_factory.get_logger()
+
         self.engine = engine
 
         project_id = PROJECT_ID
@@ -20,7 +23,7 @@ class EventSubscriber():
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
         else:
-            print("Using service account from environment variable")
+            self.logger.info("Using service account from environment variable")
             SA_json = json.loads(SERVICE_ACCOUNT)
             credentials = service_account.Credentials.from_service_account_info(SA_json)
 
@@ -28,8 +31,6 @@ class EventSubscriber():
         subscription_path = subscriber.subscription_path(project_id, subscription_id)
         self.streaming_pull_future = subscriber.subscribe(subscription_path, callback=self.callback)
 
-        logger_factory = LoggerFactory()
-        self.logger = logger_factory.get_logger()
         self.logger.info(f"Started subscriber process on pid {getpid()}")
         self.logger.info(f"Subscriber listening on subscription '{subscription_id}'")
   
