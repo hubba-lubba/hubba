@@ -5,17 +5,23 @@ from google.protobuf.json_format import MessageToJson
 from events_pb2 import Event
 from config import *
 import json
+from logger import LoggerFactory
 
 class EventPublisher():
     def __init__(self):
+        logger_factory = LoggerFactory()
+        self.logger = logger_factory.get_logger()
+
         project_id = "hubba-412704"
-        topic_id = "dev-user-event"
+        topic_id = EVENTS_EVENT_TOPIC_ID
+
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
         else:
-            print("Using service account from environment variable")
+            self.logger.info("Using service account from environment variable")
             SA_json = json.loads(SERVICE_ACCOUNT)
             credentials = service_account.Credentials.from_service_account_info(SA_json)
+
         self.publisher_client = pubsub_v1.PublisherClient(credentials=credentials, 
                                                 publisher_options = pubsub_v1.types.PublisherOptions(
                                                 enable_message_ordering=True))

@@ -25,6 +25,13 @@ def version():
     })
     return result
 
+@events_blueprint.route("/")
+def base():
+    result = jsonify({
+        "api": "events"
+    })
+    return result, 200
+
 @events_blueprint.route("/", methods=["PUT"])
 @require_json_params(["title", "description", "owner", "moderators", "users"])
 @ensureUUID("users")
