@@ -3,7 +3,7 @@
     margin: 15px;
 
     border: 3px dashed var(--accent2);
-    border-radius: 3px;
+    border-radius: 12px;
 
     width: 18%;
     min-width: 200px;
@@ -11,6 +11,7 @@
 
     .sidebar-library {
         padding: 20px;
+        padding-left: 35px;
     }
 
     .library-title {
@@ -24,11 +25,12 @@
     }
 
     .section-block {
-        margin-top: 20px;
+        margin-top: 30px;
     }
 
     .expand-section {
         color: gray;
         text-decoration: underline;
+        margin-top: 5px;
     }
 }
