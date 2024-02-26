@@ -7,11 +7,11 @@ export default function Sidebar() {
         <div className="sidebar-container">
             <div className="sidebar-library">
                 <div className="section-block">
-                    <MenuButton icon={defaultimg} name="Feed" />
-                    <MenuButton icon={defaultimg} name="Events" />
-                    <MenuButton icon={defaultimg} name="Organizations" />
-                    <MenuButton icon={defaultimg} name="Community" />
-                    <MenuButton icon={defaultimg} name="Education" />
+                    <MenuButton icon="/feed-icon.svg" name="Feed" />
+                    <MenuButton icon="/events-icon.svg" name="Events" />
+                    <MenuButton icon="/organizations-icon.svg" name="Organizations" />
+                    <MenuButton icon="/community-icon.svg" name="Community" />
+                    <MenuButton icon="/education-icon.svg" name="Education" />
                 </div>
                 <div className="section-block">
                     <small className="section-title">DISCOVER</small>
@@ -35,7 +35,7 @@ export default function Sidebar() {
                     <OrgButton name="org 2" />
                     <OrgButton name="org 3" />
                     <OrgButton name="org 4" />
-                    <MenuButton icon={defaultimg} name="Join an org" />
+                    <MenuButton icon="/join-org-icon.svg" name="Join an org" />
                 </div>
             </div>
         </div>
