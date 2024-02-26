@@ -51,4 +51,4 @@ RUN pip install -r requirements.txt
 WORKDIR /opt/events-service
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "--preload", "-w", "4", "wsgi:app"]
 
-EXPOSE 8000
+EXPOSE 8001
