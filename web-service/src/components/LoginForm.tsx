@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/LoginForm.scss';
 
 export default function LoginForm() {
