@@ -8,7 +8,7 @@ on:
     branches:
       - "main"
     types: [opened, edited]
-  on: workflow_dispatch
+  workflow_dispatch:
   
 env:
   GKE_CLUSTER: hubba-cluster     # Add your cluster name here.
