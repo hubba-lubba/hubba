@@ -70,7 +70,13 @@ jobs:
             DB_NAME=${{ secrets.DB_NAME }}
             DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            VERSION=${{ env.TIMESTAMP }}
+            PROJECT_ID=${{ env.PROJECT_ID }}
+            USER_EVENT_SUBSCRIPTION_ID=${{ secrets.USER_EVENT_SUBSCRIPTION_ID }}
+            EVENTS_EVENT_SUBSCRIPTION_ID=${{ secrets.EVENTS_EVENT_SUBSCRIPTION_ID }}
+            USER_EVENT_TOPIC_ID=${{ secrets.USER_EVENT_TOPIC_ID }}
+            EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
+            ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
+            SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
           context: user-service
           platforms: linux/amd64
           push: true
