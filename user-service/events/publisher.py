@@ -22,7 +22,6 @@ class EventPublisher():
             credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
         else:
             self.logger.info("Using service account from environment variable")
-            self.logger.info("Service account: " + SERVICE_ACCOUNT)
             SA_json = json.loads(SERVICE_ACCOUNT)
             credentials = service_account.Credentials.from_service_account_info(SA_json)
 

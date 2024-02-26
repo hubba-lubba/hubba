@@ -20,6 +20,7 @@ class EventSubscriber():
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
         else:
+            print("Using service account from environment variable")
             SA_json = json.loads(SERVICE_ACCOUNT)
             credentials = service_account.Credentials.from_service_account_info(SA_json)
 
