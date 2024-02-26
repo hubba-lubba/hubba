@@ -1,0 +1,86 @@
+name: build-only
+
+on:
+  pull_request:
+    branches:
+      - "main"
+    types: [opened, edited]
+  workflow_dispatch:
+  
+env:
+  GKE_CLUSTER: hubba-cluster     # Add your cluster name here.
+  GKE_ZONE: us-central1          # Add your cluster zone here.
+  TIMESTAMP: latest
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    outputs:
+      TIMESTAMP: ${{ steps.set-time.outputs.TIMESTAMP }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Current Date as Env Variable
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
+
+      - id: set-time
+        name: Set Output Timestamp
+        run: echo "TIMESTAMP=${{ env.TIMESTAMP }}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      - run: |
+          npm install
+          npm run build
+        working-directory: web-service
+
+      - name: Build and Push web-service
+        uses: docker/build-push-action@v5
+        with:
+          context: web-service
+          platforms: linux/amd64
+          push: true
+          tags: eddisonso/web-service:${{ env.TIMESTAMP }}, eddisonso/web-service:latest
+
+      - name: Build and Push user-service
+        uses: docker/build-push-action@v5
+        with:
+          build-args: |
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            PROJECT_ID=${{ env.PROJECT_ID }}
+            USER_EVENT_SUBSCRIPTION_ID=${{ secrets.USER_EVENT_SUBSCRIPTION_ID }}
+            EVENTS_EVENT_SUBSCRIPTION_ID=${{ secrets.EVENTS_EVENT_SUBSCRIPTION_ID }}
+            USER_EVENT_TOPIC_ID=${{ secrets.USER_EVENT_TOPIC_ID }}
+            EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
+            ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
+            SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
+          context: user-service
+          platforms: linux/amd64
+          push: true
+          tags: eddisonso/user-service:${{ env.TIMESTAMP }}, eddisonso/user-service:latest
+
+      - name: Pass Timestamp to Deploy Stage
+        id: pass-ts
+        run: |
+          echo "::set-output name=TIMESTAMP::$TIMESTAMP"
