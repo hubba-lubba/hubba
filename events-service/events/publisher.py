@@ -4,6 +4,7 @@ from google.protobuf.json_format import MessageToJson
 #from events.events_pb2 import Event
 from events_pb2 import Event
 from config import *
+import json
 
 class EventPublisher():
     def __init__(self):
@@ -12,7 +13,8 @@ class EventPublisher():
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
         else:
-            credentials = service_account.Credentials.from_service_account_info(SERVICE_ACCOUNT)
+            SA_json = json.loads(SERVICE_ACCOUNT)
+            credentials = service_account.Credentials.from_service_account_info(SA_json)
         self.publisher_client = pubsub_v1.PublisherClient(credentials=credentials, 
                                                 publisher_options = pubsub_v1.types.PublisherOptions(
                                                 enable_message_ordering=True))
