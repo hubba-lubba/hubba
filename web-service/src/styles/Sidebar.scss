@@ -1,17 +1,26 @@
+@use '../sass/abstracts/colors' as *;
+
 .sidebar-container {
-    float: left;
-    margin: 15px;
+    position: fixed;
+    bottom: 0;
+    padding: 2rem;
+    width: 15%;
+    height: 90%;
+    overflow-y: auto;
 
-    border: 3px dashed var(--accent2);
-    border-radius: 12px;
-
-    width: 18%;
-    min-width: 200px;
-    //height: calc(100vh - 70px);
-
-    .sidebar-library {
-        padding: 20px;
-        padding-left: 35px;
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px $hubba-800;
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: $hubba-500;
+        &:hover {
+            background-color: darken($hubba-500, 10%);
+        }
     }
 
     .library-title {
@@ -20,17 +29,25 @@
 
     .section-title {
         color: gray;
-        font-size: 12px;
         font-weight: bold;
+        font-size: 12px;
+    }
+
+    .sidebar-library {
+        & > *:not(:first-child) {
+            margin-top: 30px;
+        }
     }
 
     .section-block {
-        margin-top: 30px;
+        & button:not(:first-child) {
+            margin-top: 5px;
+        }
     }
 
     .expand-section {
+        margin-top: 5px;
         color: gray;
         text-decoration: underline;
-        margin-top: 5px;
     }
 }

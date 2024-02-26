@@ -1,37 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {
+    ChakraProvider,
+    extendTheme,
+    type ThemeConfig,
+} from '@chakra-ui/react';
 
 import './sass/style.scss';
-import './index.scss';
 import App from './App';
 
-const themeOptions = createTheme({
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#4b5bc2',
-            light: '#6ecbf6',
-            dark: '#bb51e2',
+// Custom colors
+const THEME: ThemeConfig = extendTheme({
+    styles: {
+        global: {
+            body: {
+                bg: 'hubba.900',
+                color: 'hubba.100',
+            },
         },
-        secondary: {
-            main: '#f50057',
-        },
-        text: {
-            primary: '#dad5fd',
-            secondary: '#dad5fd',
-        },
-        background: {
-            default: '#1a1635',
-            paper: '#33295D',
+    },
+    colors: {
+        hubba: {
+            '100': '#E9E4FC',
+            '500': '#B59BFF',
+            '800': '#30313F',
+            '900': '#100E22',
         },
     },
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-        <ThemeProvider theme={themeOptions}>
+    <ChakraProvider theme={THEME}>
+        <React.StrictMode>
             <App />
-        </ThemeProvider>
-    </React.StrictMode>,
+        </React.StrictMode>
+    </ChakraProvider>,
 );
