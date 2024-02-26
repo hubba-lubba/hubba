@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles//ForgotPasswordForm.scss';
 
 export default function ForgotPasswordForm() {
