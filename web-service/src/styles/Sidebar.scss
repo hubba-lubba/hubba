@@ -1,0 +1,36 @@
+.sidebar-container {
+    float: left;
+    margin: 15px;
+
+    border: 3px dashed var(--accent2);
+    border-radius: 12px;
+
+    width: 18%;
+    min-width: 200px;
+    //height: calc(100vh - 70px);
+
+    .sidebar-library {
+        padding: 20px;
+        padding-left: 35px;
+    }
+
+    .library-title {
+        font-size: 22px;
+    }
+
+    .section-title {
+        color: gray;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .section-block {
+        margin-top: 30px;
+    }
+
+    .expand-section {
+        color: gray;
+        text-decoration: underline;
+        margin-top: 5px;
+    }
+}

@@ -1,0 +1,13 @@
+.baseButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
+    text-align: start;
+
+    background: var(--background);
+    border-radius: 8px;
+    padding: 5px;
+    width: calc(100% - 25px);
+    min-width: 40px;
+}

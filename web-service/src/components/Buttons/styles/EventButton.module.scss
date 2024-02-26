@@ -1,0 +1,14 @@
+.eventButton {
+    cursor: pointer;
+    border: none;
+    background: none;
+
+    padding: 0;
+    width: 100%;
+    min-width: 40px;
+    font-size: 14px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
