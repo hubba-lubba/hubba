@@ -5,6 +5,7 @@ from events.protobuf_files.events_pb2 import Event
 from logger import LoggerFactory
 from config import *
 import threading
+import json
 
 class EventPublisher():
     def __init__(self, domain):
@@ -20,7 +21,8 @@ class EventPublisher():
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
         else:
-            credentials = service_account.Credentials.from_service_account_info(SERVICE_ACCOUNT)
+            SA_json = json.loads(SERVICE_ACCOUNT)
+            credentials = service_account.Credentials.from_service_account_info(SA_json)
 
         self.events_publisher_client = pubsub_v1.PublisherClient(credentials=credentials, 
                                                 publisher_options = pubsub_v1.types.PublisherOptions(

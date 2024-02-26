@@ -8,6 +8,7 @@ from config import *
 from engine import engine
 from domains.repositories.user_repository import UserRepository
 from sqlalchemy.orm import Session
+import json
 
 class EventSubscriber():
     def __init__(self, engine):
@@ -19,7 +20,8 @@ class EventSubscriber():
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
         else:
-            credentials = service_account.Credentials.from_service_account_info(SERVICE_ACCOUNT)
+            SA_json = json.loads(SERVICE_ACCOUNT)
+            credentials = service_account.Credentials.from_service_account_info(SA_json)
 
         subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
         subscription_path = subscriber.subscription_path(project_id, subscription_id)
