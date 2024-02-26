@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from domains.models.user import User
 from domains.models.events import Events
 from domains.models.base import Base
@@ -15,8 +15,11 @@ engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_
 if not database_exists(engine.url): create_database(engine.url)
 
 if RESET_DB:
-    event_moderator_table.drop(engine)
-    user_table.drop(engine)
+    ins = inspect(engine)
+    if ins.has_table(event_moderator_table.name):
+        event_moderator_table.drop(engine)
+    if ins.has_table(user_table.name):
+        user_table.drop(engine)
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
