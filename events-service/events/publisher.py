@@ -13,6 +13,7 @@ class EventPublisher():
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
         else:
+            print("Using service account from environment variable")
             SA_json = json.loads(SERVICE_ACCOUNT)
             credentials = service_account.Credentials.from_service_account_info(SA_json)
         self.publisher_client = pubsub_v1.PublisherClient(credentials=credentials, 
