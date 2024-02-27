@@ -38,7 +38,10 @@ class EventSubscriber():
         self.logger.info(f"user_event:\n {data}")
         with Session(engine) as session:
             user_repository = UserRepository(session)
-            user_repository.add_user(user_id=data.uuid)
+            if data.action:
+                user_repository.add_user(user_id=data.uuid)
+            else:
+                user_repository.delete_user(user_id=data.uuid)
 
     def handle_event(self, event):
         match event.domain:

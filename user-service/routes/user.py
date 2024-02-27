@@ -26,13 +26,6 @@ def version():
     })
     return result
 
-@user_blueprint.route("/")
-def root():
-    result = jsonify({
-        "api": "user"
-    })
-    return result, 200
-
 @user_blueprint.route("/", methods=["PUT"])
 @require_json_params(["username"])
 def add_user():
@@ -81,6 +74,27 @@ def get_user():
             })
             return result, 400
 
+@user_blueprint.route("/", methods=["DELETE"])
+@require_query_params(["user_id"])
+@ensureUUID("user_id")
+def delete_user():
+    user_id = request.args.get("user_id")
+    with Session(engine) as session:
+        try:
+            user_repository = UserRepository(session)
+            user_id = user_repository.delete_user(user_id=user_id)
+            response = jsonify({
+                "status": "success",
+                "user_id": user_id
+            })
+            return response
+        except IdMissingException as e:
+            result = jsonify({
+                "status": "failure",
+                "reason": str(e)
+            })
+            return result, 400
+
 @user_blueprint.route("/add_following", methods=["POST"])
 @require_json_params(["user_id", "following"])
 @ensureUUID("user_id")
@@ -105,4 +119,5 @@ def add_following():
                 "status": "failure",
                 "reason": str(e)
             })
+            
             return result, 400

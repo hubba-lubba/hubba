@@ -55,6 +55,20 @@ class UserRepository:
         return user
 
     """
+    Deletes an existing User
+
+    :param user_id: uuid of User
+    :return: uuid of deleted User
+    """
+    @check_id_exists(["user_id"])
+    def delete_user(self, user_id):
+        user = self.session.get(User, user_id)
+        self.session.delete(user)
+        self.session.commit()
+        self.session.publish(action=False, uuid=str(user.user_id))
+        return user_id
+
+    """
     Adds following users to existing user
 
     :param user_id: uuid of User
@@ -73,4 +87,5 @@ class UserRepository:
         self.session.merge(user)
         self.session.commit()
         return user
+
 

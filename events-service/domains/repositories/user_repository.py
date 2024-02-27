@@ -31,3 +31,10 @@ class UserRepository:
     def add_user(self, *, user_id):
         new_user = User(user_id = user_id)
         return self._add_user(new_user)
+
+    @check_id_exists(User, ["user_id"])
+    def delete_user(self, *, user_id):
+        user = self.session.get(User, user_id)
+        self.session.delete(user)
+        self.session.commit()
+        return user
