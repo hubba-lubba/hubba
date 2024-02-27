@@ -74,6 +74,7 @@ jobs:
             EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
             ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
             SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
+            VERSION=${{ env.TIMESTAMP }}
           context: user-service
           platforms: linux/amd64
           push: true
@@ -95,6 +96,7 @@ jobs:
             EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
             ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
             SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
+            VERSION=${{ env.TIMESTAMP }}
           context: events-service
           platforms: linux/amd64
           push: true
