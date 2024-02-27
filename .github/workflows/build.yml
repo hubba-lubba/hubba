@@ -13,7 +13,7 @@ env:
   TIMESTAMP: latest
 
 jobs:
-  build-and-push:
+  setup:
     runs-on: ubuntu-latest
 
     outputs:
@@ -30,6 +30,19 @@ jobs:
         name: Set Output Timestamp
         run: echo "TIMESTAMP=${{ env.TIMESTAMP }}" >> "$GITHUB_OUTPUT"
 
+      - name: Pass Timestamp to Deploy Stage
+        id: pass-ts
+        run: |
+          echo "::set-output name=TIMESTAMP::$TIMESTAMP"
+
+  build-webservice:
+    runs-on: ubuntu-latest
+    needs: [setup]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -56,31 +69,85 @@ jobs:
         with:
           context: web-service
           platforms: linux/amd64
-          push: true
-          tags: eddisonso/web-service:${{ env.TIMESTAMP }}, eddisonso/web-service:latest
+          push: false
 
+  build-userservice:
+    runs-on: ubuntu-latest
+    needs: [setup]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
       - name: Build and Push user-service
         uses: docker/build-push-action@v5
         with:
           build-args: |
             DB_USER=${{ secrets.DB_USER }}
             DB_PORT=${{ secrets.DB_PORT }}
-            DB_NAME=${{ secrets.DB_NAME }}
+            DB_NAME="user-db"
             DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            PROJECT_ID=${{ env.PROJECT_ID }}
+            PROJECT_ID=${{ secrets.PROJECT_ID }}
             USER_EVENT_SUBSCRIPTION_ID=${{ secrets.USER_EVENT_SUBSCRIPTION_ID }}
             EVENTS_EVENT_SUBSCRIPTION_ID=${{ secrets.EVENTS_EVENT_SUBSCRIPTION_ID }}
             USER_EVENT_TOPIC_ID=${{ secrets.USER_EVENT_TOPIC_ID }}
             EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
             ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
             SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
+            VERSION=${{needs.setup.outputs.TIMESTAMP}}
           context: user-service
           platforms: linux/amd64
-          push: true
-          tags: eddisonso/user-service:${{ env.TIMESTAMP }}, eddisonso/user-service:latest
+          push: false
 
-      - name: Pass Timestamp to Deploy Stage
-        id: pass-ts
-        run: |
-          echo "::set-output name=TIMESTAMP::$TIMESTAMP"
+  build-eventsservice:
+    runs-on: ubuntu-latest
+    needs: [setup]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and Push events-service
+        uses: docker/build-push-action@v5
+        with:
+          build-args: |
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_NAME="events-db"
+            DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            PROJECT_ID=${{ secrets.PROJECT_ID }}
+            USER_EVENT_SUBSCRIPTION_ID=${{ secrets.USER_EVENT_SUBSCRIPTION_ID }}
+            EVENTS_EVENT_SUBSCRIPTION_ID=${{ secrets.EVENTS_EVENT_SUBSCRIPTION_ID }}
+            USER_EVENT_TOPIC_ID=${{ secrets.USER_EVENT_TOPIC_ID }}
+            EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
+            ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
+            SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
+            VERSION=${{needs.setup.outputs.TIMESTAMP}}
+          context: events-service
+          platforms: linux/amd64
+          push: false
