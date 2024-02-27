@@ -82,10 +82,10 @@ def delete_user():
     with Session(engine) as session:
         try:
             user_repository = UserRepository(session)
-            user = user_repository.delete_user(user_id=user_id)
+            user_id = user_repository.delete_user(user_id=user_id)
             response = jsonify({
                 "status": "success",
-                "user": user.get_JSON(),
+                "user_id": user_id
             })
             return response
         except IdMissingException as e:
