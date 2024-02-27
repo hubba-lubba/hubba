@@ -19,3 +19,4 @@ USER_EVENT_TOPIC_ID = os.environ.get("USER_EVENT_TOPIC_ID", "dev-user-event")
 EVENTS_EVENT_TOPIC_ID = os.environ.get("EVENTS_EVENT_TOPIC_ID", "dev-events-event")
 ORGANIZATIONS_EVENT_TOPIC_ID = os.environ.get("ORGANIZATIONS_EVENT_TOPIC_ID", "dev-organizations-event")
 SERVICE_ACCOUNT = os.environ.get("SERVICE_ACCOUNT", None)
+PORT = 8001
