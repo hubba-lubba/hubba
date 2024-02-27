@@ -62,7 +62,7 @@ class UserRepository:
     """
     @check_id_exists(["user_id"])
     def delete_user(self, user_id):
-        self.session.delete(User, user_id)
+        self.session.delete(user_id)
         return user_id
 
     """
