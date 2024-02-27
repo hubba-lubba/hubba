@@ -61,7 +61,7 @@ class UserRepository:
     :return: uuid of deleted User
     """
     @check_id_exists(["user_id"])
-    def get_user(self, user_id):
+    def delete_user(self, user_id):
         self.session.delete(User, user_id)
         return user_id
 
