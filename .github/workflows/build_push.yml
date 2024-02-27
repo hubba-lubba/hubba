@@ -12,7 +12,7 @@ env:
   TIMESTAMP: latest
 
 jobs:
-  build-and-push:
+  setup:
     runs-on: ubuntu-latest
 
     outputs:
@@ -29,6 +29,16 @@ jobs:
         name: Set Output Timestamp
         run: echo "TIMESTAMP=${{ env.TIMESTAMP }}" >> "$GITHUB_OUTPUT"
 
+      - name: Pass Timestamp to Deploy Stage
+        id: pass-ts
+        run: |
+          echo "::set-output name=TIMESTAMP::$TIMESTAMP"
+
+  build-push-webservice:
+    runs-on: ubuntu-latest
+    needs: [setup]
+
+    steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -56,8 +66,25 @@ jobs:
           context: web-service
           platforms: linux/amd64
           push: true
-          tags: eddisonso/web-service:${{ env.TIMESTAMP }}, eddisonso/web-service:latest
+          tags: eddisonso/web-service:${{needs.setup.outputs.TIMESTAMP}}, eddisonso/web-service:latest
 
+  build-push-userservice:
+    runs-on: ubuntu-latest
+    needs: [setup]
+
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
       - name: Build and Push user-service
         uses: docker/build-push-action@v5
         with:
@@ -74,12 +101,28 @@ jobs:
             EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
             ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
             SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
-            VERSION=${{ env.TIMESTAMP }}
+            VERSION=${{needs.setup.outputs.TIMESTAMP}}
           context: user-service
           platforms: linux/amd64
           push: true
-          tags: eddisonso/user-service:${{ env.TIMESTAMP }}, eddisonso/user-service:latest
-      
+          tags: eddisonso/user-service:${{needs.setup.outputs.TIMESTAMP}}, eddisonso/user-service:latest
+
+  build-push-eventsservice:
+    runs-on: ubuntu-latest
+    needs: [setup]
+
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and Push events-service
         uses: docker/build-push-action@v5
         with:
@@ -96,19 +139,14 @@ jobs:
             EVENTS_EVENT_TOPIC_ID=${{ secrets.EVENTS_EVENT_TOPIC_ID }}
             ORGANIZATIONS_EVENT_TOPIC_ID=${{ secrets.ORGANIZATIONS_EVENT_TOPIC_ID }}
             SERVICE_ACCOUNT=${{ secrets.SERVICE_ACCOUNT }}
-            VERSION=${{ env.TIMESTAMP }}
+            VERSION=${{needs.setup.outputs.TIMESTAMP}}
           context: events-service
           platforms: linux/amd64
           push: true
-          tags: eddisonso/events-service:${{ env.TIMESTAMP }}, eddisonso/events-service:latest
-
-      - name: Pass Timestamp to Deploy Stage
-        id: pass-ts
-        run: |
-          echo "::set-output name=TIMESTAMP::$TIMESTAMP"
+          tags: eddisonso/events-service:${{needs.setup.outputs.TIMESTAMP}}, eddisonso/events-service:latest
   deploy:
     runs-on: ubuntu-latest
-    needs: [build-and-push]
+    needs: [build-push-userservice]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -130,6 +168,6 @@ jobs:
   
       - name: Deploy
         run: |-
-          kubectl set image deployment/user-service user-service=eddisonso/user-service:${{needs.build-and-push.outputs.TIMESTAMP}}
-          kubectl set image deployment/web-service web-service=eddisonso/web-service:${{needs.build-and-push.outputs.TIMESTAMP}}
-          kubectl set image deployment/events-service events-service=eddisonso/events-service:${{needs.build-and-push.outputs.TIMESTAMP}}
+          kubectl set image deployment/user-service user-service=eddisonso/user-service:${{needs.setup.outputs.TIMESTAMP}}
+          kubectl set image deployment/web-service web-service=eddisonso/web-service:${{needs.setup.outputs.TIMESTAMP}}
+          kubectl set image deployment/events-service events-service=eddisonso/events-service:${{needs.setup.outputs.TIMESTAMP}}
