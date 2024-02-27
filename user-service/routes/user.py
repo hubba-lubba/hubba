@@ -26,13 +26,6 @@ def version():
     })
     return result
 
-@user_blueprint.route("/")
-def root():
-    result = jsonify({
-        "api": "user"
-    })
-    return result, 200
-
 @user_blueprint.route("/", methods=["PUT"])
 @require_json_params(["username"])
 def add_user():
