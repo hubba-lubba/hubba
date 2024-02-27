@@ -64,6 +64,8 @@ class UserRepository:
     def delete_user(self, user_id):
         user = self.session.get(User, user_id)
         self.session.delete(user)
+        self.session.commit()
+        self.session.publish(action=False, uuid=str(user.user_id))
         return user_id
 
     """
