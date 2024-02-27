@@ -155,7 +155,7 @@ jobs:
           tags: eddisonso/events-service:${{needs.setup.outputs.TIMESTAMP}}, eddisonso/events-service:latest
   deploy:
     runs-on: ubuntu-latest
-    needs: [build-push-userservice, build-push-webservice, build-push-eventsservice]
+    needs: [build-push-userservice, build-push-webservice, build-push-eventsservice, setup]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
