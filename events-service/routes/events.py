@@ -77,3 +77,32 @@ def get_event():
             })
             response.status_code = 404
             return response
+@events_blueprint.route("/", methods=["DELETE"])
+@require_query_params(["event_id"])
+@ensureUUID("event_id")
+def delete_event():
+    event_id = request.args.get("event_id")
+    if not event_id:
+        response = jsonify({
+            "status": "error",
+            "message": "event_id is required"
+        })
+        response.status_code = 400
+        return response
+    
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        try:
+            event_id = events_repository.delete_event(event_id=event_id)
+            response = jsonify({
+                "status": "success",
+                "event_id": event_id
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
