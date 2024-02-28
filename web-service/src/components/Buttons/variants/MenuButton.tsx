@@ -8,10 +8,7 @@ interface Props {
     name: string;
 }
 
-export default function MenuButton({
-    icon,
-    name,
-}: Props): React.ReactElement {
+export default function MenuButton({ icon, name }: Props): React.ReactElement {
     return (
         <BaseButton style={styles.menuButton}>
             <img src={icon} className={styles.icon} alt="Menu icon" />
