@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import '../styles/Navbar.scss';
 
-export default function Navbar(): React.ReactElement {
+export const Navbar = () => {
     return (
         <nav>
             <Logo />
@@ -12,7 +12,7 @@ export default function Navbar(): React.ReactElement {
             </div>
         </nav>
     );
-}
+};
 
 const Logo = () => {
     return (

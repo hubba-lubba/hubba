@@ -1,15 +1,18 @@
-import { MenuButton, ChannelButton, EventButton, OrgButton } from './Buttons';
+import { MenuButton, ChannelButton, EventButton, OrgButton } from '../elements/buttons';
 import defaultimg from '..assets/images/defaultimg.png';
 import '../styles/Sidebar.scss';
 
-export default function Sidebar() {
+export const Sidebar = () => {
     return (
         <div className="sidebar-container">
             <div className="sidebar-library">
                 <div className="section-block">
                     <MenuButton icon="/feed-icon.svg" name="Feed" />
                     <MenuButton icon="/events-icon.svg" name="Events" />
-                    <MenuButton icon="/organizations-icon.svg" name="Organizations" />
+                    <MenuButton
+                        icon="/organizations-icon.svg"
+                        name="Organizations"
+                    />
                     <MenuButton icon="/community-icon.svg" name="Community" />
                     <MenuButton icon="/education-icon.svg" name="Education" />
                 </div>
@@ -40,4 +43,4 @@ export default function Sidebar() {
             </div>
         </div>
     );
-}
+};

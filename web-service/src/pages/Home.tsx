@@ -1,5 +1,4 @@
-import Navbar from './Navbar';
-import Sidebar from './Sidebar';
+import { Navbar, Sidebar } from '@/components/layout'
 
 export default function Home() {
     return (
