@@ -46,3 +46,14 @@ class EventsRepository:
     def get_event(self, event_id):
         event = self.session.get(Events, event_id)
         return event
+
+    """
+    Delete Event object
+    :param event_id: uuid of event_uuid
+    :return: uuid of deleted event
+    """
+    def delete_event(self, event_id):
+        event = self.get_event(event_id)
+        self.session.delete(event)
+        self.session.commit()
+        return event_id

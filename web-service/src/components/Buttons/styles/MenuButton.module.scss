@@ -1,12 +1,11 @@
-.menuButton {
-    &:hover {
-        background: var(--accent2);
-    }
+@use '../../../sass/abstracts/colors' as *;
 
+.menuButton {
     .icon {
+        filter: invert(41%) sepia(59%) saturate(1569%) hue-rotate(231deg)
+            brightness(106%) contrast(103%);
         margin-right: 10px;
         height: 25px;
-        filter: invert(41%) sepia(59%) saturate(1569%) hue-rotate(231deg) brightness(106%) contrast(103%);
     }
 
     .name {
