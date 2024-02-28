@@ -2,14 +2,15 @@ from flask import Blueprint, jsonify, request
 from domains.repositories.user_repository import UserRepository
 from config import VERSION
 from engine import engine
+from events.publisher import EventPublisher
 from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
-
-from routes.utils import ensureUUID, require_json_params, require_query_params
+from routes.utils import *
 
 user_blueprint = Blueprint('user_api', __name__, url_prefix="/")
 CORS(user_blueprint)
+publisher = EventPublisher("user")
 
 @user_blueprint.route("/healthcheck")
 def healthcheck():
@@ -25,7 +26,7 @@ def version():
     })
     return result
 
-@user_blueprint.route("/add_user", methods=["PUT"])
+@user_blueprint.route("/", methods=["PUT"])
 @require_json_params(["username"])
 def add_user():
     context = request.get_json()
@@ -52,7 +53,7 @@ def add_user():
             return result, 400
 
 
-@user_blueprint.route("/get_user", methods=["GET"])
+@user_blueprint.route("/", methods=["GET"])
 @require_query_params(["user_id"])
 @ensureUUID("user_id")
 def get_user():
@@ -64,6 +65,27 @@ def get_user():
             response = jsonify({
                 "status": "success",
                 "user": user.get_JSON(),
+            })
+            return response
+        except IdMissingException as e:
+            result = jsonify({
+                "status": "failure",
+                "reason": str(e)
+            })
+            return result, 400
+
+@user_blueprint.route("/", methods=["DELETE"])
+@require_query_params(["user_id"])
+@ensureUUID("user_id")
+def delete_user():
+    user_id = request.args.get("user_id")
+    with Session(engine) as session:
+        try:
+            user_repository = UserRepository(session)
+            user_id = user_repository.delete_user(user_id=user_id)
+            response = jsonify({
+                "status": "success",
+                "user_id": user_id
             })
             return response
         except IdMissingException as e:
@@ -97,4 +119,5 @@ def add_following():
                 "status": "failure",
                 "reason": str(e)
             })
+            
             return result, 400

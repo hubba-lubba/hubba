@@ -2,7 +2,8 @@ from sqlalchemy.orm import Session
 from domains.models.user import User
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import check_id_exists, check_id_not_exists
-import uuid
+from events.publisher_factory import PublisherFactory
+from logger import LoggerFactory
 
 
 class UserRepository:
@@ -10,6 +11,12 @@ class UserRepository:
 
     def __init__(self, db_session: Session):
         self.session = db_session
+        logger_factory = LoggerFactory()
+        self.logger = logger_factory.get_logger()
+
+        publisher_factory = PublisherFactory()
+        self.publisher = publisher_factory.get_publisher()
+        
 
     """
     Adds new User object to be persisted using User object
@@ -20,6 +27,7 @@ class UserRepository:
     def _add_user(self, new_user: User):
         self.session.add(new_user)
         self.session.commit()
+        self.publisher.publish(action=True, uuid=str(new_user.user_id))
         return new_user
 
     """
@@ -47,6 +55,20 @@ class UserRepository:
         return user
 
     """
+    Deletes an existing User
+
+    :param user_id: uuid of User
+    :return: uuid of deleted User
+    """
+    @check_id_exists(["user_id"])
+    def delete_user(self, user_id):
+        user = self.session.get(User, user_id)
+        self.session.delete(user)
+        self.session.commit()
+        self.session.publish(action=False, uuid=str(user.user_id))
+        return user_id
+
+    """
     Adds following users to existing user
 
     :param user_id: uuid of User
@@ -58,7 +80,7 @@ class UserRepository:
         user = self.session.get(User, user_id)
         new_following = list(map(lambda user_id: self.session.get(User, user_id), following))
 
-        if user in new_following:
+        if user is not None and user in new_following:
             raise SelfReferentialFollowException(user.user_id)
 
         user.following.extend(new_following)
