@@ -1,5 +1,5 @@
 import { MenuButton, ChannelButton, EventButton, OrgButton } from './Buttons';
-import defaultimg from '../images/defaultimg.png';
+import defaultimg from '..assets/images/defaultimg.png';
 import '../styles/Sidebar.scss';
 
 export default function Sidebar() {
