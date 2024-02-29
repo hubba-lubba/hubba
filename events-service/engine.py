@@ -11,7 +11,7 @@ from domains.models.events import event_moderator_table, user_table
 RESET_DB = True
 
 engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_PORT}/{DB_NAME}",
-                       echo=True)
+                       echo=True, preping=True)
 if not database_exists(engine.url): create_database(engine.url)
 
 if RESET_DB:
