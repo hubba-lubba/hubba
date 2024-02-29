@@ -9,7 +9,7 @@ from config import *
 RESET_DB = True
 
 engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_PORT}/{DB_NAME}",
-                       echo=True, preping=True)
+                       echo=True, pool_pre_ping=True)
 if not database_exists(engine.url): create_database(engine.url)
 
 if RESET_DB:
