@@ -12,8 +12,11 @@ class EventPublisher():
         logger_factory = LoggerFactory()
         self.logger = logger_factory.get_logger()
 
-        project_id = "hubba-412704"
+        project_id = PROJECT_ID
         topic_id = EVENTS_EVENT_TOPIC_ID
+
+        self.logger.info(f"Using project_id: {project_id}")
+        self.logger.info(f"Using topic_id: {topic_id}")
 
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
