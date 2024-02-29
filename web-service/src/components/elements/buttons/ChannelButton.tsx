@@ -1,14 +1,14 @@
 import React from 'react';
+import { BaseButton } from '@/components/elements/buttons';
 
-import BaseButton from '../Button';
-import styles from '../styles/ChannelButton.module.scss';
+import styles from './button.module.scss';
 
 interface Props {
     icon: string;
     name: string;
 }
 
-export default function ChannelButton({
+export function ChannelButton({
     icon,
     name,
 }: Props): React.ReactElement {

@@ -1,4 +1,4 @@
-import '../styles/SignupForm.scss';
+// import '../styles/SignupForm.scss';
 
 export default function SignupForm() {
     return (

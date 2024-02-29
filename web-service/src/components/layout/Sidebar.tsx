@@ -1,6 +1,5 @@
-import { MenuButton, ChannelButton, EventButton, OrgButton } from '../elements/buttons';
-import defaultimg from '..assets/images/defaultimg.png';
-import '../styles/Sidebar.scss';
+import { MenuButton, ChannelButton, EventButton, OrgButton } from '@/components/elements/buttons';
+import defaultimg from '@/assets/images/defaultimg.png'
 
 export const Sidebar = () => {
     return (

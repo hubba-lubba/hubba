@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Button.module.scss';
+import styles from './button.module.scss';
 
 interface Props {
     children: React.ReactNode;
@@ -8,7 +8,7 @@ interface Props {
     handleClick?: () => void;
 }
 
-export default function BaseButton({
+export function BaseButton({
     children,
     style = '',
     handleClick,

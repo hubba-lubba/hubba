@@ -1,4 +1,4 @@
-import '../styles//ForgotPasswordForm.scss';
+// import '../styles//ForgotPasswordForm.scss';
 
 export default function ForgotPasswordForm() {
     return (
