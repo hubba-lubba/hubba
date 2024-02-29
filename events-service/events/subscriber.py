@@ -20,6 +20,9 @@ class EventSubscriber():
         project_id = PROJECT_ID
         subscription_id = EVENTS_EVENT_SUBSCRIPTION_ID
 
+        self.logger.info(f"Using project_id: {project_id}")
+        self.logger.info(f"Using subscription_id: {subscription_id}")
+
         if SERVICE_ACCOUNT is None:
             credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
         else:
