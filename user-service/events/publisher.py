@@ -14,9 +14,13 @@ class EventPublisher():
 
         self.domain = domain
 
-        project_id = "hubba-412704"
+        project_id = PROJECT_ID
         events_topic = EVENTS_EVENT_TOPIC_ID
         organizations_topic = ORGANIZATIONS_EVENT_TOPIC_ID
+
+        self.logger.info(f"Using project_id: {project_id}")
+        self.logger.info(f"Using events_topic: {events_topic}")
+        self.logger.info(f"Using organizations_topic: {organizations_topic}")
 
         if SERVICE_ACCOUNT is not None and not SERVICE_ACCOUNT:
             credentials = service_account.Credentials.from_service_account_file("./events/hubba-credentials.json")
