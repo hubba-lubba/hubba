@@ -138,3 +138,4 @@ dist
 ./user-service/events/hubba-credentials.json
 ./events-service/events/hubba-credentials.json
 
+*.code-workspace
