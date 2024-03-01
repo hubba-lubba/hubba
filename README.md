@@ -16,5 +16,7 @@
 ### Github Workflow and Actions
 > Temporarily blank. Waiting on completion from devops.
 
+## [Frontend Development Guide](web-service/README.md)
+
 ## hubba
-Gaming Streaming Service\
+Gaming Streaming Service

@@ -1,4 +1,4 @@
-# Frontend Developer Documentation
+# Frontend Developer Guide
 
 ## Description
 
@@ -11,11 +11,12 @@ The project is built with:
 ## Table of Contents
 
 -   [Installation](#installation)
+-   [Usage](#usage)
+    -   [Documentations](#documentations)
 -   [Coding Standards](#coding-standards)
     -   [Prettier](#prettier)
     -   [Structure](#structure)
--   [Usage](#usage)
-    -   [Documentations](#documentations)
+    -   [Tailwind](#tailwind)
 
 ## Installation
 
@@ -35,9 +36,16 @@ Run the dev environment:
 
 Then visit the url printed in the terminal. Default is [http://localhost:5173/](http://localhost:5173/).
 
+### Documentations
+
+-   [React](https://react.dev/reference/react)
+-   [Tailwind](https://tailwindcss.com/docs) [[Cheatsheet](https://nerdcave.com/tailwind-cheat-sheet)]
+-   [ChakraUI](https://chakra-ui.com/docs/components)
+
+
 ## Coding Standards
 
-### Prettier<span style="color:red;">\*</span>
+### Prettier*
 
 We use Prettier to keep our code pretty formatted consistently for seamless collaboration. Make sure this is done!
 
@@ -84,9 +92,3 @@ In short:
 Our theme variables are specified in `tailwind.config.js`. Use those instead of hardcoding colors.
 
 Please ask Jackey for further tailwind questions :D
-
-### Documentations
-
--   [React](https://react.dev/reference/react)
--   [Tailwind](https://tailwindcss.com/docs) [[Cheatsheet](https://nerdcave.com/tailwind-cheat-sheet)]
--   [ChakraUI](https://chakra-ui.com/docs/components)
