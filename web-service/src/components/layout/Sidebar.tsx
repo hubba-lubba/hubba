@@ -96,7 +96,7 @@ export const Sidebar = () => {
                     </Button>
                 ))}
                 <Button variant="text">
-                    <small className="text-hubba-600 mt-2 uppercase">
+                    <small className="mt-2 uppercase text-hubba-600">
                         Show more
                     </small>
                 </Button>
@@ -132,7 +132,7 @@ const SidebarSection = ({ children, title }: SidebarSectionProps) => {
     return (
         <section className="flex flex-col space-y-3">
             {title && (
-                <small className="bold text-xs text-hubba-600 uppercase">
+                <small className="bold text-xs uppercase text-hubba-600">
                     {title}
                 </small>
             )}

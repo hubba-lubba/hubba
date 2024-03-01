@@ -1,8 +1,8 @@
 import React from 'react';
 
 type FormProps = {
-    children: React.ReactNode,
-    title: string
+    children: React.ReactNode;
+    title: string;
 };
 
 export const Form = ({ children, title }: FormProps) => {
@@ -13,4 +13,4 @@ export const Form = ({ children, title }: FormProps) => {
             {children}
         </form>
     );
-}
+};

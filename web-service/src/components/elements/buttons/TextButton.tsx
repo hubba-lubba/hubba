@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 type TextButtonProps = {
     text: string;
@@ -7,7 +7,10 @@ type TextButtonProps = {
 
 export const TextButton = ({ text, path }: TextButtonProps) => {
     return (
-        <Link to={path} className="cursor-pointer border-none bg-none underline">
+        <Link
+            to={path}
+            className="cursor-pointer border-none bg-none underline"
+        >
             {text}
         </Link>
     );

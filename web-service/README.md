@@ -68,14 +68,15 @@ In short:
 -   `@/utils`: for any custom javascript or react utilities
 
 #### Paths
+
 -   To modularize components and export the ones we need to be used globally, we have an `index.ts` in some directories.
     -   When creating new components or functions that may need to be used globally, please export them in `index.ts`.
     -   Don't include them in `index.ts` if they are only to be used in their local scope and nowhere else.
--   Scopes are primarily folder-based, then can be category based according to our implementation. So each `/features/*/routes/` is its own scope, while `/features/` and `/features/auth/` are also their own scopes. 
+-   Scopes are primarily folder-based, then can be category based according to our implementation. So each `/features/*/routes/` is its own scope, while `/features/` and `/features/auth/` are also their own scopes.
 -   Use the `@` symbol instead relative path to reference components far from current scope. The `@` symbol basically just replaces `/src`.
     -   For example, if I'm accessing a `Button` component from `@/features/components/SigninForm`, I'll use `import @/components/buttons` instead of `import ../../components/buttons`
 -   Use relative path instead of `@` when dealing with components from current scope.
-    -   For example, if I'm accessing `@/features/components/SignupForm` from `@/features/components/Layout`, I'll use `import ./SignupForm` instead of `import @/features/auth/components/SignupForm`. 
+    -   For example, if I'm accessing `@/features/components/SignupForm` from `@/features/components/Layout`, I'll use `import ./SignupForm` instead of `import @/features/auth/components/SignupForm`.
         -   Failing to do this may also result in errors - in our example, SigninForm is locally scoped and not exported, so the compiler will whine about not being able t find `@/features/auth/components/SignupForm`.
 
 ### Tailwind

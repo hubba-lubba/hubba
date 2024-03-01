@@ -4,8 +4,8 @@ type SubmitButtonProps = {
 
 export const SubmitButton = ({ text }: SubmitButtonProps) => {
     return (
-        <button type="submit" className="cursor-pointer w-full h-4 hubba-900">
+        <button type="submit" className="hubba-900 h-4 w-full cursor-pointer">
             {text}
         </button>
     );
-}
+};

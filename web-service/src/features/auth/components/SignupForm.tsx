@@ -7,9 +7,16 @@ export const SignupForm = () => {
             <TextField type="text" label="Email Address" required={true} />
             <TextField type="text" label="Username" required={true} />
             <TextField type="password" label="Password" required={true} />
-            <TextField type="password" label="Confirm Password" required={true} />
+            <TextField
+                type="password"
+                label="Confirm Password"
+                required={true}
+            />
             <SubmitButton text="Sign Up" />
-            <TextButton text="Already have an account? Sign in" path="/signin" />
+            <TextButton
+                text="Already have an account? Sign in"
+                path="/signin"
+            />
         </Form>
     );
-}
+};

@@ -1,7 +1,6 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
 import { TextButton } from '@/components/elements/buttons';
 
-
 export const SigninForm = () => {
     // add button functions here
     return (
@@ -13,4 +12,4 @@ export const SigninForm = () => {
             <TextButton text="Dont have an account? Sign up" path="/signup" />
         </Form>
     );
-}
+};

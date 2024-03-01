@@ -20,7 +20,7 @@ export const TextField = ({
                 {label}
                 <input
                     type={type}
-                    className={clsx('mb-3 w-48 hubba-900', style)}
+                    className={clsx('hubba-900 mb-3 w-48', style)}
                     required={required}
                 />
             </label>
