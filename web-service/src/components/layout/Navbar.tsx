@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 // componentize?
 const Logo = () => {
     return (
-        <div className="flex justify-start items-center p-8 h-full w-56">
+        <div className="flex h-full w-56 items-center justify-start p-8">
             <img src="/hubba.png" alt="logo" />
         </div>
     );
@@ -11,9 +11,9 @@ const Logo = () => {
 
 export const Navbar = () => {
     return (
-        <nav className="flex w-full h-[10%]">
+        <nav className="fixed flex h-20 w-full flex-grow-0">
             <Logo />
-            <div className="flex justify-end items-center p-8 w-10/12 h-auto">
+            <div className="flex h-auto w-10/12 items-center justify-end p-8">
                 <Link to="/login">Login</Link>
             </div>
         </nav>

@@ -3,9 +3,9 @@ import clsx from 'clsx';
 
 const variants = {
     base: 'flex flex-center cursor-pointer',
-    menu: 'flex flex-center cursor-pointer w-[calc(100%-25px)] min-w-10 text-start hover:transition-colors ease-in-out hover:bg-hubba-900',
-    icon: 'flex flex-center cursor-pointer w-[calc(100%-25px)] min-w-10 text-start hover:transition-colors ease-in-out hover:bg-hubba-900',
-    text: 'cursor-pointer border-none bg-none underline',
+    menu: 'flex flex-center cursor-pointer w-[calc(100%-25px)] min-w-10 text-start hover:transition-colors ease-in-out hover:text-hubba-500',
+    icon: 'flex flex-center cursor-pointer w-[calc(100%-25px)] min-w-10 text-start hover:transition-colors ease-in-out hover:text-hubba-500',
+    text: 'flex flex-center cursor-pointer border-none bg-none hover:underline',
 };
 // somehow modularize
 // variants inherit from base, but some tac on icon and others tac on underline (2 variants)
@@ -30,13 +30,13 @@ export function Button({
     return (
         <button
             onClick={handleClick}
-            className={clsx(variants[variant], style)}
+            className={clsx('transition-all', variants[variant], style)}
         >
             {icon && (
                 <img
                     src={icon}
                     className={clsx(
-                        'pr-2.5 h-6',
+                        'h-6 pr-2.5',
                         variant == 'menu' ? 'invert' : '',
                     )}
                     alt={alt}
