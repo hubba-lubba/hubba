@@ -14,5 +14,11 @@ module.exports = {
             'warn',
             { allowConstantExport: true },
         ],
+        'no-restricted-imports': [
+            'error',
+            {
+                patterns: ['@/features/*/*'],
+            },
+        ],
     },
 };

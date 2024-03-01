@@ -1,5 +1,6 @@
 {
     "tabWidth": 4,
     "singleQuote": true,
-    "plugins": ["prettier-plugin-css-order"]
+    "useTabs": false,
+    "plugins": ["prettier-plugin-css-order", "prettier-plugin-tailwindcss"]
 }

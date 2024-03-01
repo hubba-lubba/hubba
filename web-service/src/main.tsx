@@ -6,7 +6,7 @@ import {
     type ThemeConfig,
 } from '@chakra-ui/react';
 
-import './sass/style.scss';
+import './main.css';
 import App from './App';
 
 // Custom colors
@@ -30,9 +30,9 @@ const THEME: ThemeConfig = extendTheme({
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <ChakraProvider theme={THEME}>
-        <React.StrictMode>
+    <React.StrictMode>
+        <ChakraProvider theme={THEME}>
             <App />
-        </React.StrictMode>
-    </ChakraProvider>,
+        </ChakraProvider>
+    </React.StrictMode>,
 );
