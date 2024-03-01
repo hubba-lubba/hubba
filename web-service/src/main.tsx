@@ -6,8 +6,8 @@ import {
     type ThemeConfig,
 } from '@chakra-ui/react';
 
-import '@/sass/style.scss';
-import App from '@/App';
+import './main.css';
+import App from './App';
 
 // Custom colors
 const THEME: ThemeConfig = extendTheme({

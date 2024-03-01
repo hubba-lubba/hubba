@@ -4,14 +4,14 @@ type InputFieldProps = {
     type: 'text' | 'email' | 'password';
     label: string;
     required?: boolean;
-    classNames?: string;
+    style?: string;
 };
 // add a wrapper for error and validation
 export const TextField = ({
     type,
     label,
     required,
-    classNames,
+    style,
 }: InputFieldProps) => {
     // validate depending on type
     return (
@@ -20,7 +20,7 @@ export const TextField = ({
                 {label}
                 <input
                     type={type}
-                    className={clsx('mb-3 w-48 hubba-900', classNames)}
+                    className={clsx('mb-3 w-48 hubba-900', style)}
                     required={required}
                 />
             </label>

@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 
+// componentize?
 const Logo = () => {
     return (
-        <div className="logo">
+        <div className="flex justify-start items-center p-8 h-full w-2/12">
             <img src="/hubba.png" alt="logo" />
         </div>
     );
@@ -10,12 +11,11 @@ const Logo = () => {
 
 export const Navbar = () => {
     return (
-        <nav>
+        <nav className="flex w-full h-[10%]">
             <Logo />
-            <div className="links">
+            <div className="flex justify-end items-center p-8 w-10/12 h-auto">
                 <Link to="/login">Login</Link>
             </div>
         </nav>
     );
 };
-
