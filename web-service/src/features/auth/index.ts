@@ -1,1 +1,1 @@
-// auth feature
+export * from './routes';

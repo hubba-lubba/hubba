@@ -1,5 +1,12 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+
+const Logo = () => {
+    return (
+        <div className="logo">
+            <img src="/hubba.png" alt="logo" />
+        </div>
+    );
+};
 
 export const Navbar = () => {
     return (
@@ -12,10 +19,3 @@ export const Navbar = () => {
     );
 };
 
-const Logo = () => {
-    return (
-        <div className="logo">
-            <img src="/hubba.png" alt="logo" />
-        </div>
-    );
-};

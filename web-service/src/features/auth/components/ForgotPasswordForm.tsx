@@ -1,18 +1,11 @@
-// import '../styles//ForgotPasswordForm.scss';
+import { Form, SubmitButton, TextField } from '@/components/form';
 
-export default function ForgotPasswordForm() {
+export const ForgotPasswordForm = () => {
+    // add button functions here
     return (
-        <div className="forgotpassword-container">
-            <form action="">
-                <h1>Forgot Password</h1>
-                Email Address:
-                <div>
-                    <input className="input-box" type="text" required></input>
-                </div>
-                <button className="sendcode-button" type="submit">
-                    Send Code
-                </button>
-            </form>
-        </div>
+        <Form title="Forgot Password">
+            <TextField type="text" label="Email Address" required={true} /> 
+            <SubmitButton text="Send Code" />
+        </Form>
     );
 }

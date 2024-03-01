@@ -1,6 +1,12 @@
 import React from 'react';
 
-import styles from './button.module.scss';
+const variant = {
+    base: 'flex flex-center cursor-pointer ',
+    channel: 'flex';
+};
+// somehow modularize
+// variants inherit from base, but some tac on icon and others tac on underline (2 variants)
+
 
 interface Props {
     children: React.ReactNode;
