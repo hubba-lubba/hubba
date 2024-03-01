@@ -4,7 +4,7 @@ export const AuthContext = React.createContext<any>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
     const currentUser = useRef<any>(null!);
-    const loadingUser = useRef<boolean>(false);
+    // const loadingUser = useRef<boolean>(false);
     // const [currentUser, setCurrentUser] = useState<any>(null!);
     // const [loadingUser, setLoadingUser] = useState<boolean>(false);
 
@@ -18,13 +18,13 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
         // };
     }, []);
 
-    if (loadingUser) {
-        return (
-            <div>
-                <h1>Loading...</h1>
-            </div>
-        );
-    }
+    // if (loadingUser) {
+    //     return (
+    //         <div>
+    //             <h1>Loading...</h1>
+    //         </div>
+    //     );
+    // }
 
     return (
         <AuthContext.Provider value={currentUser}>
