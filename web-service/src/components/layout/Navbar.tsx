@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 // componentize?
 const Logo = () => {
     return (
-        <div className="flex justify-start items-center p-8 h-full w-2/12">
+        <div className="flex justify-start items-center p-8 h-full w-56">
             <img src="/hubba.png" alt="logo" />
         </div>
     );
