@@ -42,7 +42,6 @@ Then visit the url printed in the terminal. Default is [http://localhost:5173/](
 -   [Tailwind](https://tailwindcss.com/docs) [[Cheatsheet](https://nerdcave.com/tailwind-cheat-sheet)]
 -   [ChakraUI](https://chakra-ui.com/docs/components)
 
-
 ## Coding Standards
 
 ### Prettier*

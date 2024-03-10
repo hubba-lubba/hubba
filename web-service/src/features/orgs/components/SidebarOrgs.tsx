@@ -15,12 +15,6 @@ const TEST = {
         {
             name: 'Org 4',
         },
-        {
-            name: 'Org 4',
-        },
-        {
-            name: 'Org 4',
-        },
     ]
 };
 
@@ -32,7 +26,7 @@ export const SidebarOrgs = () => {
                     {org.name}
                 </Button>
             ))}
-            <Button variant="menu" icon="/icons/join-org-icon.svg">
+            <Button>
                 Join an Org
             </Button>
             {/* remove this and make it so they gotta click into an org to apply */}

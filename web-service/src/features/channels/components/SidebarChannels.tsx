@@ -27,7 +27,7 @@ export const SidebarChannels = () => {
     return (
         <SidebarSection title="My Channels">
             {TEST.channels.map((channel, index) => (
-                <Button key={index} variant="icon" icon={channel.img}>
+                <Button key={index} variant="image" image={channel.img}>
                     {channel.name}
                 </Button>
             ))}
