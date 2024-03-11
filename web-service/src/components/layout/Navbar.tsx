@@ -29,7 +29,9 @@ export const Navbar = () => {
             <Logo />
             <div className="flex h-auto w-8/12 items-center justify-end p-8">
                 {currentUser ? (
-                    <Button handleClick={signOut}>Sign Out</Button>
+                    <Button handleClick={signOut}>
+                        Hello {currentUser.displayName}. Sign Out
+                    </Button>
                 ) : (
                     <Link to="/auth/signin">Sign In</Link>
                 )}
