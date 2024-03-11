@@ -1,5 +1,5 @@
-import { Button } from "@/components/elements/buttons";
-import { SidebarSection } from "@/components/layout";
+import { Button } from '@/components/elements/buttons';
+import { SidebarSection } from '@/components/layout';
 
 const TEST = {
     events: [
@@ -11,21 +11,6 @@ const TEST = {
         },
         {
             name: 'Event 3',
-        },
-        {
-            name: 'Event 4',
-        },
-        {
-            name: 'Event 4',
-        },
-        {
-            name: 'Event 4',
-        },
-        {
-            name: 'Event 4',
-        },
-        {
-            name: 'Event 4',
         },
         {
             name: 'Event 4',
@@ -42,5 +27,5 @@ export const SidebarEvents = () => {
                 </Button>
             ))}
         </SidebarSection>
-    )
-};  
+    );
+};

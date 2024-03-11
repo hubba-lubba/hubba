@@ -1,5 +1,6 @@
-import { Button } from "@/components/elements/buttons";
-import { SidebarSection } from "@/components/layout";
+import { Button } from '@/components/elements/buttons';
+import { SidebarSection } from '@/components/layout';
+import { CiCirclePlus } from 'react-icons/ci';
 
 const TEST = {
     orgs: [
@@ -15,7 +16,7 @@ const TEST = {
         {
             name: 'Org 4',
         },
-    ]
+    ],
 };
 
 export const SidebarOrgs = () => {
@@ -26,10 +27,10 @@ export const SidebarOrgs = () => {
                     {org.name}
                 </Button>
             ))}
-            <Button>
+            <Button variant="image" Icon={CiCirclePlus}>
                 Join an Org
             </Button>
             {/* remove this and make it so they gotta click into an org to apply */}
         </SidebarSection>
-    )
-};  
+    );
+};
