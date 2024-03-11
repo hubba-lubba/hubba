@@ -14,7 +14,7 @@ export const Navbar = () => {
         <nav className="fixed flex h-32 w-full flex-grow-0">
             <Logo />
             <div className="flex h-auto w-8/12 items-center justify-end p-8">
-                <Link to="/login">Login</Link>
+                <Link to="/auth/signin">Sign In</Link>
             </div>
         </nav>
     );

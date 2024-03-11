@@ -1,29 +1,34 @@
 import clsx from 'clsx';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
-type InputFieldProps = {
-    type: 'text' | 'email' | 'password';
+import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper';
+
+type InputFieldProps = FieldWrapperPassThroughProps & {
+    type?: 'text' | 'email' | 'password';
+    registration: Partial<UseFormRegisterReturn>;
     label: string;
-    required?: boolean;
     style?: string;
 };
+
 // add a wrapper for error and validation
 export const TextField = ({
-    type,
+    type = 'text',
     label,
-    required,
     style,
+    error,
+    registration,
 }: InputFieldProps) => {
     // validate depending on type
     return (
-        <div>
-            <label>
-                {label}
-                <input
-                    type={type}
-                    className={clsx('hubba-900 mb-3 w-48', style)}
-                    required={required}
-                />
-            </label>
-        </div>
+        <FieldWrapper label={label} error={error}>
+            <input
+                type={type}
+                className={clsx(
+                    'sm:text-sm block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-700 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500',
+                    style,
+                )}
+                {...registration}
+            />
+        </FieldWrapper>
     );
 };
