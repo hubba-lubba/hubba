@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
 import { Form, TextField, SubmitButton } from '@/components/form';
 import { TextButton } from '@/components/elements/buttons';
-import { useNavigate } from 'react-router-dom';
+import { email, password } from '@/lib/validation';
+import { signin } from '@/lib/auth';
 import Joi from 'joi';
 
 const schema = Joi.object({
-    email: Joi.string().min(1).required(),
-    password: Joi.string().min(1).required(),
+    email: email,
+    password: password,
 });
 
 type SigninValues = {
@@ -23,9 +23,12 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
     // const navigate = useNavigate();
 
     const doSignIn = async (data: SigninValues) => {
-        console.log('signin');
-        console.log(data)
-        console.log(event);
+        const { email, password } = data;
+        try {
+            await signin(email, password);
+        } catch (error: any) {
+            console.log(`Error: ${error.message}`);
+        }
         onSuccess();
     };
     return (

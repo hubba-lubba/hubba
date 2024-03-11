@@ -1,12 +1,14 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
 import { TextButton } from '@/components/elements/buttons';
+import { email, username, password, confirmPassword } from '@/lib/validation';
+import { signup } from '@/lib/auth';
 import Joi from 'joi';
 
 const schema = Joi.object({
-    email: Joi.string().min(1).required(),
-    username: Joi.string().min(3).required(),
-    password: Joi.string().min(1).required(),
-    confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+    email: email,
+    username: username,
+    password: password,
+    confirmPassword: confirmPassword,
 });
 
 type SignupValues = {
@@ -24,7 +26,12 @@ export const SignupForm = ({ onSuccess }: SignupFormProps) => {
     const doSignUp = async (data: SignupValues) => {
         console.log('signup');
         console.log(data);
-        console.log(event);
+        const { email, username, password } = data;
+        try {
+            await signup(email, username, password);
+        } catch (error: any) {
+            console.log(`Error: ${error.message}`);
+        }
         onSuccess();
     };
 

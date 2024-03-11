@@ -1,13 +1,13 @@
 import { Form, SubmitButton, TextField } from '@/components/form';
+import { email } from '@/lib/validation';
 import Joi from 'joi';
 
 const schema = Joi.object({
-    email: Joi.string().min(1).required(),
+    email: email
 });
 
 type ForgotValues = {
     email: string;
-    password: string;
 };
 
 type ForgotFormProps = {
@@ -16,7 +16,10 @@ type ForgotFormProps = {
 
 export const ForgotPasswordForm = ({ onSuccess }: ForgotFormProps) => {
     // add button functions here
-    const doForgotPassword = async(data: ForgotValues) => {}
+    const doForgotPassword = async(data: ForgotValues) => {
+        console.log(data);
+        onSuccess();
+    }
 
     return (
         <Form<ForgotValues, typeof schema> title="Forgot Password" onSubmit={doForgotPassword} schema={schema}>
