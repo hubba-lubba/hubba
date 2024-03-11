@@ -5,6 +5,7 @@ import {
     extendTheme,
     type ThemeConfig,
 } from '@chakra-ui/react';
+import { initializeApp } from "firebase/app";
 
 import './main.css';
 import App from './App';
@@ -28,6 +29,9 @@ const THEME: ThemeConfig = extendTheme({
         },
     },
 });
+
+const config = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
+initializeApp(config);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
