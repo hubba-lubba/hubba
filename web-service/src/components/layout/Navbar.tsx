@@ -4,16 +4,22 @@ import { AuthContext } from '@/contexts/AuthProvider';
 import { logout } from '@/lib/auth';
 import { Button } from '../elements/buttons';
 
+type NavbarProps = {
+    bare?: boolean;
+};
+
 // componentize?
 const Logo = () => {
     return (
         <div className="flex h-full w-80 items-center justify-start px-16">
-            <img src="/hubba.png" alt="logo" />
+            <Link to="/">
+                <img src="/hubba.png" alt="logo" />
+            </Link>
         </div>
     );
 };
 
-export const Navbar = () => {
+export const Navbar = ({ bare = false }: NavbarProps) => {
     const currentUser = useContext(AuthContext);
 
     const signOut = async (): Promise<void> => {
@@ -27,15 +33,17 @@ export const Navbar = () => {
     return (
         <nav className="fixed flex h-32 w-full flex-grow-0">
             <Logo />
-            <div className="flex h-auto w-8/12 items-center justify-end p-8">
-                {currentUser ? (
-                    <Button handleClick={signOut}>
-                        Hello {currentUser.displayName}. Sign Out
-                    </Button>
-                ) : (
-                    <Link to="/auth/signin">Sign In</Link>
-                )}
-            </div>
+            {!bare && (
+                <div className="flex h-auto w-8/12 items-center justify-end p-8">
+                    {currentUser ? (
+                        <Button handleClick={signOut}>
+                            Hello {currentUser.displayName}. Sign Out
+                        </Button>
+                    ) : (
+                        <Link to="/auth/signin">Sign In</Link>
+                    )}
+                </div>
+            )}
         </nav>
     );
 };

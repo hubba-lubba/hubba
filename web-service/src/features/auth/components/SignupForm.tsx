@@ -3,6 +3,7 @@ import { TextButton } from '@/components/elements/buttons';
 import { email, username, password, confirmPassword } from '@/lib/validation';
 import { signup } from '@/lib/auth';
 import Joi from 'joi';
+import { AuthLinks } from './AuthLinks';
 
 const schema = Joi.object({
     email: email,
@@ -36,45 +37,49 @@ export const SignupForm = ({ onSuccess }: SignupFormProps) => {
     };
 
     return (
-        <Form<SignupValues, typeof schema>
-            style="pt-[10%]"
-            title="Sign Up"
-            onSubmit={doSignUp}
-            schema={schema}
-        >
-            {({ register, formState }) => (
-                <>
-                    <TextField
-                        type="email"
-                        label="Email Address"
-                        error={formState.errors['email']}
-                        registration={register('email')}
-                    />
-                    <TextField
-                        type="text"
-                        label="Username"
-                        error={formState.errors['username']}
-                        registration={register('username')}
-                    />
-                    <TextField
-                        type="password"
-                        label="Password"
-                        error={formState.errors['password']}
-                        registration={register('password')}
-                    />
-                    <TextField
-                        type="password"
-                        label="Confirm Password"
-                        error={formState.errors['confirmPassword']}
-                        registration={register('confirmPassword')}
-                    />
-                    <SubmitButton text="Sign Up" />
-                    <TextButton
-                        text="Already have an account? Sign in"
-                        path="/auth/signin"
-                    />
-                </>
-            )}
-        </Form>
+        <>
+            <Form<SignupValues, typeof schema>
+                title="Sign Up"
+                onSubmit={doSignUp}
+                schema={schema}
+            >
+                {({ register, formState }) => (
+                    <>
+                        <TextField
+                            type="email"
+                            label="Email Address"
+                            error={formState.errors['email']}
+                            registration={register('email')}
+                        />
+                        <TextField
+                            type="text"
+                            label="Username"
+                            error={formState.errors['username']}
+                            registration={register('username')}
+                        />
+                        <TextField
+                            type="password"
+                            label="Password"
+                            error={formState.errors['password']}
+                            registration={register('password')}
+                        />
+                        <TextField
+                            type="password"
+                            label="Confirm Password"
+                            error={formState.errors['confirmPassword']}
+                            registration={register('confirmPassword')}
+                        />
+                        <SubmitButton text="Sign Up" />
+                    </>
+                )}
+            </Form>
+            <AuthLinks>
+                <TextButton
+                    text="Already have an account?"
+                    anchortext="Sign in"
+                    path="/auth/signin"
+                />
+            </AuthLinks>
+        </>
     );
 };

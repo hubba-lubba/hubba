@@ -1,17 +1,23 @@
+import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import { CenterLayout } from '@/components/layout/CenterLayout';
 
 type TextButtonProps = {
-    text: string;
+    text?: string;
+    anchortext?: string;
     path: string;
 };
 
-export const TextButton = ({ text, path }: TextButtonProps) => {
+export const TextButton = ({ text, anchortext, path }: TextButtonProps) => {
     return (
-        <Link
-            to={path}
-            className="cursor-pointer border-none bg-none underline flex justify-center hover:text-hubba-500"
-        >
+        <CenterLayout>
             {text}
-        </Link>
+            <Link
+                to={path}
+                className={clsx("cursor-pointer underline hover:text-hubba-500", text ? "ml-1" : "")}
+            >
+                {anchortext}
+            </Link>
+        </CenterLayout>
     );
 };
