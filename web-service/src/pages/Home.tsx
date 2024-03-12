@@ -1,10 +1,128 @@
 import { Interface } from '@/components/layout';
+import { Card } from '@/components/layout/Card';
+import { Shelf } from '@/components/layout/Shelf';
+import { useEffect } from 'react';
+const TEST = {
+    current_events: [
+        {
+            id: '1',
+            title: 'Event 1',
+            thumbnail: 'https://placehold.co/600x400',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '2',
+            title: 'Event 2',
+            thumbnail: 'https://placehold.co/600x400',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '3',
+            title: 'Event 3',
+            thumbnail: 'https://placehold.co/600x400',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+    ],
+    upcoming_events: [
+        {
+            id: '4',
+            title: 'Event 4',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '5',
+            title: 'Event 5',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '6',
+            title: 'Event 6',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+    ],
+    live: [
+        {
+            id: '7',
+            title: 'Live 1',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '8',
+            title: 'Event 8',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '9',
+            title: 'Event 9',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+    ],
+};
 
 export const Home = () => {
+    // put this into each feature as a component
+    useEffect(() => {
+        // fetch data
+        // fetch events, upcoming, and live to be displayed on homepage
+        // put each into its own array state
+        // for each array, map and create a thumbnail
+        // once this is complete, move into individual features as a component
+    }, []);
     return (
         <Interface>
-            <div className="flex h-full w-full items-center justify-center">
-                <h1 className="text-hubba-100">Home</h1>
+            {/* Current Events */}
+            {/* Upcoming Events */}
+            {/* Live */}
+            <div className="flex h-full w-full flex-col items-start justify-start">
+                <Shelf variant="large" title="Current Events">
+                    {TEST.current_events.map((event, index) => (
+                        <Card key={index} {...event}></Card>
+                    ))}
+                </Shelf>
+                <Shelf title="Upcoming Events"></Shelf>
+                <Shelf title="Live"></Shelf>
             </div>
         </Interface>
     );

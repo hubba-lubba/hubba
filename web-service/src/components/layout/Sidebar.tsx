@@ -2,7 +2,7 @@ import { Button } from '@/components/elements/buttons';
 import { SidebarSection } from '.';
 import { SidebarOrgs } from '@/features/orgs/components';
 import { SidebarEvents } from '@/features/events/components';
-import { SidebarChannels } from '@/features/channels/components';
+import { SidebarChannels } from '@/features/users/components';
 import { BsHouseDoor, BsCalendarEvent, BsRss, BsPeople } from "react-icons/bs";
 
 export const Sidebar = () => {
