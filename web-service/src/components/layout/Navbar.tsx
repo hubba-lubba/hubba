@@ -20,7 +20,7 @@ const Logo = () => {
 };
 
 export const Navbar = ({ bare = false }: NavbarProps) => {
-    const currentUser = useContext(AuthContext);
+    const user = useContext(AuthContext);
 
     const signOut = async (): Promise<void> => {
         try {
@@ -35,10 +35,15 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
             <Logo />
             {!bare && (
                 <div className="flex h-auto w-8/12 items-center justify-end p-8">
-                    {currentUser ? (
-                        <Button handleClick={signOut}>
-                            Hello {currentUser.displayName}. Sign Out
-                        </Button>
+                    {user ? (
+                        <div className="flex flex-col">
+                            Hello {user.displayName}
+                            {/* replace with dropdown or icon */}
+                            <Link to="/user/settings">Settings</Link>
+                            <Link to="/user/profile">Profile</Link>
+                            {/* replace with user's profile picture */}
+                            <Button handleClick={signOut}>Sign Out</Button>
+                        </div>
                     ) : (
                         <Link to="/auth/signin">Sign In</Link>
                     )}

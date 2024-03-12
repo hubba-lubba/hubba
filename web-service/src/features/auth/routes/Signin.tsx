@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Layout } from './Layout';
+import { AuthLayout } from './AuthLayout';
 import { SigninForm } from '../components/SigninForm';
 
 export const Signin = () => {
@@ -8,8 +8,8 @@ export const Signin = () => {
 
     // add clientside functionality -> on successful signin, redirect to /home
     return (
-        <Layout>
+        <AuthLayout>
             <SigninForm onSuccess={() => navigate('/')} />
-        </Layout>
+        </AuthLayout>
     );
 };

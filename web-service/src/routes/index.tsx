@@ -1,17 +1,18 @@
 // here we handle routing (middleware)
 import { useRoutes } from 'react-router-dom';
-
 import { Home } from '@/pages/Home'; //move into features, maybe folder called 'pages'
 import { protectedRoutes } from './protected';
 import { publicRoutes } from './public';
+import { useContext } from 'react';
+import { AuthContext } from '@/contexts/AuthProvider';
 
 export const AppRoutes = () => {
-    //   const auth = useAuth(); // authContext
-    const auth = { user: false }; // mock authContext
+    const user = useContext(AuthContext);
+    console.log(user);
 
     const commonRoutes = [{ path: '/', element: <Home /> }];
 
-    const routes = auth.user ? protectedRoutes : publicRoutes;
+    const routes = user ? protectedRoutes : publicRoutes;
 
     const element = useRoutes([...routes, ...commonRoutes]);
 

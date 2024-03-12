@@ -1,4 +1,4 @@
-import { CenterLayout } from "../layout/CenterLayout";
+import { Layout } from '../layout/Layout';
 
 type SubmitButtonProps = {
     text: string;
@@ -6,13 +6,13 @@ type SubmitButtonProps = {
 
 export const SubmitButton = ({ text }: SubmitButtonProps) => {
     return (
-        <CenterLayout>            
+        <Layout>
             <button
                 type="submit"
                 className="h-11 w-5/12 cursor-pointer rounded-md bg-hubba-500 hover:bg-hubba-400"
             >
                 {text}
             </button>
-        </CenterLayout>
+        </Layout>
     );
 };
