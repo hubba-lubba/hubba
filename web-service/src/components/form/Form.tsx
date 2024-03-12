@@ -38,11 +38,11 @@ export const Form = <
     });
     return (
         <form
-            className={clsx('space-y-6', style)}
+            className={clsx('space-y-5', style)}
             onSubmit={methods.handleSubmit(onSubmit)}
             id={id}
         >
-            <h1>{title}</h1>
+            <h1 className='text-center text-6xl font-semibold'>{title}</h1>
             {children(methods)}
         </form>
     );

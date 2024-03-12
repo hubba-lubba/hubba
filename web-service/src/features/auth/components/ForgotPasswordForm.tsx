@@ -22,7 +22,12 @@ export const ForgotPasswordForm = ({ onSuccess }: ForgotFormProps) => {
     }
 
     return (
-        <Form<ForgotValues, typeof schema> title="Forgot Password" onSubmit={doForgotPassword} schema={schema}>
+        <Form<ForgotValues, typeof schema> 
+            style="pt-[10%]"
+            title="Forgot Password" 
+            onSubmit={doForgotPassword} 
+            schema={schema}
+            >
             {({ register, formState }) => (
                 <>
                     <TextField type="email" label="Email Address" error={formState.errors['email']} registration={register('email')} />

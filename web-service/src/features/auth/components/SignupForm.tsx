@@ -37,6 +37,7 @@ export const SignupForm = ({ onSuccess }: SignupFormProps) => {
 
     return (
         <Form<SignupValues, typeof schema>
+            style="pt-[10%]"
             title="Sign Up"
             onSubmit={doSignUp}
             schema={schema}

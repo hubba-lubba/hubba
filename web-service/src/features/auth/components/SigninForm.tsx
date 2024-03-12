@@ -32,7 +32,7 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
         onSuccess();
     };
     return (
-        <div>
+        <div className='pt-[10%]'>
             <Form<SigninValues, typeof schema>
                 title="Sign In"
                 onSubmit={doSignIn}
@@ -56,11 +56,15 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
                     </>
                 )}
             </Form>
-            <TextButton text="Forgot password?" path="/auth/forgot" />
-            <TextButton
-                text="Dont have an account? Sign up"
-                path="/auth/signup"
-            />
+            <div className='flex-col mt-6 space-y-2'>
+                <TextButton text="Forgot password?" path="/auth/forgot" />
+                <TextButton
+                    text="Dont have an account? Sign up"
+                    path="/auth/signup"
+                />
+            </div>
+            
         </div>
+
     );
 };
