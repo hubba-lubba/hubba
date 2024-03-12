@@ -57,8 +57,28 @@ const TEST = {
             viewer_count: 100,
         },
         {
-            id: '6',
-            title: 'Event 6',
+            id: '12',
+            title: 'Event 24',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '10',
+            title: 'Event 22',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '11',
+            title: 'Event 21',
             thumbnail: 'https://placehold.co/300x200',
             description: 'This is a description',
             url: 'https://www.google.com',
@@ -98,6 +118,26 @@ const TEST = {
             tags: ['tag1', 'tag2', 'tag3'],
             viewer_count: 100,
         },
+        {
+            id: '9',
+            title: 'Event 9',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
+        {
+            id: '9',
+            title: 'Event 9',
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+        },
     ],
 };
 
@@ -116,13 +156,21 @@ export const Home = () => {
             {/* Upcoming Events */}
             {/* Live */}
             <div className="flex h-full w-full flex-col items-start justify-start">
-                <Shelf variant="large" title="Current Events">
+                <Shelf title="Current Events">
                     {TEST.current_events.map((event, index) => (
+                        <Card key={index} variant="large" {...event}></Card>
+                    ))}
+                </Shelf>
+                <Shelf title="Upcoming Events">
+                    {TEST.upcoming_events.map((event, index) => (
                         <Card key={index} {...event}></Card>
                     ))}
                 </Shelf>
-                <Shelf title="Upcoming Events"></Shelf>
-                <Shelf title="Live"></Shelf>
+                <Shelf title="Live">
+                    {TEST.live.map((event, index) => (
+                        <Card key={index} {...event}></Card>
+                    ))}
+                </Shelf>
             </div>
         </Interface>
     );
