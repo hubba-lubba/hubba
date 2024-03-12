@@ -1,4 +1,5 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
+import { AuthLinks } from './AuthLinks';
 import { TextButton } from '@/components/elements/buttons';
 import { email, password } from '@/lib/validation';
 import { signin } from '@/lib/auth';
@@ -32,7 +33,7 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
         onSuccess();
     };
     return (
-        <div>
+        <>
             <Form<SigninValues, typeof schema>
                 title="Sign In"
                 onSubmit={doSignIn}
@@ -56,11 +57,14 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
                     </>
                 )}
             </Form>
-            <TextButton text="Forgot password?" path="/auth/forgot" />
-            <TextButton
-                text="Dont have an account? Sign up"
-                path="/auth/signup"
-            />
-        </div>
+            <AuthLinks>
+                <TextButton
+                    text="Dont have an account?"
+                    anchortext="Sign up"
+                    path="/auth/signup"
+                    />
+                <TextButton anchortext="Forgot password?" path="/auth/forgot" />
+            </AuthLinks>
+        </>
     );
 };

@@ -13,12 +13,6 @@ export default {
                 'monospace',
             ],
         },
-        fontSize: {
-            base: '1rem',
-        },
-        lineHeight: {
-            base: '1.5',
-        },
         screens: {
             sm: '560px',
             md: '768px',
@@ -27,10 +21,17 @@ export default {
         extend: {
             colors: {
                 'hubba-100': '#e9e4fc', //text
+                'hubba-400': '#c7b6ff',
                 'hubba-500': '#b59bff',
                 'hubba-600': '#a69bb2',
                 'hubba-800': '#30313f',
                 'hubba-900': '#100e22', //bg
+            },
+            fontSize: {
+                base: '1rem',
+            },
+            lineHeight: {
+                base: '1.5',
             },
         },
     },
