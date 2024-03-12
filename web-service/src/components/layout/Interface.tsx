@@ -8,9 +8,10 @@ export const Interface = ({ children }: InterfaceProps) => {
     return (
         <div className="flex h-screen flex-col">
             <Navbar />
-            <div className="ml-56 mt-20 flex flex-1 overflow-hidden">
+            {/* margin spacing for sidebar and nav */}
+            <div className="ml-sidebar mt-32 flex flex-1 overflow-hidden">
                 <Sidebar />
-                <main className="flex-1 overflow-y-auto">{children}</main>
+                <main className="flex-1 overflow-y-auto p-8">{children}</main>
             </div>
         </div>
     );

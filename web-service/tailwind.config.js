@@ -33,6 +33,9 @@ export default {
             lineHeight: {
                 base: '1.5',
             },
+            spacing: {
+                'sidebar': '16rem',
+            }
         },
     },
     plugins: [require('tailwind-scrollbar')],

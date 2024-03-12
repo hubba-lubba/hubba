@@ -11,7 +11,7 @@ type NavbarProps = {
 // componentize?
 const Logo = () => {
     return (
-        <div className="flex h-full w-80 items-center justify-start px-16">
+        <div className="flex h-full w-sidebar items-center justify-start px-8">
             <Link to="/">
                 <img src="/hubba.png" alt="logo" />
             </Link>
