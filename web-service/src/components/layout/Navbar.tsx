@@ -7,7 +7,7 @@ import { Button } from '../elements/buttons';
 // componentize?
 const Logo = () => {
     return (
-        <div className="flex h-full w-80 items-center justify-start px-16">
+        <div className="flex h-full w-sidebar items-center justify-start px-8">
             <img src="/hubba.png" alt="logo" />
         </div>
     );

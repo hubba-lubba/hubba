@@ -24,7 +24,7 @@ export const Card = ({
             className="flex w-1/3 flex-col"
             onClick={() => window.open(url, '_blank')}
         >
-            <img src={thumbnail} alt={title} className="rounded" />
+            <img src={thumbnail} alt={title} className="rounded-xl" />
             <h1>{title}</h1>
             <p>{description}</p>
             <p>{platform}</p>

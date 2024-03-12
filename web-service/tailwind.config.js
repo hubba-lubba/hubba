@@ -13,12 +13,6 @@ export default {
                 'monospace',
             ],
         },
-        fontSize: {
-            base: '1rem',
-        },
-        lineHeight: {
-            base: '1.5',
-        },
         screens: {
             sm: '560px',
             md: '768px',
@@ -32,6 +26,15 @@ export default {
                 'hubba-800': '#30313f',
                 'hubba-900': '#100e22', //bg
             },
+            fontSize: {
+                base: '1rem',
+            },
+            lineHeight: {
+                base: '1.5',
+            },
+            spacing: {
+                'sidebar': '16rem',
+            }
         },
     },
     plugins: [require('tailwind-scrollbar')],
