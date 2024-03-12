@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
-import { CenterLayout } from '@/components/layout/CenterLayout';
+import { Layout } from '@/components/layout/Layout';
 
 type TextButtonProps = {
     text?: string;
@@ -10,7 +10,7 @@ type TextButtonProps = {
 
 export const TextButton = ({ text, anchortext, path }: TextButtonProps) => {
     return (
-        <CenterLayout>
+        <Layout>
             {text}
             <Link
                 to={path}
@@ -18,6 +18,6 @@ export const TextButton = ({ text, anchortext, path }: TextButtonProps) => {
             >
                 {anchortext}
             </Link>
-        </CenterLayout>
+        </Layout>
     );
 };

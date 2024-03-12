@@ -1,6 +1,5 @@
-import { Interface } from '@/components/layout';
-import { Card } from '@/components/layout/Card';
-import { Shelf } from '@/components/layout/Shelf';
+import { Card } from '@/components/layout';
+import { Shelf } from '@/components/layout';
 import { useEffect } from 'react';
 const TEST = {
     current_events: [
@@ -151,27 +150,25 @@ export const Home = () => {
         // once this is complete, move into individual features as a component
     }, []);
     return (
-        <Interface>
+        <div className="flex h-full w-full flex-col items-start justify-start">
             {/* Current Events */}
             {/* Upcoming Events */}
             {/* Live */}
-            <div className="flex h-full w-full flex-col items-start justify-start">
-                <Shelf title="Current Events">
-                    {TEST.current_events.map((event, index) => (
-                        <Card key={index} variant="large" {...event}></Card>
-                    ))}
-                </Shelf>
-                <Shelf title="Upcoming Events">
-                    {TEST.upcoming_events.map((event, index) => (
-                        <Card key={index} {...event}></Card>
-                    ))}
-                </Shelf>
-                <Shelf title="Live">
-                    {TEST.live.map((event, index) => (
-                        <Card key={index} {...event}></Card>
-                    ))}
-                </Shelf>
-            </div>
-        </Interface>
+            <Shelf title="Current Events">
+                {TEST.current_events.map((event, index) => (
+                    <Card key={index} variant="large" {...event}></Card>
+                ))}
+            </Shelf>
+            <Shelf title="Upcoming Events">
+                {TEST.upcoming_events.map((event, index) => (
+                    <Card key={index} {...event}></Card>
+                ))}
+            </Shelf>
+            <Shelf title="Live">
+                {TEST.live.map((event, index) => (
+                    <Card key={index} {...event}></Card>
+                ))}
+            </Shelf>
+        </div>
     );
 };

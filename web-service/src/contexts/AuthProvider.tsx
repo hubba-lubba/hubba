@@ -5,13 +5,13 @@ import firebase from 'firebase/compat/app';
 export const AuthContext = React.createContext<firebase.User>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
-    const [currentUser, setCurrentUser] = useState<firebase.User>(null!);
+    const [user, setUser] = useState<firebase.User>(null!);
     const [loadingUser, setLoadingUser] = useState<boolean>(true);
 
     const auth = getAuth();
     useEffect(() => {
         let myListener = onAuthStateChanged(auth, (user: any) => {
-            setCurrentUser(user);
+            setUser(user);
             setLoadingUser(false);
         });
         return () => {
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
     }
 
     return (
-        <AuthContext.Provider value={currentUser}>
+        <AuthContext.Provider value={user}>
             {children}
         </AuthContext.Provider>
     );

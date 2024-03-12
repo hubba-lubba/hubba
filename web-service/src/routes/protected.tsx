@@ -1,18 +1,25 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { Home } from '@/pages/Home';
+import { UserRoutes } from '@/features/users/routes';
+import { Interface } from '@/components/layout';
 
 const App = () => {
-    // user profile page
-    return <Home />;
+    return (
+        <Interface>
+            <Outlet />
+        </Interface>
+    );
 };
 
 export const protectedRoutes = [
     {
-        path: '/profile',
+        path: '/',
         element: <App />,
         children: [
-            // { path: '/', element: <Dashboard /> },
-            { path: '*', element: <Navigate to="." /> },
+            { path: '/', element: <Home /> },
+            { path: '/user/*', element: <UserRoutes /> },
+            // 404
+            { path: '*', element: <Navigate to="/" /> },
         ],
     },
 ];
