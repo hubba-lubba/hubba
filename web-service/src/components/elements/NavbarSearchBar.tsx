@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import SearchBar from './SearchBar';
+import SearchBar, { searchContainer, searchBarExternalProps } from './SearchBar';
 
 const sampleSuggestions = [
     {
@@ -31,10 +31,10 @@ export default function NavbarSearchBar() {
         suggestions: sampleSuggestions,
     })
 
-    function handleSearchInput(event: any) {
+    function handleSearchInput(event: React.FormEvent) {
         setSearch(prevSearch => ({
             ...prevSearch,
-            value: event.target.value
+            value: (event.target as HTMLInputElement).value
         }))
     }
 
@@ -52,9 +52,20 @@ export default function NavbarSearchBar() {
         }))
     }
 
-    const inputProps = {
+    function renderSuggestionsContainer(NavbarSearch: searchContainer) {
+        const { containerProps, children } = NavbarSearch
+        return (
+            <div {...containerProps} className="bg-gray-800 w-full h-full rounded">
+                {children}
+            </div>
+        )
+    }
+
+    const inputProps: searchBarExternalProps = {
         value: search.value,
         onChange: handleSearchInput,
+        placeholder: "Search for streamers, events, or orgs",
+        className: "bg-gray-700 w-full h-[36px]"
     }
 
     return (
@@ -62,6 +73,7 @@ export default function NavbarSearchBar() {
             suggestions={sampleSuggestions}
             fetchSuggestions={fetchSearchSuggestions}
             clearSuggestions={clearSearchSuggestions}
+            renderSuggestionsContainer={renderSuggestionsContainer}
             inputProps={inputProps} />
     )
 }

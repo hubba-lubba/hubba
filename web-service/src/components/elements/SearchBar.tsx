@@ -1,15 +1,28 @@
 import Autosuggest from 'react-autosuggest';
 
-type searchBarProps = {
-    inputProps: {
+
+export type searchContainer = {
+    containerProps: {
         value: string;
-        onChange: (event: any) => void;
-        className?: string
-        placeholder?: string
+        onChange: (event: React.FormEvent) => void;
     }
+    //the search suggestions
+    children: React.ReactNode;
+}
+
+export type searchBarExternalProps = {
+    value: string;
+    onChange: (event: React.FormEvent) => void;
+    className?: string //used for the searchbar input
+    placeholder?: string
+}
+
+type searchBarProps = {
+    inputProps: searchBarExternalProps;
     suggestions: { title: string; recs: { name: string }[] }[];
     fetchSuggestions: () => void;
     clearSuggestions: () => void;
+    renderSuggestionsContainer?: (search: searchContainer) => React.ReactNode;
 }
 
 function getSuggestionValue(suggestion: { name: string }) {
@@ -17,11 +30,11 @@ function getSuggestionValue(suggestion: { name: string }) {
 }
 
 function renderSuggestion(suggestion: { name: string }) {
-    return <span>{suggestion.name}</span>
+    return <span className="p-1">{suggestion.name}</span>
 }
 
 function renderSectionTitle(section: { title: string }) {
-    return <small>{section.title}</small>
+    return <small className="p-1">{section.title}</small>
 }
 
 function getSectionSuggestions(section: { recs: { name: string }[] } ) {
@@ -40,6 +53,7 @@ export default function SearchBar(props: searchBarProps) {
             renderSuggestion={renderSuggestion}
             renderSectionTitle={renderSectionTitle}
             getSectionSuggestions={getSectionSuggestions}
+            renderSuggestionsContainer={props.renderSuggestionsContainer}
             inputProps={props.inputProps} />
     )
 }

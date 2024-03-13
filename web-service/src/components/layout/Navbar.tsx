@@ -24,13 +24,13 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
         <nav className="fixed flex h-32 w-full flex-grow-0">
             <Logo />
             {!bare && (
-                <div className="grid grid-cols-2 w-8/12 items-center p-8">
+                <div className="grid grid-cols-2 w-full items-center px-16 py-8">
                     {user ? (
                         <>
-                            <div className="my-auto h-[24px]">
+                            <div className="my-auto h-[36px]">
                                 <NavbarSearchBar />
                             </div>
-                            <div className="flex flex-row gap-1">
+                            <div className="flex flex-row gap-1 justify-end">
                                 <Link to="/user/edit">Edit</Link>
                                 <Link to="/user/message">Message</Link>
                                 <Link to="/user/inbox">Inbox</Link>
