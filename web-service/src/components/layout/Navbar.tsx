@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { logout } from '@/lib/auth';
 import Logo from '../elements/Logo';
+import NavbarSearchBar from '../elements/NavbarSearchBar'
 
 type NavbarProps = {
     bare?: boolean;
@@ -23,9 +24,12 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
         <nav className="fixed flex h-32 w-full flex-grow-0">
             <Logo />
             {!bare && (
-                <div className="flex h-auto w-8/12 items-center justify-end p-8">
+                <div className="grid grid-cols-2 w-8/12 items-center p-8">
                     {user ? (
-                        <div className="grid grid-cols-2 gap-2">
+                        <>
+                            <div className="my-auto h-[24px]">
+                                <NavbarSearchBar />
+                            </div>
                             <div className="flex flex-row gap-1">
                                 <Link to="/user/edit">Edit</Link>
                                 <Link to="/user/message">Message</Link>
@@ -35,7 +39,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     <img src={user.photoURL!} alt="pfp" />
                                 </Link>
                             </div>
-                        </div>
+                        </>
                     ) : (
                         <Link to="/auth/signin">Sign In</Link>
                     )}

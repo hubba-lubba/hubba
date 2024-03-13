@@ -28,10 +28,10 @@ const sampleSuggestions = [
 export default function NavbarSearchBar() {
     const [search, setSearch] = useState({
         value: '',
-        suggestions: sampleSuggestions
+        suggestions: sampleSuggestions,
     })
 
-    function handleSearchInput(event: React.ChangeEvent<HTMLInputElement>) { //ew
+    function handleSearchInput(event: any) {
         setSearch(prevSearch => ({
             ...prevSearch,
             value: event.target.value
@@ -52,12 +52,16 @@ export default function NavbarSearchBar() {
         }))
     }
 
-    return (
-        <input
-            type="text"
-            value={search.value}
-            onChange={handleSearchInput}>
-        </input>
-    )
+    const inputProps = {
+        value: search.value,
+        onChange: handleSearchInput,
+    }
 
+    return (
+        <SearchBar
+            suggestions={sampleSuggestions}
+            fetchSuggestions={fetchSearchSuggestions}
+            clearSuggestions={clearSearchSuggestions}
+            inputProps={inputProps} />
+    )
 }

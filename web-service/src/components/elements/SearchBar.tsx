@@ -1,5 +1,17 @@
 import Autosuggest from 'react-autosuggest';
 
+type searchBarProps = {
+    inputProps: {
+        value: string;
+        onChange: (event: any) => void;
+        className?: string
+        placeholder?: string
+    }
+    suggestions: { title: string; recs: { name: string }[] }[];
+    fetchSuggestions: () => void;
+    clearSuggestions: () => void;
+}
+
 function getSuggestionValue(suggestion: { name: string }) {
     return suggestion.name
 }
@@ -16,18 +28,7 @@ function getSectionSuggestions(section: { recs: { name: string }[] } ) {
     return section.recs
 }
 
-export default function SearchBar(props: {
-    value: string;
-    onChange: () => null;
-    suggestions: { title: string; recs: { name: string }[] }[];
-    fetchSuggestions: () => null
-    clearSuggestions: () => null
-}) {
-
-    const inputProps = {
-        value: props.value,
-        onChange: props.onChange
-    }
+export default function SearchBar(props: searchBarProps) {
 
     return (
         <Autosuggest
@@ -39,6 +40,6 @@ export default function SearchBar(props: {
             renderSuggestion={renderSuggestion}
             renderSectionTitle={renderSectionTitle}
             getSectionSuggestions={getSectionSuggestions}
-            inputProps={inputProps} />
+            inputProps={props.inputProps} />
     )
 }
