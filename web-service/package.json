@@ -15,6 +15,7 @@
         "@emotion/react": "^11.11.3",
         "@emotion/styled": "^11.11.0",
         "@hookform/resolvers": "^3.3.4",
+        "autocorrect": "^1.2.0",
         "clsx": "^2.1.0",
         "firebase": "^10.8.1",
         "framer-motion": "^11.0.6",

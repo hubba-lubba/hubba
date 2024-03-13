@@ -39,11 +39,13 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                         <div className="grid grid-cols-2 gap-2">
                             <input type="text"></input>
                             <div className="flex flex-row gap-1">
-                                <div>edit</div>
-                                <div>message</div>
-                                <div>inbox</div>
+                                <Link to="/user/edit">Edit</Link>
+                                <Link to="/user/message">Message</Link>
+                                <Link to="/user/inbox">Inbox</Link>
                                 <Link to="/user/settings">Settings</Link>
-                                <img src={user.photoURL!} alt="pfp" />
+                                <Link to="/user/profile">
+                                    <img src={user.photoURL!} alt="pfp" />
+                                </Link>
                             </div>
                         </div>
                     ) : (
@@ -55,7 +57,6 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
     );
 
     /*
-    <Link to="/user/profile">Profile</Link>
     <Button handleClick={signOut}>Sign Out</Button>
      */
 };
