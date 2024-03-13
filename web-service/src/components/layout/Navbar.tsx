@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { logout } from '@/lib/auth';
-import { Button } from '../elements/buttons';
+import SearchBar from '../elements/SearchBar.tsx';
 
 type NavbarProps = {
     bare?: boolean;
@@ -36,13 +36,15 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
             {!bare && (
                 <div className="flex h-auto w-8/12 items-center justify-end p-8">
                     {user ? (
-                        <div className="flex flex-col">
-                            Hello {user.displayName}
-                            {/* replace with dropdown or icon */}
-                            <Link to="/user/settings">Settings</Link>
-                            <Link to="/user/profile">Profile</Link>
-                            {/* replace with user's profile picture */}
-                            <Button handleClick={signOut}>Sign Out</Button>
+                        <div className="grid grid-cols-2 gap-2">
+                            <input type="text"></input>
+                            <div className="flex flex-row gap-1">
+                                <div>edit</div>
+                                <div>message</div>
+                                <div>inbox</div>
+                                <Link to="/user/settings">Settings</Link>
+                                <img src={user.photoURL!} alt="pfp" />
+                            </div>
                         </div>
                     ) : (
                         <Link to="/auth/signin">Sign In</Link>
@@ -51,4 +53,9 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
             )}
         </nav>
     );
+
+    /*
+    <Link to="/user/profile">Profile</Link>
+    <Button handleClick={signOut}>Sign Out</Button>
+     */
 };
