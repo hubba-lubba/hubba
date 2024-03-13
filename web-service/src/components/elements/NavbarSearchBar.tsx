@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BsSearch } from 'react-icons/bs'
 import SearchBar, { searchContainer, searchBarExternalProps } from './SearchBar';
 
 const sampleSuggestions = [
@@ -52,6 +53,15 @@ export default function NavbarSearchBar() {
         }))
     }
 
+    function renderInputComponent(inputProps: searchBarExternalProps) {
+        return (
+            <div className="w-full flex flex-row">
+                <BsSearch size={36} className="p-[8px] inline bg-gray-700" />
+                <input {...inputProps} />
+            </div>
+        )
+    }
+
     function renderSuggestionsContainer(NavbarSearch: searchContainer) {
         const { containerProps, children } = NavbarSearch
         return (
@@ -65,7 +75,7 @@ export default function NavbarSearchBar() {
         value: search.value,
         onChange: handleSearchInput,
         placeholder: "Search for streamers, events, or orgs",
-        className: "bg-gray-700 w-full h-[36px]"
+        className: "bg-gray-700 w-full h-[36px] inline"
     }
 
     return (
@@ -74,6 +84,7 @@ export default function NavbarSearchBar() {
             fetchSuggestions={fetchSearchSuggestions}
             clearSuggestions={clearSearchSuggestions}
             renderSuggestionsContainer={renderSuggestionsContainer}
+            renderInputComponent={renderInputComponent}
             inputProps={inputProps} />
     )
 }

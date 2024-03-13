@@ -4,7 +4,7 @@ import { AuthContext } from '@/contexts/AuthProvider';
 import { logout } from '@/lib/auth';
 import Logo from '../elements/Logo';
 import NavbarSearchBar from '../elements/NavbarSearchBar'
-import { BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs'
+import { BsSearch, BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs'
 
 type NavbarProps = {
     bare?: boolean;
