@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { logout } from '@/lib/auth';
 import Logo from '../elements/Logo';
-import SearchBar from '../elements/SearchBar';
 
 type NavbarProps = {
     bare?: boolean;
@@ -27,7 +26,6 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                 <div className="flex h-auto w-8/12 items-center justify-end p-8">
                     {user ? (
                         <div className="grid grid-cols-2 gap-2">
-                            <input type="text"></input>
                             <div className="flex flex-row gap-1">
                                 <Link to="/user/edit">Edit</Link>
                                 <Link to="/user/message">Message</Link>

@@ -16,17 +16,29 @@ function getSectionSuggestions(section: { recs: { name: string }[] } ) {
     return section.recs
 }
 
-export default function SearchBar(props: { value: string, onChange: () => null }) {
+export default function SearchBar(props: {
+    value: string;
+    onChange: () => null;
+    suggestions: { title: string; recs: { name: string }[] }[];
+    fetchSuggestions: () => null
+    clearSuggestions: () => null
+}) {
+
+    const inputProps = {
+        value: props.value,
+        onChange: props.onChange
+    }
+
     return (
         <Autosuggest
             multiSection={true}
-            suggestions={sampleSuggestions}
-            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            suggestions={props.suggestions}
+            onSuggestionsFetchRequested={props.fetchSuggestions}
+            onSuggestionsClearRequested={props.clearSuggestions}
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             renderSectionTitle={renderSectionTitle}
             getSectionSuggestions={getSectionSuggestions}
-            inputProps={{...props}} />
+            inputProps={inputProps} />
     )
 }
