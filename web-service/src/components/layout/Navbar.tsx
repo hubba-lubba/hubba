@@ -4,6 +4,7 @@ import { AuthContext } from '@/contexts/AuthProvider';
 import { logout } from '@/lib/auth';
 import Logo from '../elements/Logo';
 import NavbarSearchBar from '../elements/NavbarSearchBar'
+import { BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs'
 
 type NavbarProps = {
     bare?: boolean;
@@ -30,11 +31,11 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                             <div className="my-auto h-[36px]">
                                 <NavbarSearchBar />
                             </div>
-                            <div className="flex flex-row gap-1 justify-end">
-                                <Link to="/user/edit">Edit</Link>
-                                <Link to="/user/message">Message</Link>
-                                <Link to="/user/inbox">Inbox</Link>
-                                <Link to="/user/settings">Settings</Link>
+                            <div className="flex flex-row gap-4 justify-end">
+                                <Link to="/user/edit"><BsPencil size={24} /></Link>
+                                <Link to="/user/message"><BsChatDots size={24}/></Link>
+                                <Link to="/user/inbox"><BsInbox size={24}/></Link>
+                                <Link to="/user/settings"><BsThreeDots size={24}/></Link>
                                 <Link to="/user/profile">
                                     <img src={user.photoURL!} alt="pfp" />
                                 </Link>
