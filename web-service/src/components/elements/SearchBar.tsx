@@ -49,12 +49,14 @@ export default function SearchBar(props: searchBarProps) {
         <Autosuggest
             multiSection={true}
             suggestions={props.suggestions}
+
             onSuggestionsFetchRequested={props.fetchSuggestions}
             onSuggestionsClearRequested={props.clearSuggestions}
             getSuggestionValue={getSuggestionValue}
+            getSectionSuggestions={getSectionSuggestions}
+
             renderSuggestion={renderSuggestion}
             renderSectionTitle={renderSectionTitle}
-            getSectionSuggestions={getSectionSuggestions}
             renderInputComponent={props.renderInputComponent}
             renderSuggestionsContainer={props.renderSuggestionsContainer}
             inputProps={props.inputProps}

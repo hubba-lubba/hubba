@@ -39,6 +39,7 @@ export default function NavbarSearchBar() {
         }))
     }
 
+    //customize this function to determine the suggestions that pop up
     function fetchSearchSuggestions() {
         setSearch(prevSearch => ({
             ...prevSearch,
