@@ -2,21 +2,11 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { logout } from '@/lib/auth';
-import SearchBar from '../elements/SearchBar.tsx';
+import Logo from '../elements/Logo';
+import SearchBar from '../elements/SearchBar';
 
 type NavbarProps = {
     bare?: boolean;
-};
-
-// componentize?
-const Logo = () => {
-    return (
-        <div className="flex h-full w-sidebar items-center justify-start px-8">
-            <Link to="/">
-                <img src="/hubba.png" alt="logo" />
-            </Link>
-        </div>
-    );
 };
 
 export const Navbar = ({ bare = false }: NavbarProps) => {
