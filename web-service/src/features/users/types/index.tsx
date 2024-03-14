@@ -6,6 +6,7 @@ export type User = {
     username: string;
     email: string;
     profile_image: string;
+    bio: string;
 
     followers: string[];
     num_followers: number;
@@ -13,6 +14,7 @@ export type User = {
     num_following: number;
 
     streaming_status: number;
+    channel_url: string;
     stream_url: string;
     video_urls: string[];
 

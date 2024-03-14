@@ -1,34 +1,31 @@
-import { Button } from "@/components/elements/buttons";
-import { SidebarSection } from "@/components/layout";
-import defaultimg from '@/assets/images/defaultimg.png';
-
-const TEST = {
-    channels: [
-        {
-            name: 'Channel 1',
-            img: defaultimg,
-        },
-        {
-            name: 'Channel 2',
-            img: defaultimg,
-        },
-        {
-            name: 'Channel 3',
-            img: defaultimg,
-        },
-        {
-            name: 'Channel 4',
-            img: defaultimg,
-        },
-    ],
-};
+import { Button } from '@/components/elements/buttons';
+import { SidebarSection } from '@/components/layout';
+import { useEffect, useState } from 'react';
+import { getFollowingChannels } from '../api';
+import { User } from '../types';
 
 export const SidebarChannels = () => {
+    const [channels, setChannels] = useState<User[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const channels = await getFollowingChannels();
+            setChannels(channels.following);
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <SidebarSection title="My Channels">
-            {TEST.channels.map((channel, index) => (
-                <Button key={index} variant="image" image={channel.img}>
-                    {channel.name}
+            {channels.map((channel, index) => (
+                <Button
+                    key={`sidebar-channel-${channel.id}-${index}`}
+                    variant="image"
+                    image={channel.profile_image}
+                    handleClick={() => window.open(channel.channel_url)}
+                >
+                    {channel.username}
                 </Button>
             ))}
             <Button variant="text">
@@ -37,5 +34,5 @@ export const SidebarChannels = () => {
                 </small>
             </Button>
         </SidebarSection>
-    )
-};  
+    );
+};

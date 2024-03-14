@@ -1,3 +1,4 @@
+
 export const getCurrentEvents = async () => {
     const data = {
         current_events: [
@@ -93,3 +94,11 @@ export const getUpcomingEvents = async () => {
     };
     return data;
 };
+
+export const getSidebarEvents = async () => {
+    // current and upcoming? we want only ours so maybe query api for user's events (current and upcoming)
+    // but homepage might have current events that are popular (or do this for discover only - homepage is curated only for user)
+    // but in the latter case it makes the sidebar obsolete... hmm
+    // UI/UX INTERNS ASSEMBLE
+    return await getCurrentEvents();
+}
