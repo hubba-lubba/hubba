@@ -1,5 +1,7 @@
 import { BaseEntity } from '@/types';
 
+// extremely rough type schemas. prolly will be very different once we connect with backend
+
 export type User = {
     username: string;
     email: string;
@@ -20,4 +22,15 @@ export type User = {
     joined_orgs: string[];
 
     platforms: string[];
+} & BaseEntity;
+
+export type Live = {
+    id: string;
+    title: string;
+    thumbnail: string;
+    description: string;
+    url: string;
+    platform: string;
+    tags: string[];
+    viewer_count: number;
 } & BaseEntity;
