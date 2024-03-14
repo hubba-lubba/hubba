@@ -6,7 +6,7 @@ import { Event } from '@/features/events/types';
 import { getLiveUsers } from '@/features/users/api';
 import { Live } from '@/features/users/types';
 
-export const Home = () => {
+export const EventsFeed = () => {
     const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
     const [live, setLive] = useState<Live[]>([]);
@@ -16,29 +16,34 @@ export const Home = () => {
         const fetchData = async () => {
             const currentEventsData = await getCurrentEvents();
             setCurrentEvents(currentEventsData.current_events);
-            
+
             const upcomingEventsData = await getUpcomingEvents();
             setUpcomingEvents(upcomingEventsData.upcoming_events);
 
             const liveData = await getLiveUsers();
             setLive(liveData.live);
-        }
+        };
 
         fetchData();
     }, []);
     return (
         <div className="flex h-full w-full flex-col items-start justify-start">
-            {/* Current Events */}
-            {/* Upcoming Events */}
-            {/* Live */}
+            Events Feed
             <Shelf title="Current Events">
                 {currentEvents.map((event, index) => (
-                    <Card key={`current-${event.id}-${index}`} variant="large" {...event}></Card>
+                    <Card
+                        key={`current-${event.id}-${index}`}
+                        variant="large"
+                        {...event}
+                    ></Card>
                 ))}
             </Shelf>
             <Shelf title="Upcoming Events">
                 {upcomingEvents.map((event, index) => (
-                    <Card key={`upcoming-${event.id}-${index}`} {...event}></Card>
+                    <Card
+                        key={`upcoming-${event.id}-${index}`}
+                        {...event}
+                    ></Card>
                 ))}
             </Shelf>
             <Shelf title="Live">

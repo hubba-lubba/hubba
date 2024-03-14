@@ -29,9 +29,10 @@ export const Card = ({
 }: CardProps) => {
     return (
         <div
-            className={clsx('flex flex-col', variants[variant])}
+            className={clsx('flex cursor-pointer flex-col', variants[variant])}
             onClick={() => window.open(url, '_blank')}
         >
+            {/* add org/user pfp here too */}
             <img src={thumbnail} alt={title} className="rounded-xl" />
             <h1>{title}</h1>
             <p>{description}</p>
