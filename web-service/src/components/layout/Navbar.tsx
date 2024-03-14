@@ -39,8 +39,8 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                         <div className="flex flex-col">
                             Hello {user.displayName}
                             {/* replace with dropdown or icon */}
-                            <Link to="/user/settings">Settings</Link>
-                            <Link to="/user/profile">Profile</Link>
+                            <Link to="/settings">Settings</Link>
+                            <Link to="/profile">Profile</Link>
                             {/* replace with user's profile picture */}
                             <Button handleClick={signOut}>Sign Out</Button>
                         </div>

@@ -1,6 +1,6 @@
 // here we handle routing (middleware)
 import { useRoutes, Outlet } from 'react-router-dom';
-import { Home } from '@/pages/Home'; //move into features, maybe folder called 'pages'
+import { Home } from '@/pages/Home';
 import { protectedRoutes } from './protected';
 import { publicRoutes } from './public';
 import { useContext } from 'react';
@@ -8,6 +8,7 @@ import { AuthContext } from '@/contexts/AuthProvider';
 import { EventRoutes } from '@/features/events';
 import { OrgRoutes } from '@/features/orgs';
 import { Interface } from '@/components/layout';
+import { UserCommonRoutes } from '@/features/users/routes';
 
 const App = () => {
     return (
@@ -28,6 +29,14 @@ export const AppRoutes = () => {
             element: <App />,
             children: [
                 {
+                    path: '/',
+                    element: <Home />,
+                },
+                {
+                    path: '/user/*',
+                    element: <UserCommonRoutes />,
+                },
+                {
                     path: '/events/*',
                     element: <EventRoutes />,
                 },
@@ -41,7 +50,7 @@ export const AppRoutes = () => {
 
     const routes = user ? protectedRoutes : publicRoutes;
 
-    const element = useRoutes([...routes, ...commonRoutes]);
+    const element = useRoutes([...commonRoutes, ...routes]);
 
     return <>{element}</>;
 };
