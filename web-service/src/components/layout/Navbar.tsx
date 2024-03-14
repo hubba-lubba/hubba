@@ -1,10 +1,22 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
-import { logout } from '@/lib/auth';
 import Logo from '../elements/Logo';
 import NavbarSearchBar from '../elements/NavbarSearchBar'
 import { BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs'
+
+//LOGOUT FUNCTION
+//import { logout } from '@/lib/auth';
+    /*
+    const signOut = async (): Promise<void> => {
+        try {
+            await logout();
+        } catch (error: any) {
+            console.log(`Error: ${error.message}`);
+        }
+    }; */
+
+
 
 type NavbarProps = {
     bare?: boolean;
@@ -12,14 +24,6 @@ type NavbarProps = {
 
 export const Navbar = ({ bare = false }: NavbarProps) => {
     const user = useContext(AuthContext);
-
-    const signOut = async (): Promise<void> => {
-        try {
-            await logout();
-        } catch (error: any) {
-            console.log(`Error: ${error.message}`);
-        }
-    };
 
     return (
         <nav className="fixed flex h-32 w-full flex-grow-0">
