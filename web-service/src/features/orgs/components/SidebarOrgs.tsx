@@ -4,9 +4,11 @@ import { CiCirclePlus } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
 import { Org } from '../types';
 import { getUserOrgs } from '../api';
+import { useNavigate } from 'react-router-dom';
 
 export const SidebarOrgs = () => {
     const [orgs, setOrgs] = useState<Org[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,7 +22,7 @@ export const SidebarOrgs = () => {
     return (
         <SidebarSection title="My Orgs">
             {orgs.map((org, index) => (
-                <Button key={`sidebar-org-${org.id}-${index}`} variant="text">
+                <Button key={`sidebar-org-${org.id}-${index}`} variant="text" handleClick={() => navigate(`/orgs/${org.id}`)}>
                     {org.name}
                 </Button>
             ))}
