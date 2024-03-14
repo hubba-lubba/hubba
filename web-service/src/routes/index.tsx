@@ -8,7 +8,6 @@ import { AuthContext } from '@/contexts/AuthProvider';
 
 export const AppRoutes = () => {
     const user = useContext(AuthContext);
-    console.log(user);
 
     const commonRoutes = [{ path: '/', element: <Home /> }];
 

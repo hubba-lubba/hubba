@@ -17,7 +17,7 @@ export const protectedRoutes = [
         element: <App />,
         children: [
             { path: '/', element: <Home /> },
-            { path: '/user/*', element: <UserRoutes /> },
+            { path: '/user/*', element: <UserRoutes /> }, //split into protected (profiles that isn't own, settings) and public (other profiles)
             // 404
             { path: '*', element: <Navigate to="/" /> },
         ],
