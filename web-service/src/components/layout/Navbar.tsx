@@ -1,54 +1,78 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
-import { logout } from '@/lib/auth';
-import { Button } from '../elements/buttons';
+import Logo from '../elements/Logo';
+import NavbarSearchBar from '../elements/NavbarSearchBar';
+import { BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs';
+import { signout } from '@/lib/auth';
+
+const NavDropdown = () => {
+    const user = useContext(AuthContext);
+
+    return (
+        <div className="fixed right-6 top-24 flex flex-col gap-4 bg-hubba-900 p-6">
+            {user ? (
+                <>
+                    <Link to="/user/profile">Profile</Link>
+                    <span onClick={() => signout()}>Sign Out</span>
+                </>
+            ) : (
+                <Link to="/auth/signin">Sign In</Link>
+            )}
+        </div>
+    );
+};
 
 type NavbarProps = {
     bare?: boolean;
 };
 
-// componentize?
-const Logo = () => {
-    return (
-        <div className="flex h-full w-sidebar items-center justify-start px-8">
-            <Link to="/">
-                <img src="/hubba.png" alt="logo" />
-            </Link>
-        </div>
-    );
-};
-
 export const Navbar = ({ bare = false }: NavbarProps) => {
+    const [toggleDropdown, setToggleDropdown] = useState(false);
     const user = useContext(AuthContext);
-
-    const signOut = async (): Promise<void> => {
-        try {
-            await logout();
-        } catch (error: any) {
-            console.log(`Error: ${error.message}`);
-        }
-    };
 
     return (
         <nav className="fixed flex h-32 w-full flex-grow-0">
             <Logo />
             {!bare && (
-                <div className="flex h-auto w-8/12 items-center justify-end p-8">
-                    {user ? (
-                        <div className="flex flex-col">
-                            Hello {user.displayName}
-                            {/* replace with dropdown or icon */}
-                            <Link to="/settings">Settings</Link>
-                            <Link to="/profile">Profile</Link>
-                            {/* replace with user's profile picture */}
-                            <Button handleClick={signOut}>Sign Out</Button>
+                <div className="grid w-full grid-cols-2 items-center px-16 py-8">
+                    <div className="my-auto h-[36px]">
+                        <NavbarSearchBar />
+                    </div>
+                    <div className="flex flex-row items-center justify-end gap-4">
+                        <Link to="/user/edit">
+                            <BsPencil size={24} />
+                        </Link>
+                        <Link to="/user/message">
+                            <BsChatDots size={24} />
+                        </Link>
+                        <Link to="/user/inbox">
+                            <BsInbox size={24} />
+                        </Link>
+                        <Link to="/user/settings">
+                            <BsThreeDots size={24} />
+                        </Link>
+                        <div
+                            className="cursor-pointer"
+                            onClick={() => setToggleDropdown(!toggleDropdown)}
+                        >
+                            {user?.photoURL ? (
+                                <img src={user.photoURL!} alt="pfp" />
+                            ) : (
+                                <img
+                                    src="/src/assets/images/defaultimg.png"
+                                    className="h-9 w-9"
+                                />
+                            )}
+                            {toggleDropdown && <NavDropdown />}
                         </div>
-                    ) : (
-                        <Link to="/auth/signin">Sign In</Link>
-                    )}
+                    </div>
                 </div>
             )}
         </nav>
     );
+
+    /*
+    <Button handleClick={signOut}>Sign Out</Button>
+     */
 };
