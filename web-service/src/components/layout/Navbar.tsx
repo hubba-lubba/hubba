@@ -1,57 +1,72 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import Logo from '../elements/Logo';
-import NavbarSearchBar from '../elements/NavbarSearchBar'
-import { BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs'
+import NavbarSearchBar from '../elements/NavbarSearchBar';
+import { BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs';
+import { signout } from '@/lib/auth';
 
-//LOGOUT FUNCTION
-//import { logout } from '@/lib/auth';
-    /*
-    const signOut = async (): Promise<void> => {
-        try {
-            await logout();
-        } catch (error: any) {
-            console.log(`Error: ${error.message}`);
-        }
-    }; */
+const NavDropdown = () => {
+    const user = useContext(AuthContext);
 
-
+    return (
+        <div className="fixed right-6 top-24 flex flex-col gap-4 bg-hubba-900 p-6">
+            {user ? (
+                <>
+                    <Link to="/user/profile">Profile</Link>
+                    <span onClick={() => signout()}>Sign Out</span>
+                </>
+            ) : (
+                <Link to="/auth/signin">Sign In</Link>
+            )}
+        </div>
+    );
+};
 
 type NavbarProps = {
     bare?: boolean;
 };
 
 export const Navbar = ({ bare = false }: NavbarProps) => {
+    const [toggleDropdown, setToggleDropdown] = useState(false);
     const user = useContext(AuthContext);
 
     return (
         <nav className="fixed flex h-32 w-full flex-grow-0">
             <Logo />
             {!bare && (
-                <div className="grid grid-cols-2 w-full items-center px-16 py-8">
-                    {user ? (
-                        <>
-                            <div className="my-auto h-[36px]">
-                                <NavbarSearchBar />
-                            </div>
-                            <div className="flex flex-row gap-4 justify-end items-center">
-                                <Link to="/user/edit"><BsPencil size={24} /></Link>
-                                <Link to="/user/message"><BsChatDots size={24}/></Link>
-                                <Link to="/user/inbox"><BsInbox size={24}/></Link>
-                                <Link to="/user/settings"><BsThreeDots size={24}/></Link>
-                                <Link to="/user/profile">
-                                    { user.photoURL?
-                                    <img src={user.photoURL!} alt="pfp" /> :
-                                    <img
-                                        src="/src/assets/images/defaultimg.png"
-                                        className="h-9 w-9" /> }
-                                </Link>
-                            </div>
-                        </>
-                    ) : (
-                        <Link to="/auth/signin">Sign In</Link>
-                    )}
+                <div className="grid w-full grid-cols-2 items-center px-16 py-8">
+                    <div className="my-auto h-[36px]">
+                        <NavbarSearchBar />
+                    </div>
+                    <div className="flex flex-row items-center justify-end gap-4">
+                        <Link to="/user/edit">
+                            <BsPencil size={24} />
+                        </Link>
+                        <Link to="/user/message">
+                            <BsChatDots size={24} />
+                        </Link>
+                        <Link to="/user/inbox">
+                            <BsInbox size={24} />
+                        </Link>
+                        <Link to="/user/settings">
+                            <BsThreeDots size={24} />
+                        </Link>
+                        <div
+                            className="cursor-pointer"
+                            onClick={() => setToggleDropdown(!toggleDropdown)}
+                        >
+                            {user?.photoURL ? (
+                                <img src={user.photoURL!} alt="pfp" />
+                            ) : (
+                                <img
+                                    src="/src/assets/images/defaultimg.png"
+                                    className="h-9 w-9"
+                                />
+                            )}
+                            {toggleDropdown && <NavDropdown />}
+                        </div>
+                    </div>
                 </div>
             )}
         </nav>

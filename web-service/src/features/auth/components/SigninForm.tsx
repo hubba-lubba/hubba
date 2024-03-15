@@ -2,7 +2,7 @@ import { Form, TextField, SubmitButton } from '@/components/form';
 import { AuthLinks } from './AuthLinks';
 import { TextButton } from '@/components/elements/buttons';
 import { email, password } from '@/lib/validation';
-import { signin } from '@/lib/auth';
+import { signin } from '../api';
 import Joi from 'joi';
 
 const schema = Joi.object({

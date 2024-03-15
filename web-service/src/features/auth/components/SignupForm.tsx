@@ -1,7 +1,7 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
 import { TextButton } from '@/components/elements/buttons';
 import { email, username, password, confirmPassword } from '@/lib/validation';
-import { signup } from '@/lib/auth';
+import { signup } from '../api';
 import Joi from 'joi';
 import { AuthLinks } from './AuthLinks';
 
