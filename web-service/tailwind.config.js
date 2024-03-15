@@ -21,8 +21,8 @@ export default {
         extend: {
             colors: {
                 'hubba-100': '#e9e4fc', //text
-                'hubba-400': '#c7b6ff',
-                'hubba-500': '#b59bff',
+                'hubba-400': '#c7b6ff', //trim accent
+                'hubba-500': '#b59bff', //trim
                 'hubba-600': '#a69bb2',
                 'hubba-800': '#30313f',
                 'hubba-900': '#100e22', //bg

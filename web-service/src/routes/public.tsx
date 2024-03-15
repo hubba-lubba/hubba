@@ -12,7 +12,14 @@ export const publicRoutes = [
         path: '/',
         element: <App />,
         children: [
-            { path: '/', element: <Interface><Home /></Interface> },
+            {
+                path: '/',
+                element: (
+                    <Interface>
+                        <Home />
+                    </Interface>
+                ),
+            },
             { path: '/auth/*', element: <AuthRoutes /> },
             // 404
             { path: '*', element: <Navigate to="/" /> },

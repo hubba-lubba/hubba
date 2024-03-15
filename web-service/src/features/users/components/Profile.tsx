@@ -1,19 +1,7 @@
-import { logout } from '@/lib/auth';
+import { useParams } from 'react-router-dom';
 
-export function Profile() {
+export const Profile = () => {
+    const { id } = useParams<{ id: string }>();
 
-    const signOut = async (): Promise<void> => {
-        try {
-            await logout();
-        } catch (error: any) {
-            console.log(`Error: ${error.message}`);
-        }
-    };
-
-    return (
-        <>
-            <p>Profile</p>
-            <p onClick={signOut} className="cursor-pointer underline">Sign out</p>
-        </>
-    )
-}
+    return <div>{id ? <h1>User {id}</h1> : <h1>Profile</h1>}</div>;
+};
