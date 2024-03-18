@@ -40,16 +40,16 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                         <NavbarSearchBar />
                     </div>
                     <div className="flex flex-row items-center justify-end gap-4">
-                        <Link to="/user/edit">
+                        <Link to="/edit">
                             <BsPencil size={24} />
                         </Link>
-                        <Link to="/user/message">
+                        <Link to="/message">
                             <BsChatDots size={24} />
                         </Link>
-                        <Link to="/user/inbox">
+                        <Link to="/inbox">
                             <BsInbox size={24} />
                         </Link>
-                        <Link to="/user/settings">
+                        <Link to="/settings">
                             <BsThreeDots size={24} />
                         </Link>
                         <div
