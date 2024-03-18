@@ -54,6 +54,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Setup .env.local File
+        env:
+          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+        run: |
+          touch .env.local
+          cat $FIREBASE_CONFIG >> .env.local
+        working-directory: web-service
+        shell: bash
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
