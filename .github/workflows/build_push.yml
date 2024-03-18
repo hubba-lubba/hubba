@@ -59,7 +59,7 @@ jobs:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: |
           touch .env.local
-          cat $FIREBASE_CONFIG >> .env.local
+          echo $FIREBASE_CONFIG >> .env.local
         working-directory: web-service
         shell: bash
 
