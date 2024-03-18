@@ -17,12 +17,12 @@ export const SettingsForm = () => {
                     name="notifications"
                     checked={true} />
             </section>
-            <section className="flex flex-row gap-2 mb-6">
-                <h2 className="text-2xl">Connected Apps</h2>
+            <section className="mb-6">
+                <h2 className="text-2xl mb-2">Connected Apps</h2>
                 <ConnectedApp />
             </section>
-            <section className="flex flex-row gap-2 mb-4">
-                <h2 className="text-2xl">Change Password</h2>
+            <section className="mb-4">
+                <h2 className="text-2xl mb-2">Change Password</h2>
                 <ChangePassword />
             </section>
         </div>
