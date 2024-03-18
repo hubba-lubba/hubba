@@ -36,3 +36,14 @@ export type Live = {
     tags: string[];
     viewer_count: number;
 } & BaseEntity;
+
+export type VideoLink = {
+    id: string;
+    title: string;
+    thumbnail: string;
+    description: string;
+    url: string;
+    platform: string;
+    tags: string[];
+    viewer_count: number;
+}
