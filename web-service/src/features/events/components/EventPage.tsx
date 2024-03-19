@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
     const [event, setEvent] = useState<Event>();
+    const [currentEvent, setCurrentEvent] = useState(true);
     useEffect(() => {
         (async () => {
         // once this is complete, move into individual features as a component
@@ -15,6 +16,9 @@ export const EventPage = () => {
         const upcomingEventsData = await getUpcomingEvents();
         let event = [...currentEventsData.current_events, ...upcomingEventsData.upcoming_events].filter(obj => obj.id===id);
         setEvent(event[0]);
+        if (event && upcomingEventsData.upcoming_events.includes(event[0])){
+            setCurrentEvent(false);
+        }
         })();
     }, []);
 
@@ -38,6 +42,7 @@ export const EventPage = () => {
                 )
             })}
             <p>{event?.viewer_count} views</p>
+            <p>Status: {currentEvent ? "Ongoing" : "Upcoming"}</p>
         </div>
     );
 }
