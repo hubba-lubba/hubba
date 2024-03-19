@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthProvider';
+import { updatePassword  } from 'firebase/auth'
 
 export default function ChangePassword() {
 
@@ -14,7 +15,22 @@ export default function ChangePassword() {
     const handleConfirmInput = (event: React.FormEvent) =>
         setConfirm(event.target.value)
 
-    function handleSubmit(event: React.FormEvent) {
+    //takes a firebase auth error and puts up a relevant error message
+    function handleErrorMessage(error: { code: string }) {
+        switch (error.code) {
+            case 'auth/weak-password':
+                setErrorMessage("Password must be at least 6 characters long.")
+                break
+            case 'auth/requires-recent-login':
+                //some weird reauthenticate bullshit
+                setErrorMessage("Reauthenticate your login.")
+                break
+            default:
+                setErrorMessage("Unknown error occurred. Try again later.")
+        }
+    }
+
+    async function handleSubmit(event: React.FormEvent) {
         event.preventDefault()
 
         if (newPassword !== confirm) {
@@ -23,7 +39,12 @@ export default function ChangePassword() {
         }
 
         //do something with the user context
-        console.log(user)
+        try {
+            await updatePassword(user!, newPassword)
+        } catch (error: any) {
+            handleErrorMessage(error)
+        }
+
     }
 
     return (
@@ -48,7 +69,7 @@ export default function ChangePassword() {
                 <label
                     htmlFor="confirm"
                     className="text-xl">
-                    Confirm Password
+                    Confirm New Password
                 </label>
                 <input
                     type="text"
