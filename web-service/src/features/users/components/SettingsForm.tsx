@@ -14,27 +14,26 @@ export function SettingsForm() {
     const SAMPLE_CONNECTIONS = [
         {
             platform: 'X',
-            connected: false,
+            //i dont have twitter
             id: 0
         },
         {
             platform: 'twitch',
-            connected: false,
+            username: 'kevinthuhstink',
             id: 1
         },
         {
             platform: 'spotify',
-            connected: false,
+            username: 'kevinthuhstink',
             id: 2
         },
         {
             platform: 'discord',
-            connected: false,
+            username: 'kevinthuhstink',
             id: 3
         },
         {
             platform: 'linux',
-            connected: true,
             id: 4
         },
     ]
