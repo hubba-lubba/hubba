@@ -1,43 +1,44 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import ConnectedApp from './ConnectedApp'
 import ChangePassword from './ChangePassword'
+import { AuthContext } from '@/contexts/AuthProvider';
+
+type userSettings = {
+    connections?: { platform: string; username?: string }[];
+}
 
 export function SettingsForm() {
 
     const [notifs, setNotifs] = useState(true)
+    const user = useContext(AuthContext) as userSettings
+
     function handleNotifications() {
         setNotifs(prevNotifs => !prevNotifs)
-
         //set context or someting
     }
 
     const SAMPLE_CONNECTIONS = [
         {
             platform: 'X',
-            //i dont have twitter
-            id: 0
         },
         {
-            platform: 'twitch',
-            username: 'kevinthuhstink',
-            id: 1
+            platform: 'Twitch',
         },
         {
-            platform: 'spotify',
-            username: 'kevinthuhstink',
-            id: 2
+            platform: 'Spotify',
         },
         {
-            platform: 'discord',
-            username: 'kevinthuhstink',
-            id: 3
+            platform: 'Discord',
         },
         {
-            platform: 'linux',
-            id: 4
+            platform: '',
         },
     ]
-    const connections = SAMPLE_CONNECTIONS.map(elem => <ConnectedApp {...elem} />)
+    user.connections ||= SAMPLE_CONNECTIONS
+
+    const connections = []
+    for (let i = 0; i < user.connections.length; i++)
+        connections.push(<ConnectedApp {...user.connections[i]} key={i} />)
 
     return (
         <div className="flex flex-col items-start">
@@ -58,6 +59,10 @@ export function SettingsForm() {
             <section className="mb-6">
                 <h2 className="text-3xl mb-2">Connected Apps</h2>
                 {connections}
+                <button
+                    className="border mt-4 px-4 py-2 rounded">
+                    Add Connection
+                </button>
             </section>
             <section className="mb-6">
                 <h2 className="text-3xl mb-2">Change Password</h2>

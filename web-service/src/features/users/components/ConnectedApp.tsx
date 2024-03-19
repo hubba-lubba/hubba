@@ -8,13 +8,13 @@ export default function ConnectedApp(props: { platform: string, username?: strin
         case 'X':
             icon = <BsTwitterX size={32} className="mr-4" />
             break
-        case 'twitch':
+        case 'Twitch':
             icon = <BsTwitch size={32} className="mr-4" />
             break
-        case 'discord':
+        case 'Discord':
             icon = <BsDiscord size={32} className="mr-4" />
             break
-        case 'spotify':
+        case 'Spotify':
             icon = <BsSpotify size={32} className="mr-4" />
             break
         default:
