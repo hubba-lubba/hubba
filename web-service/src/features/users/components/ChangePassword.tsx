@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthProvider';
-import { updatePassword } from 'firebase/auth'
+import { User, updatePassword } from 'firebase/auth'
 
 export default function ChangePassword() {
 
@@ -8,12 +8,12 @@ export default function ChangePassword() {
     const [confirm, setConfirm] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
 
-    const user = useContext(AuthContext)
+    const user = useContext(AuthContext) as User
 
     const handleNewPasswordInput = (event: React.FormEvent) =>
-        setNewPassword(event.target.value)
+        setNewPassword((event.target as HTMLInputElement).value)
     const handleConfirmInput = (event: React.FormEvent) =>
-        setConfirm(event.target.value)
+        setConfirm((event.target as HTMLInputElement).value)
 
     //takes an error code and puts up a relevant error message
     function handleErrorMessage(errorCode: string) {
@@ -48,9 +48,9 @@ export default function ChangePassword() {
 
         //do something with the user context
         try {
-            await updatePassword(user!, newPassword)
+            await updatePassword(user, newPassword)
             handleErrorMessage("success")
-        } catch (error) {
+        } catch (error: any) {
             handleErrorMessage(error.code)
         }
     }
