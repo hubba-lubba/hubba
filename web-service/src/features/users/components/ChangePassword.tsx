@@ -15,11 +15,14 @@ export default function ChangePassword() {
     const handleConfirmInput = (event: React.FormEvent) =>
         setConfirm(event.target.value)
 
-    //takes a firebase auth error and puts up a relevant error message
-    function handleErrorMessage(error: { code: string }) {
-        switch (error.code) {
-            case 'auth/weak-password':
-                setErrorMessage("Password must be at least 6 characters long.")
+    //takes an error code and puts up a relevant error message
+    function handleErrorMessage(errorCode: string) {
+        switch (errorCode) {
+            case 'success':
+                setErrorMessage("Password reset success")
+                break
+            case 'password-length':
+                setErrorMessage("New password must be at least 8 characters long.")
                 break
             case 'auth/requires-recent-login':
                 //some weird reauthenticate bullshit
@@ -38,22 +41,27 @@ export default function ChangePassword() {
             return
         }
 
+        if (newPassword.length < 8) {
+            setErrorMessage("password-length")
+            return
+        }
+
         //do something with the user context
         try {
             await updatePassword(user!, newPassword)
+            handleErrorMessage("success")
         } catch (error) {
-            handleErrorMessage(error as { code: string })
+            handleErrorMessage(error.code)
         }
-
     }
 
     return (
         <form
             onSubmit={handleSubmit}>
-            <div className="text-red-700">
+            <div>
                 {errorMessage}
             </div>
-            <div className="grid grid-cols-2 grid-rows-2 gap-1">
+            <div className="grid grid-cols-2 grid-rows-2 gap-y-2 gap-x-4">
                 <label
                     htmlFor="newPassword"
                     className="text-xl">
