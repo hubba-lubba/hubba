@@ -1,7 +1,7 @@
 import { BsTencentQq, BsTwitterX, BsTwitch, BsDiscord, BsSpotify } from 'react-icons/bs'
 
-export default function ConnectedApp(props: { platform: string, connected: boolean }) {
-    const { platform, connected } = props
+export default function ConnectedApp(props: { platform: string, username?: string }) {
+    const { platform, username } = props
 
     let icon
     switch (platform) {
@@ -22,8 +22,8 @@ export default function ConnectedApp(props: { platform: string, connected: boole
     }
 
     let connect
-    if (connected)
-        connect = <p>Connected!</p>
+    if (username)
+        connect = <p>{username}</p>
     else
         connect = <p>Connect your {platform} account</p>
 
