@@ -2,7 +2,7 @@ import { useState } from 'react'
 import ConnectedApp from './ConnectedApp'
 import ChangePassword from './ChangePassword'
 
-export const SettingsForm = () => {
+export function SettingsForm() {
 
     const [notifs, setNotifs] = useState(true)
     function handleNotifications() {
@@ -10,6 +10,35 @@ export const SettingsForm = () => {
 
         //set context or someting
     }
+
+    const SAMPLE_CONNECTIONS = [
+        {
+            platform: 'X',
+            connected: false,
+            id: 0
+        },
+        {
+            platform: 'twitch',
+            connected: false,
+            id: 1
+        },
+        {
+            platform: 'spotify',
+            connected: false,
+            id: 2
+        },
+        {
+            platform: 'discord',
+            connected: false,
+            id: 3
+        },
+        {
+            platform: 'linux',
+            connected: true,
+            id: 4
+        },
+    ]
+    const connections = SAMPLE_CONNECTIONS.map(elem => <ConnectedApp {...elem} />)
 
     return (
         <div className="flex flex-col items-start">
@@ -29,12 +58,12 @@ export const SettingsForm = () => {
             </section>
             <section className="mb-6">
                 <h2 className="text-3xl mb-2">Connected Apps</h2>
-                <ConnectedApp />
+                {connections}
             </section>
-            <section className="mb-4">
+            <section className="mb-6">
                 <h2 className="text-3xl mb-2">Change Password</h2>
                 <ChangePassword />
             </section>
         </div>
     )
-};
+}

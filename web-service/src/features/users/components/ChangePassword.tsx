@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthProvider';
-import { updatePassword  } from 'firebase/auth'
+import { updatePassword } from 'firebase/auth'
 
 export default function ChangePassword() {
 
@@ -41,8 +41,8 @@ export default function ChangePassword() {
         //do something with the user context
         try {
             await updatePassword(user!, newPassword)
-        } catch (error: any) {
-            handleErrorMessage(error)
+        } catch (error) {
+            handleErrorMessage(error as { code: string })
         }
 
     }
