@@ -18,7 +18,7 @@ class EventPublisher():
         self.logger.info(f"Using project_id: {project_id}")
         self.logger.info(f"Using topic_id: {topic_id}")
 
-        if SERVICE_ACCOUNT is None:
+        if SERVICE_ACCOUNT is None or not SERVICE_ACCOUNT:
             credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
         else:
             self.logger.info("Using service account from environment variable")
