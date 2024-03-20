@@ -1,38 +1,33 @@
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
 import ConnectedApp from './ConnectedApp'
 import ChangePassword from './ChangePassword'
 import { AuthContext } from '@/contexts/AuthProvider';
 
 type userSettings = {
+    notifications?: boolean;
     connections?: { platform: string; username?: string }[];
 }
 
 export function SettingsForm() {
 
-    const [notifs, setNotifs] = useState(true)
     const user = useContext(AuthContext) as userSettings
 
     function handleNotifications() {
-        setNotifs(prevNotifs => !prevNotifs)
-        //set context or someting
+        //update user notifs (somehow)
+        //setUser(prevUser => ({
+        //  ...prevUser,
+        //  notifications: !prevUser.notifications
+        //}))
+        user.notifications = !user.notifications
     }
 
     const SAMPLE_CONNECTIONS = [
-        {
-            platform: 'X',
-        },
-        {
-            platform: 'Twitch',
-        },
-        {
-            platform: 'Spotify',
-        },
-        {
-            platform: 'Discord',
-        },
-        {
-            platform: '',
-        },
+        { platform: 'X', },
+        { platform: 'Twitch', },
+        { platform: 'Youtube', },
+        { platform: 'Spotify', },
+        { platform: 'Discord', },
+        { platform: 'LINUX', },
     ]
     user.connections ||= SAMPLE_CONNECTIONS
 
@@ -53,7 +48,7 @@ export function SettingsForm() {
                     type="checkbox"
                     id="notifications"
                     name="notifications"
-                    checked={notifs}
+                    checked={user.notifications}
                     onChange={handleNotifications} />
             </section>
             <section className="mb-6">
