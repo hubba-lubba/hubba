@@ -31,14 +31,32 @@ def version():
 def add_event():
     context = request.get_json()
 
-    title = context.get("title")
-    description = context.get("description")
+    title = str(context.get("title")) if context.get("title") else None
+    thumbnail = str(context.get("thumbnail")) if context.get("thumbnail") else None
+    description = str(context.get("description")) if context.get("description") else None
+    url = str(context.get("url")) if context.get("url") else None
+    platform = str(context.get("platform")) if context.get("platform") else None
+    tags = list(map(str, context.get("tags"))) if context.get("tags") else []
+    time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
+    host = str(context.get("host")) if context.get("host") else None
+    entry_fee = str(context.get("entry_fee")) if context.get("entry_fee") else None
     owner = context.get("owner")
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
         try:
-            event = events_repository.add_event(title=title, description=description, owner=owner)
+            event = events_repository.add_event(
+                title=title,
+                thumbnail=thumbnail,
+                description=description,
+                url=url,
+                platform=platform,
+                tags=tags,
+                time_of_event=time_of_event,
+                host=host,
+                entry_fee=entry_fee,
+                owner=owner
+            )
             response = jsonify({
                 "status": "success",
                 "event": event.get_JSON()
