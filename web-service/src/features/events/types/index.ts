@@ -10,10 +10,8 @@ export type Event = {
     platform: string;
     tags: string[];
     viewer_count: number;
-    // date_pasted: Date;
-    // title: string;
-    // description: string;
-    // owner: string;
-    // moderators: string[];
-    // users: string[];
+    time_of_event: string;
+    host: string;
+    entryfee: number;
+    prizes: string[];
 } & BaseEntity;
