@@ -26,27 +26,49 @@ def version():
     return result
 
 @events_blueprint.route("/", methods=["PUT"])
-@require_json_params(["title", "description", "owner", "moderators", "users"])
-@ensureUUID("users")
-@ensureUUID("moderators")
+@require_json_params(["title", "description", "owner"])
 @ensureUUID("owner")
 def add_event():
     context = request.get_json()
 
-    title = context.get("title")
-    description = context.get("description")
+    title = str(context.get("title")) if context.get("title") else None
+    thumbnail = str(context.get("thumbnail")) if context.get("thumbnail") else None
+    description = str(context.get("description")) if context.get("description") else None
+    url = str(context.get("url")) if context.get("url") else None
+    platform = str(context.get("platform")) if context.get("platform") else None
+    tags = list(map(str, context.get("tags"))) if context.get("tags") else []
+    time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
+    host = str(context.get("host")) if context.get("host") else None
+    entry_fee = str(context.get("entry_fee")) if context.get("entry_fee") else None
     owner = context.get("owner")
-    moderators = context.get("moderators")
-    users = context.get("users")
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
-        event = events_repository.add_event(title=title, description=description, owner=owner, moderators=moderators, users=users)
-        response = jsonify({
-            "status": "success",
-            "event": event.get_JSON()
-        })
-        return response
+        try:
+            event = events_repository.add_event(
+                title=title,
+                thumbnail=thumbnail,
+                description=description,
+                url=url,
+                platform=platform,
+                tags=tags,
+                time_of_event=time_of_event,
+                host=host,
+                entry_fee=entry_fee,
+                owner=owner
+            )
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON()
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
 
 @events_blueprint.route("/", methods=["GET"])
 @require_query_params(["event_id"])
