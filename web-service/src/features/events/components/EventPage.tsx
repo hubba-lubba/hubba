@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { getUpcomingEvents, getCurrentEvents } from '@/features/events/api';
-import { Event } from '@/features/events/types';
+import { getUpcomingEvents, getCurrentEvents } from '../api';
+import { Event } from '../types';
 import { NotFound } from "@/pages/NotFound";
 import { Link } from "react-router-dom";
 
@@ -29,12 +29,21 @@ export const EventPage = () => {
             </div>
         )
     }
+
+    //pads the time with zeroes
     const pad = (n: number) => {
         return n<10 ? '0'+n : n;
     }
+
     let string = event?.time_of_event;
     if (!string) console.log('no time');
-    let time = new Date(Date.parse(string));
+
+    const timeFormat = {
+        dateStyle: 'full',
+        timeStyle: 'medium',
+        timeZone: 'America/New_York'
+    }
+    let time = new Intl.DateTimeFormat('en-US', timeFormat).format(new Date());
 
     return (
         <div>
@@ -49,7 +58,7 @@ export const EventPage = () => {
                     )
                 })}
                 <p>{event?.viewer_count} views</p>
-                <p>Time: {time.toDateString()} {pad(time.getHours())}:{pad(time.getMinutes())}:{pad(time.getSeconds())}</p>
+                <p>Time: {time}</p>
                 <p>Host: {event?.host}</p>
                 <p>Status: {currentEvent ? "Live" : "Upcoming"}</p>
                 <p>Entry Fee: ${event?.entryfee}</p>
