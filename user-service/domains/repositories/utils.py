@@ -1,35 +1,49 @@
 from functools import wraps
-from domains.repositories.repo_exceptions import IdExistsException, IdMissingException, UsernameExistsException
-from domains.models.user import User
+from domains.repositories.repo_exceptions import *
 
-def check_id_not_exists(ids):
+def check_id_not_exists(obj, ids):
     def decorator(func):
         @wraps(func)
         def returned_func(self, *args, **kwargs):
+            ids_flatten = []
             for id in ids:
-                match id:
-                    case "user_id":
-                        if self.session.get(User, kwargs["user_id"]) is not None:
-                            raise IdExistsException(kwargs["user_id"])
-                    case "username":
-                        if self.session.query(User).filter(User.username == kwargs["username"]).first() is not None:
-                            raise UsernameExistsException(kwargs["username"])
+                if kwargs[id]:
+                    ids_flatten += [kwargs[id]] if kwargs[id] is not list else kwargs[id]
+
+            for id in ids_flatten:
+                if self.session.get(obj, id) is not None:
+                    raise IdExistsException(obj, id)
             return func(self, *args, **kwargs)
         return returned_func
     return decorator
 
-def check_id_exists(ids):
+def check_id_exists(obj, ids):
     def decorator(func):
         @wraps(func)
         def returned_func(self, *args, **kwargs):
+            ids_flatten = []
             for id in ids:
-                if kwargs[id] is list and kwargs[id]:
-                    users = filter(lambda x: self.session.get(User, x) is None, kwargs[id])
-                    if users:
-                        raise IdMissingException(users)
-                else:
-                    if self.session.get(User, kwargs[id]) is None:
-                        raise IdMissingException(kwargs[id])
+                if kwargs[id]:
+                    ids_flatten += [kwargs[id]] if kwargs[id] is not list else kwargs[id]
+            for id in ids_flatten:
+                if self.session.get(obj, id) is None:
+                    raise IdMissingException(obj, id)
+            return func(self, *args, **kwargs)
+        return returned_func
+    return decorator
+
+def check_unique(obj, field, values):
+    def decorator(func):
+        @wraps(func)
+        def returned_func(self, *args, **kwargs):
+            values_flatten = []
+            for value in values:
+                if kwargs[value]:
+                    values_flatten += [kwargs[value]] if kwargs[value] is not list else kwargs[value]
+
+            for value in values_flatten:
+                if self.session.query(obj).filter(field == value).first():
+                    raise NonUniqueException(obj, field)
             return func(self, *args, **kwargs)
         return returned_func
     return decorator
