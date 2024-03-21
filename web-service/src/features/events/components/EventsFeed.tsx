@@ -39,7 +39,7 @@ export const EventsFeed = () => {
         setLoading(false);
     }, []);
 
-    if (typeof loading === "string")
+    if (typeof loading === "string") //error
         return <p>{loading}</p>
 
     if (loading)
