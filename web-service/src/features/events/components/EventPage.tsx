@@ -39,29 +39,35 @@ export const EventPage = () => {
     return (
         <div>
             <Link to={event?.url}><img src={!!event.thumbnail ? event.thumbnail : "/public/image_not_found.jpg"}/></Link>
-            <h1>{!!event.title ? event.title : `Event ${event.id}`}</h1>
-            
-            {event?.tags.map((tag) => {
-                return (
-                    // please make these tags oval shaped and in a line and different colored if you know what i mean 
-                    <p>{tag}</p>
-                )
-            })}
-            <p>{event?.viewer_count} views</p>
-            <p>Time: {time.toDateString()} {pad(time.getHours())}:{pad(time.getMinutes())}:{pad(time.getSeconds())}</p>
-            <p>Host: {event?.host}</p>
-            <p>Status: {currentEvent ? "Live" : "Upcoming"}</p>
-            <p>Entry Fee: ${event?.entryfee}</p>
-            {/* button should do something idk */}
-            <button>ENTER</button> 
-            <h2>DETAILS</h2>
-            <p>{!!event.description ? event.description : <></>}</p>
+            <div>
+                <h1>{!!event.title ? event.title : `Event ${event.id}`}</h1>
+                
+                {event?.tags.map((tag) => {
+                    return (
+                        // please make these tags oval shaped and in a line and different colored if you know what i mean 
+                        <p>{tag}</p>
+                    )
+                })}
+                <p>{event?.viewer_count} views</p>
+                <p>Time: {time.toDateString()} {pad(time.getHours())}:{pad(time.getMinutes())}:{pad(time.getSeconds())}</p>
+                <p>Host: {event?.host}</p>
+                <p>Status: {currentEvent ? "Live" : "Upcoming"}</p>
+                <p>Entry Fee: ${event?.entryfee}</p>
+                {/* button should do something idk */}
+                <button>ENTER</button> 
+            </div>
+            <div>
+                <h2>DETAILS</h2>
+                <p>{!!event.description ? event.description : <></>}</p>
+            </div>
+            <div>
             <h2>PRIZES</h2>
-            {event?.prizes?.[0] ? `First Place: ${event?.prizes?.[0]}` : <></>}
-            <br/>
-            {event?.prizes?.[1] ? `Second Place: ${event?.prizes?.[1]}` : <></>}
-            <br/>
-            {event?.prizes?.[2] ? `Third Place: ${event?.prizes?.[2]}` : <></>}
+                {event?.prizes?.[0] ? `First Place: ${event?.prizes?.[0]}` : <></>}
+                <br/>
+                {event?.prizes?.[1] ? `Second Place: ${event?.prizes?.[1]}` : <></>}
+                <br/>
+                {event?.prizes?.[2] ? `Third Place: ${event?.prizes?.[2]}` : <></>}
+            </div>
         </div>
     );
 }
