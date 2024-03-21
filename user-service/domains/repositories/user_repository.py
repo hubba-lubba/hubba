@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from domains.models.user import User
 from domains.repositories.repo_exceptions import *
-from domains.repositories.utils import check_id_exists, check_id_not_exists
+from domains.repositories.utils import check_id_exists, check_id_not_exists, check_unique
 from events.publisher_factory import PublisherFactory
 from logger import LoggerFactory
 
@@ -38,7 +38,7 @@ class UserRepository:
     :optional param streaming_status: str of streaming status
     :return: User of added user
     """
-    @check_id_not_exists(["username"])
+    @check_unique(User, User.username, ["username"])
     def add_user(self, username, user_id=None, streaming_status=None):
         new_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
         return self._add_user(new_user)
@@ -49,7 +49,7 @@ class UserRepository:
     :param user_id: uuid of User
     :return: User object obtained from persisted data
     """
-    @check_id_exists(["user_id"])
+    @check_id_exists(User, ["user_id"])
     def get_user(self, user_id):
         user = self.session.get(User, user_id)
         return user
@@ -60,7 +60,7 @@ class UserRepository:
     :param user_id: uuid of User
     :return: uuid of deleted User
     """
-    @check_id_exists(["user_id"])
+    @check_id_exists(User, ["user_id"])
     def delete_user(self, user_id):
         user = self.session.get(User, user_id)
         self.session.delete(user)
@@ -75,7 +75,7 @@ class UserRepository:
     :param new_following: list of uuid of new following users
     :return: User
     """
-    @check_id_exists(["user_id", "following"])
+    @check_id_exists(User, ["user_id", "following"])
     def add_following(self, user_id, following=[]):
         user = self.session.get(User, user_id)
         new_following = list(map(lambda user_id: self.session.get(User, user_id), following))

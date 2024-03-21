@@ -45,7 +45,7 @@ def add_user():
                 "user": new_user.get_JSON(),
             })
             return response
-        except (IdExistsException, UsernameExistsException) as e:
+        except (IdExistsException, NonUniqueException) as e:
             result = jsonify({
                     "status": "failure",
                     "reason": str(e)
