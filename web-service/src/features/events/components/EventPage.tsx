@@ -78,27 +78,31 @@ export const EventPage = () => {
 
 
     return (
-        <div>
+        <div className="max-w-[600px]">
             <header className="mb-4">
                 <h1 className="text-6xl font-bold">
                     {event.title || `Event ${event.id}`}
                 </h1>
-                <h3 className="text-xl font-bold">
+                <h3 className="text-2xl font-bold">
                     {currentEvent ? "LIVE" : "Upcoming"}
                 </h3>
+                <h4 className="text-l">
+                    {currentEvent ? "Began " : "Starting " } {time}
+                </h4>
             </header>
 
             <main>
                 <Link to={event.url}>
                     <img src={event.thumbnail || "/public/image_not_found.jpg"}/>
                 </Link>
-                <div className="flex flex-row gap-3 px-2 pt-2 mb-6">
-                    {tags}
+                <div className="flex flex-row justify-between px-2 pt-2">
+                    <div className="flex flex-row gap-3 mb-6">
+                        {tags}
+                    </div>
+                    <p className="">{event.viewer_count} views</p>
                 </div>
 
                 <p>Host: {event.host}</p>
-                <p>{event.viewer_count} views</p>
-                <p>Time: {time}</p>
                 <button className="rounded-xl border py-1 px-3 mt-4">
                     {`ENTER: ${event.entryfee}$`}
                 </button>
@@ -109,7 +113,7 @@ export const EventPage = () => {
                 <p className="px-4">{event.description || <></>}</p>
             </section>
 
-            <section className="mt-8 max-w-[600px]">
+            <section className="mt-8">
                 <h2 className="text-3xl font-bold mb-6">Prizes</h2>
                 <div className="grid grid-cols-10 grid-rows-4 h-[200px]">
                     <div className="col-start-auto col-span-3 row-start-2 row-span-3 border p-4">
