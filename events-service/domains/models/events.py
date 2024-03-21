@@ -51,7 +51,8 @@ class Events(Base):
     def to_JSON(user):
         return {
             "event_id": user.event_id,
-            "date_posted": str(user.date_posted),
+            #get dateposted in unix time
+            "date_posted": user.date_posted.timestamp(),
             "title": user.title,
             "description": user.description,
             "owner_id": str(user.owner_id)

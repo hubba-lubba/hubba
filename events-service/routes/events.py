@@ -26,9 +26,7 @@ def version():
     return result
 
 @events_blueprint.route("/", methods=["PUT"])
-@require_json_params(["title", "description", "owner", "moderators", "users"])
-@ensureUUID("users")
-@ensureUUID("moderators")
+@require_json_params(["title", "description", "owner"])
 @ensureUUID("owner")
 def add_event():
     context = request.get_json()
@@ -36,17 +34,23 @@ def add_event():
     title = context.get("title")
     description = context.get("description")
     owner = context.get("owner")
-    moderators = context.get("moderators")
-    users = context.get("users")
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
-        event = events_repository.add_event(title=title, description=description, owner=owner, moderators=moderators, users=users)
-        response = jsonify({
-            "status": "success",
-            "event": event.get_JSON()
-        })
-        return response
+        try:
+            event = events_repository.add_event(title=title, description=description, owner=owner)
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON()
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
 
 @events_blueprint.route("/", methods=["GET"])
 @require_query_params(["event_id"])
