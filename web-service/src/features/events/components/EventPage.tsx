@@ -38,7 +38,7 @@ export const EventPage = () => {
         fetchEventData(id).catch((err) =>
             setError('Error loading page: ' + err),
         );
-    }, []);
+    }, [id]);
 
     if (!event) return <div>Event not found</div>;
     if (loading) return <p>Loading events...</p>;
