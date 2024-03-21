@@ -28,7 +28,7 @@ export const EventPage = () => {
                 <NotFound/>
             </div>
         )
-    } 
+    }
     const pad = (n: number) => {
         return n<10 ? '0'+n : n;
     }
@@ -38,13 +38,13 @@ export const EventPage = () => {
 
     return (
         <div>
-            <Link to={event?.url}><img src={!!event.thumbnail ? event.thumbnail : "/public/image_not_found.jpg"}/></Link>
+            <Link to={event?.url}><img src={event.thumbnail || "/public/image_not_found.jpg"}/></Link>
             <div>
-                <h1>{!!event.title ? event.title : `Event ${event.id}`}</h1>
-                
+                <h1>{event.title || `Event ${event.id}`}</h1>
+
                 {event?.tags.map((tag) => {
                     return (
-                        // please make these tags oval shaped and in a line and different colored if you know what i mean 
+                        // please make these tags oval shaped and in a line and different colored if you know what i mean
                         <p>{tag}</p>
                     )
                 })}
@@ -54,11 +54,11 @@ export const EventPage = () => {
                 <p>Status: {currentEvent ? "Live" : "Upcoming"}</p>
                 <p>Entry Fee: ${event?.entryfee}</p>
                 {/* button should do something idk */}
-                <button>ENTER</button> 
+                <button>ENTER</button>
             </div>
             <div>
                 <h2>DETAILS</h2>
-                <p>{!!event.description ? event.description : <></>}</p>
+                <p>{event.description || <></>}</p>
             </div>
             <div>
             <h2>PRIZES</h2>
