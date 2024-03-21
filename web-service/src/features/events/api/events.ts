@@ -147,7 +147,7 @@ export const getEvent = async (id: string) => {
     // return event
     const event = {
         id: id,
-        title: 'Event XD',
+        title: `Event XD ${id}`,
         thumbnail: 'https://placehold.co/300x200',
         description: 'This is a description',
         url: 'https://www.google.com',
