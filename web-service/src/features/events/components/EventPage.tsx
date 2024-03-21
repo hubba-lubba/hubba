@@ -42,25 +42,29 @@ export const EventPage = () => {
     // in the future store time_of_event as a Date object
     if (!event.time_of_event)
         console.log('no time');
-    const timeFormat = {
-        dateStyle: 'long',
-        timeStyle: 'medium',
-        timeZone: 'America/New_York'
+
+    type timeFormat = {
+        dateStyle: "long",
+        timeStyle: "medium",
+        timeZone: string,
+    } //middle finger typescript
+    const timeFormat: timeFormat = {
+        dateStyle: "long",
+        timeStyle: "medium",
+        timeZone: "America/New_York"
     }
     const time = new Intl.DateTimeFormat('en-US', timeFormat).format(new Date());
+
+    const tags = []
+    for (let i = 0; i < event.tags.length; i++)
+        tags.push(<p key={i} className="">event.tags[i]</p>)
 
     return (
         <div>
             <Link to={event?.url}><img src={event.thumbnail || "/public/image_not_found.jpg"}/></Link>
             <div>
                 <h1>{event.title || `Event ${event.id}`}</h1>
-
-                {event?.tags.map((tag) => {
-                    return (
-                        // please make these tags oval shaped and in a line and different colored if you know what i mean
-                        <p>{tag}</p>
-                    )
-                })}
+                {tags}
                 <p>{event?.viewer_count} views</p>
                 <p>Time: {time}</p>
                 <p>Host: {event?.host}</p>
