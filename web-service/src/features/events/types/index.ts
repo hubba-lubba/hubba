@@ -10,7 +10,8 @@ export type Event = {
     platform: string;
     tags: string[];
     viewer_count: number;
-    time_of_event: string;
+    time_of_event: Date;
+    status: string;
     host: string;
     entryfee: number;
     prizes: string[];

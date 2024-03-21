@@ -1,6 +1,7 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { UserProtectedRoutes } from '@/features/users/routes';
 import { Interface } from '@/components/layout';
+import { NotFound } from '@/pages/NotFound';
 
 const App = () => {
     return (
@@ -17,7 +18,7 @@ export const protectedRoutes = [
         children: [
             { path: '/*', element: <UserProtectedRoutes /> }, //Q: if i want to add more to this but they come from different components, how? or should i organize differently?
             // 404
-            { path: '*', element: <Navigate to="/" /> },
+            { path: '*', element: <NotFound /> },
         ],
     },
 ];
