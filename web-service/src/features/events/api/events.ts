@@ -1,7 +1,6 @@
-
 export const getCurrentEvents = async () => {
     const data = {
-        current_events: [
+        events: [
             {
                 id: '1',
                 title: 'Event 1',
@@ -11,10 +10,10 @@ export const getCurrentEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
             {
                 id: '2',
@@ -25,10 +24,10 @@ export const getCurrentEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
             {
                 id: '3',
@@ -39,10 +38,10 @@ export const getCurrentEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
         ],
     };
@@ -51,7 +50,7 @@ export const getCurrentEvents = async () => {
 
 export const getUpcomingEvents = async () => {
     const data = {
-        upcoming_events: [
+        events: [
             {
                 id: '4',
                 title: 'Event 4',
@@ -61,10 +60,10 @@ export const getUpcomingEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
             {
                 id: '5',
@@ -75,10 +74,10 @@ export const getUpcomingEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
             {
                 id: '12',
@@ -89,10 +88,10 @@ export const getUpcomingEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
             {
                 id: '10',
@@ -103,10 +102,10 @@ export const getUpcomingEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
             {
                 id: '11',
@@ -117,10 +116,10 @@ export const getUpcomingEvents = async () => {
                 platform: 'Twitch',
                 tags: ['tag1', 'tag2', 'tag3'],
                 viewer_count: 100,
-                time_of_event: "Wed, 27 July 2016 07:45:00 UTC",
+                time_of_event: 'Wed, 27 July 2016 07:45:00 UTC',
                 host: 'hostname',
                 entryfee: 0,
-                prizes: ['prize1', 'prize2', 'prize3']
+                prizes: ['prize1', 'prize2', 'prize3'],
             },
         ],
     };
@@ -133,4 +132,4 @@ export const getSidebarEvents = async () => {
     // but in the latter case it makes the sidebar obsolete... hmm
     // UI/UX INTERNS ASSEMBLE
     return await getCurrentEvents();
-}
+};

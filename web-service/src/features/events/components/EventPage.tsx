@@ -5,45 +5,49 @@ import { Event } from '../types';
 import { NotFound } from "@/pages/NotFound";
 import { Link } from "react-router-dom";
 
+async function fetchEventData(id: string) {
+
+    const currentEvents = await getCurrentEvents();
+    const upcomingEvents = await getUpcomingEvents();
+
+    for (const event of currentEvents.events)
+        if (event.id === id)
+            return { event: event, live: true };
+    for (const event of upcomingEvents.events)
+        if (event.id === id)
+            return { event: event, live: false };
+
+    throw new Error("Event not found");
+}
+
+
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
     const [event, setEvent] = useState<Event>();
-    const [currentEvent, setCurrentEvent] = useState(true);
+    const [currentEvent, setCurrentEvent] = useState<boolean>();
+
     useEffect(() => {
-        (async () => {
-        // once this is complete, move into individual features as a component
-        const currentEventsData = await getCurrentEvents();
-        const upcomingEventsData = await getUpcomingEvents();
-        let event = [...currentEventsData.current_events, ...upcomingEventsData.upcoming_events].filter(obj => obj.id===id);
-        setEvent(event[0]);
-        if (event && upcomingEventsData.upcoming_events.includes(event[0])){
-            setCurrentEvent(false);
-        }
-        })();
-    }, []);
+        fetchEventData(id!)
+            .then((res) => {
+                setEvent(res.event)
+                setCurrentEvent(res.live)
+            })
+            .catch((err) => console.log(err))
+    }, [id]);
 
-    if (!event){
-        return (
-            <div>
-                <NotFound/>
-            </div>
-        )
+    if (!event) {
+        return <NotFound/>
     }
 
-    //pads the time with zeroes
-    const pad = (n: number) => {
-        return n<10 ? '0'+n : n;
-    }
-
-    let string = event?.time_of_event;
-    if (!string) console.log('no time');
-
+    // in the future store time_of_event as a Date object
+    if (!event.time_of_event)
+        console.log('no time');
     const timeFormat = {
-        dateStyle: 'full',
+        dateStyle: 'long',
         timeStyle: 'medium',
         timeZone: 'America/New_York'
     }
-    let time = new Intl.DateTimeFormat('en-US', timeFormat).format(new Date());
+    const time = new Intl.DateTimeFormat('en-US', timeFormat).format(new Date());
 
     return (
         <div>
