@@ -26,6 +26,7 @@ export const EventPage = () => {
                     return;
                 }
             }
+
             for (const event of upcomingEvents.events) {
                 if (event.id === id) {
                     setEvent(event)
@@ -59,7 +60,7 @@ export const EventPage = () => {
         dateStyle: "long",
         timeStyle: "medium",
         timeZone: string,
-    } //middle finger typescript
+    }
     const timeFormat: timeFormat = {
         dateStyle: "long",
         timeStyle: "medium",
@@ -75,12 +76,19 @@ export const EventPage = () => {
             </p>
         )
 
+
     return (
         <div>
-            <main>
-                <h1 className="text-6xl font-bold mb-4">
+            <header className="mb-4">
+                <h1 className="text-6xl font-bold">
                     {event.title || `Event ${event.id}`}
                 </h1>
+                <h3 className="text-xl font-bold">
+                    {currentEvent ? "LIVE" : "Upcoming"}
+                </h3>
+            </header>
+
+            <main>
                 <Link to={event.url}>
                     <img src={event.thumbnail || "/public/image_not_found.jpg"}/>
                 </Link>
@@ -91,9 +99,9 @@ export const EventPage = () => {
                 <p>Host: {event.host}</p>
                 <p>{event.viewer_count} views</p>
                 <p>Time: {time}</p>
-                <p>Status: {currentEvent ? "Live" : "Upcoming"}</p>
-                <p>Entry Fee: ${event.entryfee}</p>
-                <button className="rounded-xl border py-1 px-3 mt-4">ENTER</button>
+                <button className="rounded-xl border py-1 px-3 mt-4">
+                    {`ENTER: ${event.entryfee}$`}
+                </button>
             </main>
 
             <section className="mt-8">
@@ -101,19 +109,19 @@ export const EventPage = () => {
                 <p className="px-4">{event.description || <></>}</p>
             </section>
 
-            <section className="mt-8">
-                <h2 className="text-3xl font-bold">Prizes</h2>
+            <section className="mt-8 max-w-[600px]">
+                <h2 className="text-3xl font-bold mb-6">Prizes</h2>
                 <div className="grid grid-cols-10 grid-rows-4 h-[200px]">
                     <div className="col-start-auto col-span-3 row-start-2 row-span-3 border p-4">
-                        <p>Second Place:</p>
+                        <p className="font-bold text-xl">Second Place:</p>
                         {event.prizes?.[1]}
                     </div>
                     <div className="col-start-4 col-span-4 row-span-4 border p-4">
-                        <p>First Place:</p>
+                        <p className="font-bold text-2xl">First Place:</p>
                         {event.prizes?.[0]}
                     </div>
                     <div className="col-start-8 col-span-3 row-start-2 row-span-3 border p-4">
-                        <p>Third Place:</p>
+                        <p className="font-bold text-xl">Third Place:</p>
                         {event.prizes?.[2]}
                     </div>
                 </div>
