@@ -17,21 +17,23 @@ export const EventPage = () => {
 
             const currentEvents = await getCurrentEvents();
             const upcomingEvents = await getUpcomingEvents();
+            setLoading(false);
 
             for (const event of currentEvents.events) {
                 if (event.id === id) {
                     setEvent(event)
                     setCurrentEvent(true)
+                    return;
                 }
             }
             for (const event of upcomingEvents.events) {
                 if (event.id === id) {
                     setEvent(event)
                     setCurrentEvent(false)
+                    return;
                 }
             }
 
-            setLoading(false);
             throw new Error("Event not found");
         }
 
@@ -67,34 +69,55 @@ export const EventPage = () => {
 
     const tags = []
     for (let i = 0; i < event.tags.length; i++)
-        tags.push(<p key={i} className="">{event.tags[i]}</p>)
+        tags.push(
+            <p key={i} className="rounded-2xl border py-1 px-3">
+                {event.tags[i]}
+            </p>
+        )
 
     return (
         <div>
-            <Link to={event.url}><img src={event.thumbnail || "/public/image_not_found.jpg"}/></Link>
-            <div>
-                <h1>{event.title || `Event ${event.id}`}</h1>
-                {tags}
+            <main>
+                <h1 className="text-6xl font-bold mb-4">
+                    {event.title || `Event ${event.id}`}
+                </h1>
+                <Link to={event.url}>
+                    <img src={event.thumbnail || "/public/image_not_found.jpg"}/>
+                </Link>
+                <div className="flex flex-row gap-3 px-2 pt-2 mb-6">
+                    {tags}
+                </div>
+
+                <p>Host: {event.host}</p>
                 <p>{event.viewer_count} views</p>
                 <p>Time: {time}</p>
-                <p>Host: {event.host}</p>
                 <p>Status: {currentEvent ? "Live" : "Upcoming"}</p>
                 <p>Entry Fee: ${event.entryfee}</p>
-                {/* button should do something idk */}
-                <button>ENTER</button>
-            </div>
-            <div>
-                <h2>DETAILS</h2>
-                <p>{event.description || <></>}</p>
-            </div>
-            <div>
-            <h2>PRIZES</h2>
-                {event.prizes?.[0] ? `First Place: ${event.prizes?.[0]}` : <></>}
-                <br/>
-                {event.prizes?.[1] ? `Second Place: ${event.prizes?.[1]}` : <></>}
-                <br/>
-                {event.prizes?.[2] ? `Third Place: ${event.prizes?.[2]}` : <></>}
-            </div>
+                <button className="rounded-xl border py-1 px-3 mt-4">ENTER</button>
+            </main>
+
+            <section className="mt-8">
+                <h2 className="text-3xl font-bold">Details</h2>
+                <p className="px-4">{event.description || <></>}</p>
+            </section>
+
+            <section className="mt-8">
+                <h2 className="text-3xl font-bold">Prizes</h2>
+                <div className="grid grid-cols-10 grid-rows-4 h-[200px]">
+                    <div className="col-start-auto col-span-3 row-start-2 row-span-3 border p-4">
+                        <p>Second Place:</p>
+                        {event.prizes?.[1]}
+                    </div>
+                    <div className="col-start-4 col-span-4 row-span-4 border p-4">
+                        <p>First Place:</p>
+                        {event.prizes?.[0]}
+                    </div>
+                    <div className="col-start-8 col-span-3 row-start-2 row-span-3 border p-4">
+                        <p>Third Place:</p>
+                        {event.prizes?.[2]}
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }
