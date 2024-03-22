@@ -59,7 +59,7 @@ export const EventPage = () => {
         <div>
             <div className="lg:grid lg:grid-cols-[450px_1fr] lg:grid-rows-5 lg:gap-6">
                 <main className="mb-4 lg:col-start-2 lg:row-span-4 lg:px-6
-                    lg:flex lg:flex-col lg:justify-between">
+                    lg:flex lg:flex-col lg:gap-6">
                     <h1 className="text-4xl font-bold">
                         {event.title || `Event ${event.id}`}
                     </h1>
@@ -74,8 +74,8 @@ export const EventPage = () => {
                         className="" />
                 </Link>
 
-                <button className="rounded-2xl py-2 px-3 w-full bg-hubba-500 font-bold
-                    lg:col-start-2 lg:relative lg:bottom-4 lg:w-2/3 lg:left-6">
+                <button className="rounded-2xl py-2 px-3 w-full bg-hubba-500 font-bold mt-6
+                    lg:col-start-2 lg:relative lg:bottom-4 lg:w-2/3 lg:left-6 lg:mt-0">
                     {`ENTER: ${event.entryfee}$`}
                 </button>
             </div>
