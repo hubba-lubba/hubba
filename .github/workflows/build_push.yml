@@ -87,6 +87,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: Setup firebase-sa-cred.json File
+        env:
+          FIREBASE_SA_CRED: ${{ secrets.FIREBASE_SA_CRED }}
+        run: |
+          touch firebase-sa-cred.json
+          echo $FIREBASE_SA_CRED >> firebase-sa-cred.json
+        working-directory: user-service
+        shell: bash
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -129,6 +138,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup firebase-sa-cred.json File
+        env:
+          FIREBASE_SA_CRED: ${{ secrets.FIREBASE_SA_CRED }}
+        run: |
+          touch firebase-sa-cred.json
+          echo $FIREBASE_SA_CRED >> firebase-sa-cred.json
+        working-directory: events-service
+        shell: bash
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
