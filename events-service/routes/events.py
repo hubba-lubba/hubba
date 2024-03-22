@@ -6,7 +6,7 @@ from engine import engine
 from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
-from routes.utils import ensureUUID, require_json_params, require_query_params
+from routes.utils import ensureUUID, require_json_params, require_query_params, ensureAuthorized
 
 events_blueprint = Blueprint('events_api', __name__, url_prefix="/")
 CORS(events_blueprint)
@@ -26,6 +26,7 @@ def version():
     return result
 
 @events_blueprint.route("/", methods=["PUT"])
+@ensureAuthorized()
 @require_json_params(["title", "description", "owner"])
 @ensureUUID("owner")
 def add_event():
@@ -100,6 +101,7 @@ def get_event():
             response.status_code = 404
             return response
 @events_blueprint.route("/", methods=["DELETE"])
+@ensureAuthorized()
 @require_query_params(["event_id"])
 @ensureUUID("event_id")
 def delete_event():
