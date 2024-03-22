@@ -56,63 +56,46 @@ export const EventPage = () => {
     });
 
     return (
-        <div className="max-w-[600px]">
-            <header className="mb-4">
-                <h1 className="text-6xl font-bold">
-                    {event.title || `Event ${event.id}`}
-                </h1>
-                <h3 className="text-2xl font-bold">
-                    {event.status} {time}
-                </h3>
-            </header>
+        <div>
+            <div className="lg:grid lg:grid-cols-[450px_1fr] lg:grid-rows-5 lg:gap-6">
+                <main className="mb-4 lg:col-start-2 lg:row-span-4 lg:px-6
+                    lg:flex lg:flex-col lg:justify-between">
+                    <h1 className="text-4xl font-bold">
+                        {event.title || `Event ${event.id}`}
+                    </h1>
+                    <p className="lg:text-xl">
+                        {time}
+                    </p>
+                    <p className="lg:text-xl">Host: {event.host}</p>
+                </main>
 
-            <main>
-                <Link to={event.url}>
-                    <img
-                        src={event.thumbnail || '/public/image_not_found.jpg'}
-                    />
+                <Link to={event.url} className="lg:row-span-full lg:h-[300px]">
+                    <img src={event.thumbnail || "/public/image_not_found.jpg"}
+                        className="" />
                 </Link>
-                <div className="flex flex-row justify-between px-2 pt-2">
-                    <div className="mb-6 flex flex-row gap-3">{tags}</div>
-                    <div className="">{event.viewer_count} views</div>
-                </div>
 
-                <div>Host: {event.host}</div>
-                <button className="mt-4 rounded-xl border px-3 py-1">
+                <button className="rounded-2xl py-2 px-3 w-full bg-hubba-500 font-bold
+                    lg:col-start-2 lg:relative lg:bottom-4 lg:w-2/3 lg:left-6">
                     {`ENTER: ${event.entryfee}$`}
                 </button>
-            </main>
+            </div>
 
-            <section className="mt-8">
-                <h2 className="text-3xl font-bold">Details</h2>
-                <div className="px-4">{event.description}</div>
+            <section className="my-12">
+                <h2 className="text-4xl font-bold mb-4">DETAILS</h2>
+                <p className="px-4">{event.description || <></>}</p>
             </section>
 
-            {event.prizes && (
-                <section className="mt-8">
-                    <h2 className="mb-6 text-3xl font-bold">Prizes</h2>
-                    <div className="grid h-[200px] grid-cols-10 grid-rows-4">
-                        <div className="col-span-3 col-start-auto row-span-3 row-start-2 border p-4">
-                            <div className="text-xl font-bold">
-                                Second Place:
-                            </div>
-                            {event.prizes?.[1]}
-                        </div>
-                        <div className="col-span-4 col-start-4 row-span-4 border p-4">
-                            <div className="text-2xl font-bold">
-                                First Place:
-                            </div>
-                            {event.prizes?.[0]}
-                        </div>
-                        <div className="col-span-3 col-start-8 row-span-3 row-start-2 border p-4">
-                            <div className="text-xl font-bold">
-                                Third Place:
-                            </div>
-                            {event.prizes?.[2]}
-                        </div>
-                    </div>
-                </section>
-            )}
+            <section>
+                <h2 className="text-4xl font-bold mb-4">PRIZES</h2>
+                <div className="grid grid-cols-[180px_1fr] gap-8 px-6">
+                    <p className="font-bold text-3xl inline">First Place:</p>
+                    <p className="self-end">{event.prizes?.[0]}</p>
+                    <p className="font-bold text-xl inline">Second Place:</p>
+                    {event.prizes?.[1]}
+                    <p className="font-bold text-xl inline">Third Place:</p>
+                    {event.prizes?.[2]}
+                </div>
+            </section>
         </div>
     );
 };
