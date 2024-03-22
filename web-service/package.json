@@ -11,9 +11,6 @@
         "format": "prettier --write ."
     },
     "dependencies": {
-        "@chakra-ui/react": "^2.8.2",
-        "@emotion/react": "^11.11.3",
-        "@emotion/styled": "^11.11.0",
         "@hookform/resolvers": "^3.3.4",
         "autocorrect": "^1.2.0",
         "clsx": "^2.1.0",
