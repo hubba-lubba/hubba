@@ -11,9 +11,10 @@ export const EventPage = () => {
     const [error, setError] = useState<string>('');
     const [tags, setTags] = useState<React.ReactElement[]>([]);
 
-    if (!id) return <div>Event not found</div>; //do smt else abt this i think
 
     useEffect(() => {
+        if (!id) return //do smt else abt this (but safer)
+
         const fetchEventData = async (id: string) => {
             const eventData = await getEvent(id);
             setEvent(eventData);
@@ -40,6 +41,7 @@ export const EventPage = () => {
         );
     }, [id]);
 
+    if (!id) return <div>Event not found</div>; //do smt else abt this i think
     if (!event) return <div>Event not found</div>;
     if (loading) return <p>Loading events...</p>;
     if (error) return <div>error</div>;
@@ -57,7 +59,7 @@ export const EventPage = () => {
 
     return (
         <div>
-            <div className="lg:grid lg:grid-cols-[300px_1fr] lg:grid-rows-4 lg:gap-4">
+            <div className="lg:grid lg:grid-cols-[400px_1fr] lg:grid-rows-4 lg:gap-4">
                 <main className="mb-4 overflow-hidden lg:col-start-2 lg:row-span-3
                     lg:px-6 lg:flex lg:flex-col lg:gap-2">
                     <h1 className="text-4xl font-bold mb-6 lg:m-0">
@@ -74,7 +76,8 @@ export const EventPage = () => {
 
                 <div className="lg:row-span-full">
                     <Link to={event.url}>
-                        <img src={event.thumbnail || "/public/image_not_found.jpg"} />
+                        <img src={event.thumbnail || "/public/image_not_found.jpg"}
+                            className="w-full" />
                     </Link>
                     <div className="flex flex-row mx-2 my-4 gap-2">
                         {tags}
