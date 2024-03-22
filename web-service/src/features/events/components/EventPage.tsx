@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import React, { useEffect, useState, useRef } from 'react';
-import { getEvent } from '@/features/events/api';
-import { Event } from '@/features/events/types';
+import React, { useEffect, useState } from 'react';
+import { getEvent } from '../api';
+import { Event } from '../types';
 import { Link } from 'react-router-dom';
 
 export const EventPage = () => {
@@ -57,21 +57,29 @@ export const EventPage = () => {
 
     return (
         <div>
-            <div className="lg:grid lg:grid-cols-[300px_1fr] lg:grid-rows-3 lg:gap-4">
-                <main className="mb-4 lg:col-start-2 lg:row-span-2 lg:px-6
-                    lg:flex lg:flex-col lg:gap-2">
-                    <h1 className="text-4xl font-bold">
+            <div className="lg:grid lg:grid-cols-[300px_1fr] lg:grid-rows-4 lg:gap-4">
+                <main className="mb-4 overflow-hidden lg:col-start-2 lg:row-span-3
+                    lg:px-6 lg:flex lg:flex-col lg:gap-2">
+                    <h1 className="text-4xl font-bold mb-6 lg:m-0">
                         {event.title || `Event ${event.id}`}
                     </h1>
-                    <p className="lg:text-xl">
+                    <p className="text-2xl font-bold lg:text-xl">
+                        {event.status}
+                    </p>
+                    <p className="">
                         {time}
                     </p>
-                    <p className="lg:text-xl">Host: {event.host}</p>
+                    <p className="">Host: {event.host}</p>
                 </main>
 
-                <Link to={event.url} className="lg:row-span-full">
-                    <img src={event.thumbnail || "/public/image_not_found.jpg"} />
-                </Link>
+                <div className="lg:row-span-full">
+                    <Link to={event.url}>
+                        <img src={event.thumbnail || "/public/image_not_found.jpg"} />
+                    </Link>
+                    <div className="flex flex-row mx-2 my-4 gap-2">
+                        {tags}
+                    </div>
+                </div>
 
                 <button className="rounded-2xl py-2 px-3 w-full bg-hubba-500 font-bold mt-6
                     lg:col-start-2 lg:relative lg:bottom-4 lg:w-1/3 lg:left-6 lg:mt-0">
