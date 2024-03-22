@@ -144,3 +144,4 @@ user-service/firebase-sa-cred.json
 events-service/firebase-sa-cred.json
 
 *.code-workspace
+package-lock.json
