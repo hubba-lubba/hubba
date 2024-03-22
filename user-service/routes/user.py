@@ -32,6 +32,12 @@ def add_user():
     context = request.get_json()
 
     username = context.get("username")
+    if not username:
+        result = jsonify({
+            "status": "failure",
+            "reason": "missing username or username is empty"
+        })
+        return result, 400
     user_id = context.get("user_id")
     streaming_status = context.get("streaming_status")
 
