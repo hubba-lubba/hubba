@@ -11,22 +11,10 @@ type userSettings = {
 export function SettingsForm() {
     const user = useContext(AuthContext) as userSettings;
 
-    // function handleNotifications() {
-    //     //update user notifs (somehow)
-    //     //setUser(prevUser => ({
-    //     //  ...prevUser,
-    //     //  notifications: !prevUser.notifications
-    //     //}))
-    //     user.notifications = !user.notifications;
-    // }
-
     const SAMPLE_CONNECTIONS = [
         { platform: 'Twitch' },
         { platform: 'Youtube' },
         { platform: 'Discord' },
-        // { platform: 'Spotify' },
-        // { platform: 'X' },
-        // { platform: 'LINUX' },
     ];
     user.connections ||= SAMPLE_CONNECTIONS;
 
@@ -35,21 +23,8 @@ export function SettingsForm() {
         connections.push(<ConnectedApp {...user.connections[i]} key={i} />);
 
     return (
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-center">
             <h1 className="mb-8 text-5xl font-bold">Settings</h1>
-            {/* <section className="flex flex-row gap-2 mb-6">
-                <label
-                    htmlFor="notifications"
-                    className="text-xl">
-                    Notifications
-                </label>
-                <input
-                    type="checkbox"
-                    id="notifications"
-                    name="notifications"
-                    checked={user.notifications}
-                    onChange={handleNotifications} />
-            </section> */}
             <section className="mb-6">
                 <h2 className="mb-2 text-3xl">Connected Apps</h2>
                 {connections}

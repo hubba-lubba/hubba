@@ -3,7 +3,7 @@ import { SettingsForm } from '../components/SettingsForm';
 
 export const Settings = () => {
     return (
-        <Layout variant="left">
+        <Layout>
             <SettingsForm />
         </Layout>
     );

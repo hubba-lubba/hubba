@@ -1,11 +1,5 @@
-import {
-    BsTencentQq,
-    BsTwitterX,
-    BsTwitch,
-    BsDiscord,
-    BsSpotify,
-    BsYoutube,
-} from 'react-icons/bs';
+import { BsTwitch, BsDiscord, BsYoutube, BsTencentQq } from 'react-icons/bs';
+import { Button } from '@/components/elements/buttons';
 
 export default function ConnectedApp(props: {
     platform: string;
@@ -15,17 +9,11 @@ export default function ConnectedApp(props: {
 
     let icon;
     switch (platform) {
-        case 'X':
-            icon = <BsTwitterX size={32} className="mr-4" />
-            break
         case 'Twitch':
             icon = <BsTwitch size={32} className="mr-4" />;
             break;
         case 'Discord':
             icon = <BsDiscord size={32} className="mr-4" />;
-            break;
-        case 'Spotify':
-            icon = <BsSpotify size={32} className="mr-4" />;
             break;
         case 'Youtube':
             icon = <BsYoutube size={32} className="mr-4" />;
@@ -39,9 +27,9 @@ export default function ConnectedApp(props: {
     else connect = <p>Connect your {platform} account</p>;
 
     return (
-        <div className="mb-4 flex flex-row items-center rounded border-2 p-3">
+        <Button style="mb-4 flex flex-row items-center rounded border-2 p-3 w-[300px]">
             {icon}
             {connect}
-        </div>
+        </Button>
     );
 }
