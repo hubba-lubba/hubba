@@ -1,31 +1,53 @@
 import { Card } from '@/components/layout';
 import { Shelf } from '@/components/layout';
 import { useEffect, useState } from 'react';
-import { getUpcomingEvents, getCurrentEvents } from '@/features/events/api';
-import { Event } from '@/features/events/types';
+import { getUpcomingEvents, getCurrentEvents } from '../api';
+import { Event } from '../types';
 import { getLiveUsers } from '@/features/users/api';
 import { Live } from '@/features/users/types';
+import { NotFound } from "@/pages/NotFound";
 
 export const EventsFeed = () => {
-    const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
-    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
-    const [live, setLive] = useState<Live[]>([]);
-    // put this into each feature as a component
+    const [currentEvents, setCurrentEvents] = useState<Event[]>();
+    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>();
+    const [live, setLive] = useState<Live[]>();
+    const [loading, setLoading] = useState<boolean | string>(true);
+
     useEffect(() => {
-        // once this is complete, move into individual features as a component
-        const fetchData = async () => {
-            const currentEventsData = await getCurrentEvents();
-            setCurrentEvents(currentEventsData.current_events);
 
-            const upcomingEventsData = await getUpcomingEvents();
-            setUpcomingEvents(upcomingEventsData.upcoming_events);
+        async function fetchData() {
+            let currentEventsData;
+            let upcomingEventsData;
+            let liveData;
 
-            const liveData = await getLiveUsers();
+            try {
+                currentEventsData = await getCurrentEvents();
+                upcomingEventsData = await getUpcomingEvents();
+                liveData = await getLiveUsers();
+            } catch(err) {
+                console.log(err)
+                setLoading("Error loading page: " + err)
+                return
+            }
+
+            setCurrentEvents(currentEventsData.events);
+            setUpcomingEvents(upcomingEventsData.events);
             setLive(liveData.live);
-        };
+        }
 
         fetchData();
+        setLoading(false);
     }, []);
+
+    if (typeof loading === "string") //error
+        return <p>{loading}</p>
+
+    if (loading)
+        return <p>Loading events...</p>
+
+    if (!currentEvents)
+        return <NotFound />
+
     return (
         <div className="flex h-full w-full flex-col items-start justify-start">
             Events Feed
@@ -39,7 +61,7 @@ export const EventsFeed = () => {
                 ))}
             </Shelf>
             <Shelf title="Upcoming Events">
-                {upcomingEvents.map((event, index) => (
+                {upcomingEvents!.map((event, index) => (
                     <Card
                         key={`upcoming-${event.id}-${index}`}
                         {...event}
@@ -47,7 +69,7 @@ export const EventsFeed = () => {
                 ))}
             </Shelf>
             <Shelf title="Live">
-                {live.map((live, index) => (
+                {live!.map((live, index) => (
                     <Card key={`live-${live.id}-${index}`} {...live}></Card>
                 ))}
             </Shelf>
