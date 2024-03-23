@@ -65,7 +65,7 @@ services:
       networks:
          - hubba-subnet
       ports:
-        - "8001:8000"
+        - "8001:8001"
       restart: unless-stopped
   web-service:
       build:
