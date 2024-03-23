@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import { IconType } from 'react-icons';
 
 const variants = {
-    base: 'flex flex-center cursor-pointer',
-    image: 'flex flex-center cursor-pointer w-[calc(100%-25px)] min-w-10 text-start hover:transition-colors ease-in-out hover:text-hubba-500',
-    text: 'flex flex-center cursor-pointer border-none bg-none hover:underline',
+    base: 'flex flex-center items-center cursor-pointer',
+    image: 'flex flex-center items-center cursor-pointer w-[calc(100%-25px)] min-w-10 text-start hover:transition-colors ease-in-out hover:text-hubba-500',
+    text: 'flex flex-center items-center cursor-pointer border-none bg-none hover:underline',
 };
 // somehow modularize
 // variants inherit from base, but some tac on icon and others tac on underline (2 variants)
