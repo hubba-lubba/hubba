@@ -28,18 +28,19 @@ export const OrgPage = () => {
     const [error, setError] = useState<string>('');
 
     const { id } = useParams<{ id: string }>();
-    if (!id) return <div>Org not found</div>; //do smt else abt this i think
-
+    
     useEffect(() => {
+        if(!id) return;
         const fetchData = async () => {
             const orgData = await getOrg(id);
             setOrg(orgData);
             setLoading(false);
         };
-
+        
         fetchData().catch((err) => setError('Error loading page: ' + err));
     }, [id]);
-
+    
+    if (!id) return <div>Org not found</div>;
     if (!org) return <div>Org not found</div>;
     if (loading) return <p>Loading events...</p>;
     if (error) return <div>{error}</div>;
