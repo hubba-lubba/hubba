@@ -11,7 +11,7 @@ export const SidebarEvents = () => {
     useEffect(() => {
         const fetchData = async () => {
             const events = await getSidebarEvents();
-            setEvents(events.current_events);
+            setEvents(events.events);
         };
 
         fetchData();

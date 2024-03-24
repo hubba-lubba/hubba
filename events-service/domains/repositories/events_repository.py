@@ -28,12 +28,25 @@ class EventsRepository:
     :param event_id: uuid of event_uuid
     :return: Event of added event
     """
-    @check_id_exists(User, ["owner", "moderators", "users"])
-    def add_event(self, title, description, owner, moderators, users):
+    @check_id_exists(User, ["owner"])
+    def add_event(self, title=None, thumbnail=None, description=None,
+                  url=None, platform=None, tags=None, time_of_event=None,
+                  host=None, entry_fee=None, owner=None):
         owner = self.session.get(User, owner)
-        new_event = Events(title=title, description=description, owner=owner,
-                           moderators=[],
-                           users=[])
+
+        new_event = Events(title=title,
+                           thumbnail=thumbnail,
+                           description=description,
+                           url=url,
+                           platform=platform,
+                           tags=tags,
+                           time_of_event=time_of_event,
+                           host=host,
+                           entry_fee=entry_fee,
+                           owner=owner,
+                           moderators=[owner],
+                           users=[owner])
+
         return self._add_event(new_event)
 
     """
@@ -52,6 +65,7 @@ class EventsRepository:
     :param event_id: uuid of event_uuid
     :return: uuid of deleted event
     """
+    @check_id_exists(Events, ["event_id"])
     def delete_event(self, event_id):
         event = self.get_event(event_id)
         self.session.delete(event)

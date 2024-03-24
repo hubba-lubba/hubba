@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import request, jsonify
 import uuid
+from firebase_admin import auth
 
 
 def require_json_params(params):
@@ -48,6 +49,31 @@ def ensureUUID(field):
                     "reason": "unable to parse uuid"
                 })
 
+            return func(*args, **kwargs)
+        return returned_func
+    return decorator
+
+def ensureAuthorized():
+    def decorator(func):
+        @wraps(func)
+        def returned_func(*args, **kwargs):
+            request_json = request.get_json()
+            if request_json.get("admin") is not None and request_json.get("admin") == "true":
+                return func(*args, **kwargs)
+
+            if request_json.get("id_token") is None:
+                return jsonify({
+                    "status": "failure", 
+                    "reason": "missing id_token header"
+                })
+            try: 
+                auth.verify_id_token(request_json.get("id_token"))
+            except (auth.ExpiredIdTokenError, auth.InvalidIdTokenError) as e:
+                return jsonify({
+                    "status": "failure", 
+                    "reason": "unable to verify id_token",
+                    "message": str(e)
+                })
             return func(*args, **kwargs)
         return returned_func
     return decorator

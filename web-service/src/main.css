@@ -7,3 +7,7 @@ html,
 #root {
     height: 100vh;
 }
+
+body {
+    @apply bg-hubba-900 text-hubba-100;
+}

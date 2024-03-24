@@ -15,10 +15,10 @@ export const Home = () => {
         // once this is complete, move into individual features as a component
         const fetchData = async () => {
             const currentEventsData = await getCurrentEvents();
-            setCurrentEvents(currentEventsData.current_events);
+            setCurrentEvents(currentEventsData.events);
             
             const upcomingEventsData = await getUpcomingEvents();
-            setUpcomingEvents(upcomingEventsData.upcoming_events);
+            setUpcomingEvents(upcomingEventsData.events);
 
             const liveData = await getLiveUsers();
             setLive(liveData.live);
