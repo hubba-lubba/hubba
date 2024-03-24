@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Shelf } from '@/components/layout';
 import { Card } from '@/components/layout';
 import { VideoLink } from '../types';
@@ -7,8 +6,10 @@ import { getVideoLinks } from '../api';
 import { Button } from '@/components/elements/buttons';
 import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthProvider';
+import { useParams } from 'react-router-dom';
 
 export const Profile = () => {
+    const { id } = useParams<{ id: string }>();
     const [videos, setVideos] = useState<VideoLink[]>([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -32,12 +33,3 @@ export const Profile = () => {
         </div>
     );
 }
-=======
-import { useParams } from 'react-router-dom';
-
-export const Profile = () => {
-    const { id } = useParams<{ id: string }>();
-
-    return <div>{id ? <h1>User {id}</h1> : <h1>Profile</h1>}</div>;
-};
->>>>>>> main
