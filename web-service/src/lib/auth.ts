@@ -5,7 +5,7 @@ import  { logout } from '@/features/auth/api';
 export const signout = async () => {
     try {
         await logout();
-    } catch (error: any) {
-        console.log(`Error: ${error.message}`);
+    } catch (error) {
+        console.log(`Error: ${(error as Error).message}`);
     }
 }
