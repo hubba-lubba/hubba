@@ -22,9 +22,10 @@
 // } & BaseEntity;
 
 import defaultimg from '@/assets/images/defaultimg.png';
+import { User } from '../types';
 
 // Q: do you type the return value of these functions in TS?
-export const getFollowingChannels = async () => {
+export const getFollowingChannels = async (): Promise<{ following: User[] }> => {
     const data = {
         following: [
             {
@@ -146,3 +147,28 @@ export const getLiveUsers = async () => {
     };
     return data;
 };
+
+export const getUser = async (id: string): Promise<{ user: User }>  => {
+    const data = {
+        user: {
+            id: id,
+            username: `bob ${id}`,
+            email: 'email1',
+            profile_image: defaultimg,
+            bio: 'bio1',
+            followers: ['follower1', 'follower2'],
+            num_followers: 2,
+            following: ['following1', 'following2'],
+            num_following: 2,
+            streaming_status: 1,
+            channel_url: 'https://www.google.com',
+            stream_url: 'stream_url1',
+            video_urls: ['video_url1', 'video_url2'],
+            joined_event_ids: ['event1', 'event2'],
+            past_event_ids: ['event3', 'event4'],
+            joined_orgs: ['org1', 'org2'],
+            platforms: ['platform1', 'platform2'],
+        },
+    };
+    return data;
+}
