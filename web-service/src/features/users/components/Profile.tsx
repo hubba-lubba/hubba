@@ -12,6 +12,8 @@ export const Profile = () => {
     const [videos, setVideos] = useState<VideoLink[]>([]);
     useEffect(() => {
         const fetchData = async () => {
+            // if id is specified, gather information about a different user
+            console.log(id);
             const videoLinksData = await getVideoLinks();
             setVideos(videoLinksData.videos);
         };
@@ -19,7 +21,7 @@ export const Profile = () => {
     }, []);
     const user = useContext(AuthContext);
     return (
-        <div className='p-2'>
+        <div className="p-2">
             <div className="flex flex-row items-center space-x-8 py-8">
                 {user?.photoURL ? (
                     <img src={user.photoURL!} alt="pfp" />
@@ -32,7 +34,7 @@ export const Profile = () => {
                 <div className="space-y-1">
                     <p className="text-lg font-bold">{user.displayName}</p>
                     <div className="flex flex-row space-x-2">
-                        <p>Followers: {20}</p> 
+                        <p>Followers: {20}</p>
                         {/* should be user.followers */}
                         <p>Videos: {videos.length}</p>
                     </div>
