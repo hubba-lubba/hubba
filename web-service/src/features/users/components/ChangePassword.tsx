@@ -18,8 +18,8 @@ export default function ChangePassword() {
         const { password, confirmPassword } = data;
         try {
             console.log('change password: ', password, confirmPassword);
-        } catch (error: any) {
-            console.log(`Error: ${error.message}`);
+        } catch (error) {
+            console.log(`Error: ${(error as Error).message}`);
         }
     }
 
