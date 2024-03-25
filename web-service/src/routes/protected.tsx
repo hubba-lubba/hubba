@@ -1,15 +1,6 @@
-import { Outlet } from 'react-router-dom';
 import { UserProtectedRoutes } from '@/features/users/routes';
-import { Interface } from '@/components/layout';
 import { NotFound } from '@/pages/NotFound';
-
-const App = () => {
-    return (
-        <Interface>
-            <Outlet />
-        </Interface>
-    );
-};
+import { App } from './App.tsx'
 
 export const protectedRoutes = [
     {

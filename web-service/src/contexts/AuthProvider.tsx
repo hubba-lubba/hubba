@@ -11,8 +11,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     const auth = getAuth();
     useEffect(() => {
         const myListener = onAuthStateChanged(auth, user => {
-            if (!user)
-                throw new Error("AuthProvider: auth failed, null user param was passed")
             setUser(user as firebase.User);
             setLoadingUser(false);
         });
