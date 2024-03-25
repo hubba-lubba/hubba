@@ -1,30 +1,45 @@
 import { Card, Grid } from '@/components/layout';
 import { VideoLink } from '../types';
 import { useEffect, useState } from 'react';
-import { getVideoLinks } from '../api';
+import { getVideoLinks, getUser } from '../api';
 import { Button } from '@/components/elements/buttons';
 import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { useParams } from 'react-router-dom';
+import { User } from '../types';
 
 export const Profile = () => {
     const { id } = useParams<{ id: string }>();
     const [videos, setVideos] = useState<VideoLink[]>([]);
+    const currentUser = useContext(AuthContext);
+    const [user, setUser] = useState<User>();
+    const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
         const fetchData = async () => {
             // if id is specified, gather information about a different user
-            console.log(id);
+            const data = await getUser(id ?? currentUser.uid);
+            if (data.user) setUser(data.user);
+            else setError('User not found');
+
             const videoLinksData = await getVideoLinks();
             setVideos(videoLinksData.videos);
+
+            setLoading(false);
         };
         fetchData();
     }, []);
-    const user = useContext(AuthContext);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (!user) return <div>Error: User not found</div>;
+
     return (
         <div className="p-2">
             <div className="flex flex-row items-center space-x-8 py-8">
-                {user?.photoURL ? (
-                    <img src={user.photoURL!} alt="pfp" />
+                {user.profile_image ? (
+                    <img src={user.profile_image!} alt="pfp" />
                 ) : (
                     <img
                         src="/src/assets/images/defaultimg.png"
@@ -32,7 +47,7 @@ export const Profile = () => {
                     />
                 )}
                 <div className="space-y-1">
-                    <p className="text-lg font-bold">{user.displayName}</p>
+                    <p className="text-lg font-bold">{user.username}</p>
                     <div className="flex flex-row space-x-2">
                         <p>Followers: {20}</p>
                         {/* should be user.followers */}
