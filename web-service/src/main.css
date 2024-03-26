@@ -18,3 +18,11 @@ html,
 body {
     @apply bg-hubba-900 text-hubba-100;
 }
+
+.truncate-end {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

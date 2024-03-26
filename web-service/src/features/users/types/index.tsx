@@ -27,7 +27,6 @@ export type User = {
 } & BaseEntity;
 
 export type Live = {
-    id: string;
     title: string;
     thumbnail: string;
     description: string;
@@ -38,7 +37,6 @@ export type Live = {
 } & BaseEntity;
 
 export type VideoLink = {
-    id: string;
     title: string;
     thumbnail: string;
     description: string;
@@ -46,4 +44,13 @@ export type VideoLink = {
     platform: string;
     tags: string[];
     viewer_count: number;
-}
+} & BaseEntity;
+
+export type Message = {
+    sender: User;
+    receiver: User;
+    subject: string;
+    content: string;
+    timestamp: Date;
+    read: boolean;
+} & BaseEntity;
