@@ -33,7 +33,7 @@ export const signup = async (
 
     try {
         // await createUserData();
-    } catch (error: any) {
+    } catch (error) {
         // await user.delete();
         console.log(
             `Error creating userdata. User ${email} deleted. Are the server and database up?`,

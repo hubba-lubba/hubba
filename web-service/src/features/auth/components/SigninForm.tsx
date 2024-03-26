@@ -27,8 +27,8 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
         const { email, password } = data;
         try {
             await signin(email, password);
-        } catch (error: any) {
-            console.log(`Error: ${error.message}`);
+        } catch (error) {
+            console.log(`Error: ${(error as Error).message}`);
         }
         onSuccess();
     };

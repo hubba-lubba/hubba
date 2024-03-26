@@ -30,8 +30,8 @@ export const SignupForm = ({ onSuccess }: SignupFormProps) => {
         const { email, username, password } = data;
         try {
             await signup(email, username, password);
-        } catch (error: any) {
-            console.log(`Error: ${error.message}`);
+        } catch (error) {
+            console.log(`Error: ${(error as Error).message}`);
         }
         onSuccess();
     };

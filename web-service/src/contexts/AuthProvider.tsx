@@ -10,14 +10,14 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
 
     const auth = getAuth();
     useEffect(() => {
-        const myListener = onAuthStateChanged(auth, (user: any) => {
-            setUser(user);
+        const myListener = onAuthStateChanged(auth, user => {
+            setUser(user as firebase.User);
             setLoadingUser(false);
         });
         return () => {
             if (myListener) myListener();
         };
-    }, []);
+    }, [auth]);
 
     if (loadingUser) {
         return (
