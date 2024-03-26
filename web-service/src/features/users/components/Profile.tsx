@@ -29,7 +29,7 @@ export const Profile = () => {
             setLoading(false);
         };
         fetchData();
-    }, []);
+    }, [id, currentUser.uid]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -37,9 +37,9 @@ export const Profile = () => {
 
     return (
         <div className="p-2">
-            <div className="flex flex-row items-center space-x-8 py-8">
+            <div className="flex flex-row items-center space-x-8 pb-8">
                 {user.profile_image ? (
-                    <img src={user.profile_image!} alt="pfp" />
+                    <img src={user.profile_image!} alt="pfp" width={100} />
                 ) : (
                     <img
                         src="/src/assets/images/defaultimg.png"
