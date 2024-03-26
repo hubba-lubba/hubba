@@ -34,7 +34,7 @@ const InboxMessage = (props: InboxMessageProps) => {
         // when expanded, original div shows expanded subject, new div at bottom shows content.
         <div
             className={clsx(
-                'flex flex-col',
+                'flex flex-col rounded',
                 message.read ? 'bg-hubba-900' : 'bg-hubba-800',
             )}
         >
