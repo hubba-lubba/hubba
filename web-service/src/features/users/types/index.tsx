@@ -47,10 +47,10 @@ export type VideoLink = {
 } & BaseEntity;
 
 export type Message = {
-    sender: string;
-    receiver: string;
+    sender: User;
+    receiver: User;
     subject: string;
     content: string;
-    timestamp: string;
+    timestamp: Date;
     read: boolean;
 } & BaseEntity;
