@@ -8,7 +8,7 @@ type userSettings = {
     connections?: { platform: string; username?: string }[];
 };
 
-export function SettingsForm() {
+export const SettingsForm = () => {
     const user = useContext(AuthContext) as userSettings;
 
     const SAMPLE_CONNECTIONS = [

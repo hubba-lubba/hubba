@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import Logo from '../elements/Logo';
 import NavbarSearchBar from '../elements/NavbarSearchBar';
-import { BsPencil, BsInbox, BsChatDots, BsThreeDots } from 'react-icons/bs';
+import { BsPencil, BsInbox, BsThreeDots } from 'react-icons/bs';
 import { signout } from '@/lib/auth';
 
 const NavDropdown = () => {
@@ -40,11 +40,8 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                         <NavbarSearchBar />
                     </div>
                     <div className="flex flex-row items-center justify-end gap-4">
-                        <Link to="/edit">
+                        <Link to="/update">
                             <BsPencil size={24} />
-                        </Link>
-                        <Link to="/message">
-                            <BsChatDots size={24} />
                         </Link>
                         <Link to="/inbox">
                             <BsInbox size={24} />
