@@ -22,10 +22,12 @@
 // } & BaseEntity;
 
 import defaultimg from '@/assets/images/defaultimg.png';
-import { User } from '../types';
+import { Message, User } from '../types';
 
 // Q: do you type the return value of these functions in TS?
-export const getFollowingChannels = async (): Promise<{ following: User[] }> => {
+export const getFollowingChannels = async (): Promise<{
+    following: User[];
+}> => {
     const data = {
         following: [
             {
@@ -148,7 +150,7 @@ export const getLiveUsers = async () => {
     return data;
 };
 
-export const getUser = async (id: string): Promise<{ user: User }>  => {
+export const getUser = async (id: string): Promise<{ user: User }> => {
     const data = {
         user: {
             id: id,
@@ -171,4 +173,40 @@ export const getUser = async (id: string): Promise<{ user: User }>  => {
         },
     };
     return data;
-}
+};
+
+// for invitations or requests, create a button componoent that extends button
+// specifically for this: contains link with info and token.
+// content will simply hold a react component with said values.
+export const getInbox = async (): Promise<{ messages: Message[] }> => {
+    const data = {
+        messages: [
+            {
+                id: '1',
+                sender: 'sender1',
+                receiver: 'receiver1',
+                content: 'content1',
+                timestamp: 'timestamp1',
+                read: false,
+            },
+            {
+                id: '2',
+                sender: 'sender2',
+                receiver: 'receiver2',
+                content: 'content2',
+                timestamp: 'timestamp2',
+                read: false,
+            },
+            {
+                id: '3',
+                sender: 'sender3',
+                receiver: 'receiver3',
+                content: 'content3',
+                timestamp: 'timestamp3',
+                read: false,
+            },
+        ],
+    };
+
+    return data;
+};
