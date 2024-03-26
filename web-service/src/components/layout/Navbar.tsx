@@ -13,7 +13,7 @@ const NavDropdown = () => {
         <div className="fixed right-6 top-24 flex flex-col gap-4 bg-hubba-900 p-6">
             {user ? (
                 <>
-                    <Link to="/user/profile">Profile</Link>
+                    <Link to="/profile">Profile</Link>
                     <span onClick={() => signout()}>Sign Out</span>
                 </>
             ) : (
