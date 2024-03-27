@@ -2,12 +2,13 @@ import clsx from 'clsx';
 
 // use some js to have these decrease with screen width
 const variants = {
+    full: 'w-full',
     large: 'w-1/3',
     medium: 'w-1/5',
 };
 
 export type CardProps = {
-    variant?: 'large' | 'medium';
+    variant?: 'full' | 'large' | 'medium';
     title?: string;
     description?: string;
     thumbnail?: string;

@@ -1,18 +1,16 @@
 import { Routes, Route } from 'react-router-dom';
-import { Edit } from './Edit';
-import { Message } from './Message';
-import { Inbox } from './Inbox';
-import { Settings } from './Settings';
+import { EditProfileForm } from '../components/EditProfileForm';
+import { Inbox } from '../components/Inbox';
 import { Profile } from '../components/Profile';
+import { SettingsForm } from '../components/SettingsForm';
 
 export const UserProtectedRoutes = () => {
     console.log('protected');
     return (
         <Routes>
-            <Route path="edit" element={<Edit />} />
-            <Route path="message" element={<Message />} />
+            <Route path="update" element={<EditProfileForm />} />
             <Route path="inbox" element={<Inbox />} />
-            <Route path="settings" element={<Settings />} />
+            <Route path="settings" element={<SettingsForm />} />
             <Route path="profile" element={<Profile />} />
         </Routes>
     );

@@ -140,4 +140,8 @@ events-service/events/hubba-credentials.json
 ./user-service/events/hubba-credentials.json
 ./events-service/events/hubba-credentials.json
 
+user-service/firebase-sa-cred.json
+events-service/firebase-sa-cred.json
+
 *.code-workspace
+package-lock.json

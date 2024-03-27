@@ -3,9 +3,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .grid-autofit {
+        @apply grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+}
+
 html,
 #root {
     height: 100vh;
+}
+
+body {
+    @apply bg-hubba-900 text-hubba-100;
+}
+
+.truncate-end {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @supports (scrollbar-color: auto) {

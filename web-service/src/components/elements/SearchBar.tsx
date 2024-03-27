@@ -1,31 +1,24 @@
 import Autosuggest from 'react-autosuggest';
+import { RenderInputComponent,
+    InputProps,
+    RenderSuggestionsContainer } from 'react-autosuggest'
 
 export type searchContainer = {
-    containerProps: {
-        value: string;
-        onChange: (event: React.FormEvent) => void;
-    };
-    //the search suggestions
+    containerProps: object;
     children: React.ReactNode;
 };
 
-export type searchBarExternalProps = {
-    value: string;
-    onChange: (event: React.FormEvent) => void;
-    className?: string; //used for the searchbar input
-    placeholder?: string;
-};
-
 type searchBarProps = {
-    inputProps: searchBarExternalProps;
+    inputProps: InputProps<{ name: string }>;
     suggestions: { title: string; recs: { name: string }[] }[];
     fetchSuggestions: () => void;
     clearSuggestions: () => void;
-    renderInputComponent?: any;
-    renderSuggestionsContainer?: any;
+    renderInputComponent: RenderInputComponent;
+    renderSuggestionsContainer: RenderSuggestionsContainer;
     /*
-    renderInputComponent?: (inputProps: searchBarExternalProps) => React.ReactNode;
-    renderSuggestionsContainer?: (search: searchContainer) => React.ReactNode; */
+    renderInputComponent: (inputProps: searchBarExternalProps) => React.ReactNode;
+    renderSuggestionsContainer: (search: searchContainer) => React.ReactNode;
+     */
 };
 
 function getSuggestionValue(suggestion: { name: string }) {

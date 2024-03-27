@@ -4,14 +4,10 @@ import { Interface } from '@/components/layout';
 import { Home } from '@/pages/Home';
 import { NotFound } from '@/pages/NotFound';
 
-const App = () => {
-    return <Outlet />;
-};
-
 export const publicRoutes = [
     {
         path: '/',
-        element: <App />,
+        element: <Outlet />,
         children: [
             {
                 path: '/',

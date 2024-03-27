@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
-import SearchBar, { searchContainer, searchBarExternalProps } from './SearchBar';
+import SearchBar, { searchContainer } from './SearchBar';
+import { RenderInputComponentProps, InputProps } from 'react-autosuggest'
 
 const sampleSuggestions = [
     {
@@ -54,7 +55,7 @@ export default function NavbarSearchBar() {
         }))
     }
 
-    function renderInputComponent(inputProps: searchBarExternalProps) {
+    function renderInputComponent(inputProps: RenderInputComponentProps) {
         return (
             <div className="w-full flex flex-row">
                 <BsSearch size={36} className="p-[8px] inline bg-gray-700" />
@@ -72,7 +73,7 @@ export default function NavbarSearchBar() {
         )
     }
 
-    const inputProps: searchBarExternalProps = {
+    const inputProps: InputProps<object> = {
         value: search.value,
         onChange: handleSearchInput,
         placeholder: "Search for streamers, events, or orgs",
