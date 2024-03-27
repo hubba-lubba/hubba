@@ -11,7 +11,6 @@ export const OrgsFeed = () => {
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
     const [live, setLive] = useState<Live[]>([]);
 
-    console.log('orgsfeed');
     // put this into each feature as a component
     useEffect(() => {
         // once this is complete, move into individual features as a component

@@ -1,22 +1,26 @@
 import { Button } from '@/components/elements/buttons';
 import { SidebarSection } from '@/components/layout';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { getFollowingChannels } from '../api';
 import { User } from '../types';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '@/contexts/UserProvider';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 export const SidebarChannels = () => {
     const [channels, setChannels] = useState<User[]>([]);
+    const { userData } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
-            const channels = await getFollowingChannels();
-            setChannels(channels.following);
+            const channels = await getFollowingChannels(userData);
+            console.log(channels);
+            setChannels(channels);
         };
 
         fetchData();
-    }, []);
+    }, [userData]);
 
     return (
         <SidebarSection title="My Channels">
@@ -25,8 +29,8 @@ export const SidebarChannels = () => {
                     key={`sidebar-channel-${channel.id}-${index}`}
                     variant="image"
                     image={channel.profile_image}
-                    handleClick={() => navigate(`/user/${channel.id}`)} // TBD: link to twitch or our own user page? if twitch our user page becomes obsolete so i'm thinking our own which contains link to twitch, and instead livestream cards link to their platforms.
-                    // handleClick={() => window.open(channel.channel_url)}
+                    Icon={channel.profile_image ? undefined : FaRegUserCircle}
+                    handleClick={() => navigate(`/user/${channel.id}`)}
                 >
                     {channel.username}
                 </Button>

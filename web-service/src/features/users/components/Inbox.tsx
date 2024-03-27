@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
-import { Message } from '../types';
-import { getInbox } from '../api';
+import { Message, User } from '../types';
+import { getInbox, getUser } from '../api';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 type InboxMessageProps = {
     message: Message;
@@ -14,6 +15,7 @@ type InboxMessageProps = {
 
 const InboxMessage = (props: InboxMessageProps) => {
     const { message } = props;
+    const [sender, setSender] = useState<User>();
     const navigate = useNavigate();
     const [expanded, setExpanded] = useState<boolean>(false);
     const timestamp_date = message.timestamp.toLocaleString('en-US', {
@@ -27,6 +29,14 @@ const InboxMessage = (props: InboxMessageProps) => {
         hour: 'numeric',
         minute: 'numeric',
     });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const sender = await getUser(message.sender);
+            setSender(sender.user);
+        };
+        fetchData();
+    }, [message.sender]);
 
     return (
         // change style (background color or opacity) based on read status
@@ -44,10 +54,14 @@ const InboxMessage = (props: InboxMessageProps) => {
             >
                 <div
                     className="flex w-1/12 cursor-pointer flex-col items-center justify-center"
-                    onClick={() => navigate(`/user/${message.sender.id}`)}
+                    onClick={() => navigate(`/user/${sender?.id}`)}
                 >
-                    <img src={message.sender.profile_image} alt="" width={50} />
-                    <div>{message.sender.username}</div>
+                    {sender?.profile_image ? (
+                        <img src={sender?.profile_image} alt="" width={50} />
+                    ) : (
+                        <FaRegUserCircle size={50} />
+                    )}
+                    <div>{sender?.username}</div>
                 </div>
                 <div className="mx-4 flex w-9/12 flex-col overflow-hidden">
                     <div className={clsx(!expanded ? 'truncate' : '')}>
@@ -106,7 +120,7 @@ export const Inbox = () => {
     return (
         <Layout>
             <div className="flex h-full w-full flex-col p-12">
-                <div className="space-y-4 overflow-y-scroll">
+                <div className="scroll-gutter space-y-4 overflow-y-auto">
                     {messages.map((message) => (
                         <InboxMessage
                             key={`message-{message.id}`}

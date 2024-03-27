@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { useParams } from 'react-router-dom';
 import { User } from '../types';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 export const Profile = () => {
     const { id } = useParams<{ id: string }>();
@@ -41,10 +42,7 @@ export const Profile = () => {
                 {user.profile_image ? (
                     <img src={user.profile_image!} alt="pfp" width={100} />
                 ) : (
-                    <img
-                        src="/src/assets/images/defaultimg.png"
-                        className="h-24 w-24"
-                    />
+                    <FaRegUserCircle size={100} />
                 )}
                 <div className="space-y-1">
                     <p className="text-lg font-bold">{user.username}</p>
