@@ -7,3 +7,18 @@ html,
 #root {
     height: 100vh;
 }
+
+@supports (scrollbar-color: auto) {
+  * {
+    scrollbar-color: #30313f transparent;
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  *::-webkit-scrollbar {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: #30313f;
+  }
+}
