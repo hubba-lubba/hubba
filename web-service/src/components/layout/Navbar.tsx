@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { UserContext } from '@/contexts/UserProvider';
@@ -12,14 +12,23 @@ const NavDropdown = () => {
     const user = useContext(AuthContext);
 
     return (
-        <div className="fixed right-6 top-24 flex flex-col gap-4 bg-hubba-900 p-6">
+        <div className="fixed right-6 top-24 flex w-[110px] flex-col gap-4 bg-hubba-900">
             {user ? (
                 <>
-                    <Link to="/profile">Profile</Link>
-                    <span onClick={() => signout()}>Sign Out</span>
+                    <Link to="/profile" className="h-full w-full px-6 pt-6">
+                        Profile
+                    </Link>
+                    <span
+                        className="h-full w-full px-6 pb-6"
+                        onClick={() => signout()}
+                    >
+                        Sign Out
+                    </span>
                 </>
             ) : (
-                <Link to="/auth/signin">Sign In</Link>
+                <Link to="/auth/signin" className="h-full w-full p-6">
+                    Sign In
+                </Link>
             )}
         </div>
     );
@@ -33,7 +42,22 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const user = useContext(AuthContext);
     const { userData } = useContext(UserContext);
-    console.log(userData);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (
+                toggleDropdown &&
+                !(event.target as HTMLElement).closest('.pfp')
+            ) {
+                setToggleDropdown(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [toggleDropdown]);
 
     return (
         <nav className="fixed flex h-32 w-full flex-grow-0">
@@ -58,7 +82,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                             </>
                         )}
                         <div
-                            className="cursor-pointer"
+                            className="pfp cursor-pointer"
                             onClick={() => setToggleDropdown(!toggleDropdown)}
                         >
                             {user?.photoURL ? (

@@ -1,3 +1,6 @@
+import { User } from '@/features/users/types';
+import { Event } from '../types';
+
 export const getCurrentEvents = async () => {
     const data = {
         events: [
@@ -134,31 +137,36 @@ export const getUpcomingEvents = async () => {
     return data;
 };
 
-export const getSidebarEvents = async () => {
+export const getSidebarEvents = async (user: User): Promise<Event[]> => {
     // current and upcoming? we want only ours so maybe query api for user's events (current and upcoming)
     // but homepage might have current events that are popular (or do this for discover only - homepage is curated only for user)
     // but in the latter case it makes the sidebar obsolete... hmm
     // UI/UX INTERNS ASSEMBLE
-    return await getCurrentEvents();
+    const data = Promise.all(
+        user.joined_event_ids.map(async (id) => (await getEvent(id)).event),
+    );
+    return data;
 };
 
-export const getEvent = async (id: string) => {
+export const getEvent = async (id: string): Promise<{ event: Event }> => {
     // get event by id
     // return event
-    const event = {
-        id: id,
-        title: `Event XD ${id}`,
-        thumbnail: 'https://placehold.co/300x200',
-        description: 'This is a description',
-        url: 'https://www.google.com',
-        platform: 'Twitch',
-        tags: ['tag1', 'tag2', 'tag3'],
-        viewer_count: 100,
-        time_of_event: new Date('Wed, 27 July 2016 07:45:00 UTC'),
-        status: 'Live',
-        host: 'hostname',
-        entryfee: 0,
-        prizes: ['prize1', 'prize2', 'prize3'],
+    const data = {
+        event: {
+            id: id,
+            title: `event XD ${id}`,
+            thumbnail: 'https://placehold.co/300x200',
+            description: 'This is a description',
+            url: 'https://www.google.com',
+            platform: 'Twitch',
+            tags: ['tag1', 'tag2', 'tag3'],
+            viewer_count: 100,
+            time_of_event: new Date('Wed, 27 July 2016 07:45:00 UTC'),
+            status: 'Live',
+            host: 'hostname',
+            prizes: ['prize1', 'prize2', 'prize3'],
+        },
     };
-    return event;
+
+    return data;
 };

@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
                 try {
                     const userData = await getUser(user.uid);
                     setUserData(userData.user);
-                } catch (error: any) {
+                } catch (error) {
                     console.log(error);
                     throw error;
                 }
@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
                         //   await createUserData();
                         await loadUserData();
                         return;
-                    } catch (error: any) {
-                        console.log('Error creating first user data')
+                    } catch (error) {
+                        console.log('Error creating first user data');
                         console.log(error);
                         return;
                     }
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
             }
         };
         load();
-    }, [user]);
+    }, [user, setUserData]);
 
     if (loadingUser) {
         return (

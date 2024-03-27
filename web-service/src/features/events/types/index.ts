@@ -13,7 +13,6 @@ export type Event = {
     time_of_event: Date;
     status: string;
     host: string;
-    entryfee: number;
     prizes: string[];
 } & BaseEntity;
 

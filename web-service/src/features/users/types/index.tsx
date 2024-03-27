@@ -5,7 +5,7 @@ import { BaseEntity } from '@/types';
 export type User = {
     username: string;
     email: string;
-    profile_image: string;
+    profile_image?: string;
     bio: string;
 
     followers: string[];

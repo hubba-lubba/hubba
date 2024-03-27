@@ -4,7 +4,7 @@ import { IconType } from 'react-icons';
 
 const variants = {
     base: 'flex flex-center items-center cursor-pointer',
-    image: 'flex flex-center items-center cursor-pointer w-[calc(100%-25px)] min-w-10 text-start hover:transition-colors ease-in-out hover:text-hubba-500',
+    image: 'flex flex-center items-center cursor-pointer w-[calc(100%-25px)] min-w-10 h-8 text-start hover:transition-colors ease-in-out hover:text-hubba-500',
     text: 'flex flex-center items-center cursor-pointer border-none bg-none hover:underline',
 };
 // somehow modularize
@@ -32,11 +32,11 @@ export function Button({
             onClick={handleClick}
             className={clsx('transition-all', variants[variant], style)}
         >
-            {(Icon && <Icon className="h-6 pr-2.5" size={32} />) ||
+            {(Icon && <Icon className="h-6 pr-2.5" size={50} />) ||
                 (image && (
                     <img src={image} alt="image" className="h-6 pr-2.5" />
                 ))}
-            {children}
+            <div className="truncate">{children}</div>
             {/* {text && (
                 <p className="cursor-pointer border-none bg-none w-full">
                     {text}

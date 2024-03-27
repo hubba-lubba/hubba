@@ -15,7 +15,7 @@ export const EventPage = () => {
         if (!id) return; //do smt else abt this (but safer)
 
         const fetchEventData = async (id: string) => {
-            const eventData = await getEvent(id);
+            const eventData = (await getEvent(id)).event;
             setEvent(eventData);
 
             //make Tag feature and component
