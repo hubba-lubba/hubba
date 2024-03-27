@@ -1,7 +1,8 @@
 import React from 'react';
 import { AuthProvider } from './AuthProvider';
+import { UserProvider } from './UserProvider';
 
-const providers = [AuthProvider];
+const providers = [AuthProvider, UserProvider];
 
 /**
  * This component is used to wrap the entire application with all the context providers.

@@ -24,6 +24,7 @@ export type User = {
     joined_orgs: string[];
 
     platforms: string[];
+    inbox: Message[];
 } & BaseEntity;
 
 export type Live = {
@@ -47,8 +48,8 @@ export type VideoLink = {
 } & BaseEntity;
 
 export type Message = {
-    sender: User;
-    receiver: User;
+    sender: string;
+    receiver: string;
     subject: string;
     content: string;
     timestamp: Date;
