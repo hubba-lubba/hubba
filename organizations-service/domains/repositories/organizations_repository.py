@@ -1,73 +1,76 @@
 from sqlalchemy.orm import Session
 from domains.models.events import Events
 from domains.models.user import User
+from domains.models.organizations import Organizations
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
 from uuid import UUID
 
-class EventsRepository:
+class OrganizationsRepository:
     session: Session
 
     def __init__(self, db_session: Session):
         self.session = db_session
 
     """
-    Adds new Events object to be persisted using Event object
+    Adds new Organizations object to be persisted using Organizations object
 
-    :param new_event: Event representing event to be added
-    :return: Event of added event
+    :param new_organization: Organizations representing organization to be added
+    :return: Organizations of added organization
     """
-    def _add_event(self, new_event: Events):
-        self.session.add(new_event)
+    def _add_organization(self, 
+                   new_organization: Organizations):
+        self.session.add(new_organization)
         self.session.commit()
-        return new_event
+        return new_organization
 
     """
-    Adds new Event object to be persisted using event field parameters
+    Adds new Organizations object to be persisted using organization parameters
 
-    :param event_id: uuid of event_uuid
-    :return: Event of added event
+    :param name: str of name of organization
+    :param image: str of image url of organization
+    :param description: str of description of organization
+    :param owner: uuid of owner of organization
+    :return: Organizations of added organization
     """
     @check_id_exists(User, ["owner"])
-    def add_event(self, title=None, thumbnail=None, description=None,
-                  url=None, platform=None, tags=None, time_of_event=None,
-                  host=None, entry_fee=None, owner=None):
+    def add_organization(self, 
+                         name=None,
+                         image=None,
+                         description=None, 
+                         owner=None):
         owner = self.session.get(User, owner)
 
-        new_event = Events(title=title,
-                           thumbnail=thumbnail,
-                           description=description,
-                           url=url,
-                           platform=platform,
-                           tags=tags,
-                           time_of_event=time_of_event,
-                           host=host,
-                           entry_fee=entry_fee,
-                           owner=owner,
-                           moderators=[owner],
-                           users=[owner])
+        new_organization = Organizations(name=name, 
+                                         image=image,
+                                         description=description, 
+                                         owner=owner,
+                                         moderators=[owner],
+                                         users=[owner],
+                                         events=[])
 
-        return self._add_event(new_event)
+
+        return self._add_organization(new_organization)
 
     """
-    Get Event object
+    Get Organizations object
 
-    :param event_id: uuid of event_uuid
-    :return: Event of event
+    :param organization_id: uuid of organization_uuid
+    :return: Organizations of organization
     """
-    @check_id_exists(Events, ["event_id"])
-    def get_event(self, event_id):
-        event = self.session.get(Events, event_id)
-        return event
+    @check_id_exists(Organizations, ["organization_id"])
+    def get_organization(self, organization_id):
+        organizations = self.session.get(Organizations, organization_id)
+        return organizations
 
     """
-    Delete Event object
-    :param event_id: uuid of event_uuid
-    :return: uuid of deleted event
+    Delete organization object
+    :param organization_id: uuid of organization_id
+    :return: uuid of deleted organization
     """
-    @check_id_exists(Events, ["event_id"])
-    def delete_event(self, event_id):
-        event = self.get_event(event_id)
-        self.session.delete(event)
+    @check_id_exists(Organizations, ["organization_id"])
+    def delete_organization(self, organization_id):
+        organization = self.get_organization(organization_id)
+        self.session.delete(organization)
         self.session.commit()
-        return event_id
+        return organization_id
