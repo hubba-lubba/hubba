@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import ConnectedApp from './ConnectedApp';
-import ChangePassword from './ChangePassword';
 import { AuthContext } from '@/contexts/AuthProvider';
+import { UpdateUserInfoForm } from './UpdateUserInfoForm'
 
 type userSettings = {
     notifications?: boolean;
@@ -29,10 +29,7 @@ export const SettingsForm = () => {
                 <h2 className="mb-2 text-3xl">Connected Apps</h2>
                 {connections}
             </section>
-            <section className="mb-6">
-                <h2 className="mb-2 text-3xl">Change Password</h2>
-                <ChangePassword />
-            </section>
+            <UpdateUserInfoForm />
         </div>
     );
 }

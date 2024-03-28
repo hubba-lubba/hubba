@@ -13,7 +13,7 @@ type ChangePasswordValues = {
 };
 
 
-export default function ChangePassword() {
+export function ChangePassword() {
     async function handleSubmit(data: ChangePasswordValues) {
         const { password, confirmPassword } = data;
         try {
