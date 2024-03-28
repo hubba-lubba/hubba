@@ -32,7 +32,7 @@ def require_query_params(query_args):
         return returned_func
     return decorator
 
-def ensureUUID(field):
+def ensure_UUID(field):
     def decorator(func):
         @wraps(func)
         def returned_func(*args, **kwargs):
@@ -53,7 +53,7 @@ def ensureUUID(field):
         return returned_func
     return decorator
 
-def ensureAuthorized():
+def ensure_authorized():
     def decorator(func):
         @wraps(func)
         def returned_func(*args, **kwargs):
