@@ -15,7 +15,6 @@ export const SidebarSection = ({
     showMoreState,
 }: SidebarSectionProps) => {
     const [showMore, setShowMore] = showMoreState ?? [];
-    console.log(title, collapsible);
     return (
         <section className="flex flex-col space-y-3">
             {title && setShowMore != undefined && showMore != undefined && (

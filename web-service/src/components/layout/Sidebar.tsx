@@ -13,7 +13,7 @@ export const Sidebar = () => {
     const { userData } = useContext(UserContext);
 
     return (
-        <aside className="fixed inset-0 top-32 w-sidebar space-y-8 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-hubba-800">
+        <aside className="scroll-gutter fixed inset-0 top-32 w-sidebar space-y-8 overflow-y-auto p-8 scrollbar-thin">
             {/* mts are for non-first childs -> not? */}
             <SidebarSection>
                 <Button
