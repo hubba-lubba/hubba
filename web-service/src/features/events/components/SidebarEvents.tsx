@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const SidebarEvents = () => {
     const [events, setEvents] = useState<Event[]>([]);
+    const [showMore, setShowMore] = useState<boolean>(false);
     const { userData } = useContext(UserContext);
     const navigate = useNavigate();
     useEffect(() => {
@@ -18,6 +19,11 @@ export const SidebarEvents = () => {
 
         fetchData();
     }, [userData]);
+
+    function toggleShowMore() {
+        setShowMore((prevState) => !prevState);
+    }
+
     return (
         <SidebarSection title="My Events">
             {events.map((event, index) => (
@@ -29,7 +35,12 @@ export const SidebarEvents = () => {
                 >
                     {event.title}
                 </Button>
-            ))}
+            )).slice(showMore ? 3 : 2)}
+            <Button variant="text" handleClick={toggleShowMore}>
+                <small className="mt-2 uppercase text-hubba-600">
+                    {showMore ? 'Hide' : 'Show more'}
+                </small>
+            </Button>
         </SidebarSection>
     );
 };
