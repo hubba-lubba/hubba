@@ -1,9 +1,9 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
-import { email } from '@/lib/validation';
+import { username } from '@/lib/validation';
 import Joi from 'joi';
 
 const schema = Joi.object({
-    newUsername: email,
+    newUsername: username,
 });
 
 type ChangeUsernameFields = {
