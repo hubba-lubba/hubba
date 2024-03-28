@@ -20,27 +20,26 @@ export const SidebarEvents = () => {
         fetchData();
     }, [userData]);
 
-    function toggleShowMore() {
-        setShowMore((prevState) => !prevState);
-    }
+    const collapseLength = 3;
 
     return (
-        <SidebarSection title="My Events">
-            {events.map((event, index) => (
-                <Button
-                    key={`sidebar-event-${event.id}-${index}`}
-                    variant="text"
-                    handleClick={() => navigate(`/events/${event.id}`)}
-                    // handleClick={() => window.open(event.url)} // make not open in new window when we got proper urls
-                >
-                    {event.title}
-                </Button>
-            )).slice(showMore ? 3 : 2)}
-            <Button variant="text" handleClick={toggleShowMore}>
-                <small className="mt-2 uppercase text-hubba-600">
-                    {showMore ? 'Hide' : 'Show more'}
-                </small>
-            </Button>
+        <SidebarSection
+            title="My Events"
+            collapsible={events.length > collapseLength}
+            showMoreState={[showMore, setShowMore]}
+        >
+            {events
+                .map((event, index) => (
+                    <Button
+                        key={`sidebar-event-${event.id}-${index}`}
+                        variant="text"
+                        handleClick={() => navigate(`/events/${event.id}`)}
+                        // handleClick={() => window.open(event.url)} // make not open in new window when we got proper urls
+                    >
+                        {event.title}
+                    </Button>
+                ))
+                .slice(0, showMore ? events.length : collapseLength)}
         </SidebarSection>
     );
 };
