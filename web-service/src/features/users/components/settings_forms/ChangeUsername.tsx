@@ -30,7 +30,7 @@ export function ChangeUsername() {
                 {({ register, formState }) => (
                     <>
                         <TextField
-                            type="username"
+                            type="text"
                             label="New Username"
                             error={formState.errors['newUsername']}
                             registration={register('newUsername')}
