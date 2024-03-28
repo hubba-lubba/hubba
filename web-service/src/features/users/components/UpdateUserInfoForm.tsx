@@ -1,9 +1,9 @@
-import { ChangePassword } from './settings_forms'
+import { ChangePassword, ChangeEmail } from './settings_forms'
 
 export function UpdateUserInfoForm() {
     return (
-        <section className="mb-6">
-            <h2 className="mb-2 text-3xl">Change Password</h2>
+        <section className="flex flex-col mb-6 gap-16">
+            <ChangeEmail />
             <ChangePassword />
         </section>
     )

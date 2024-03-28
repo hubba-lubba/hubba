@@ -24,27 +24,30 @@ export function ChangePassword() {
     }
 
     return (
-        <Form<ChangePasswordValues, typeof schema>
-            onSubmit={handleSubmit}
-            schema={schema}
-        >
-            {({ register, formState }) => (
-                <>
-                    <TextField
-                        type="password"
-                        label="Password"
-                        error={formState.errors['password']}
-                        registration={register('password')}
-                    />
-                    <TextField
-                        type="password"
-                        label="Confirm Password"
-                        error={formState.errors['confirmPassword']}
-                        registration={register('confirmPassword')}
-                    />
-                    <SubmitButton text="Submit" />
-                </>
-            )}
-        </Form>
+        <div>
+            <h2 className="mb-2 text-3xl">Change Password</h2>
+            <Form<ChangePasswordValues, typeof schema>
+                onSubmit={handleSubmit}
+                schema={schema}
+            >
+                {({ register, formState }) => (
+                    <>
+                        <TextField
+                            type="password"
+                            label="Password"
+                            error={formState.errors['password']}
+                            registration={register('password')}
+                        />
+                        <TextField
+                            type="password"
+                            label="Confirm Password"
+                            error={formState.errors['confirmPassword']}
+                            registration={register('confirmPassword')}
+                        />
+                        <SubmitButton text="Submit" />
+                    </>
+                )}
+            </Form>
+        </div>
     );
 }
