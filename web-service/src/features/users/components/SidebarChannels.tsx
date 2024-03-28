@@ -9,6 +9,7 @@ import { FaRegUserCircle } from 'react-icons/fa';
 
 export const SidebarChannels = () => {
     const [channels, setChannels] = useState<User[]>([]);
+    const [showMore, setShowMore] = useState<boolean>(false);
     const { userData } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -22,6 +23,10 @@ export const SidebarChannels = () => {
         fetchData();
     }, [userData]);
 
+    function toggleShowMore() {
+        setShowMore(prevState => !prevState);
+    }
+
     return (
         <SidebarSection title="My Channels">
             {channels.map((channel, index) => (
@@ -34,10 +39,10 @@ export const SidebarChannels = () => {
                 >
                     {channel.username}
                 </Button>
-            ))}
-            <Button variant="text">
+            )).slice(0, showMore ? 5 : 3)}
+            <Button variant="text" handleClick={toggleShowMore}>
                 <small className="mt-2 uppercase text-hubba-600">
-                    Show more
+                    {showMore ? "Hide" : "Show more"}
                 </small>
             </Button>
         </SidebarSection>
