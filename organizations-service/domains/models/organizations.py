@@ -14,45 +14,45 @@ from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import ARRAY
 import uuid
 
-organization_moderator_table = Table("organization_moderator_table",
-                                     Base.metadata,
-                                     Column("organization", 
-                                            UUID, 
-                                            ForeignKey("organizations.organization_id"), 
-                                            primary_key=True),
-                                     Column("moderator", 
-                                            UUID, 
-                                            ForeignKey("users.user_id"), 
-                                            primary_key=True))
+moderator_table = Table("organization_moderator_table",
+                        Base.metadata,
+                        Column("organization", 
+                               UUID, 
+                               ForeignKey("organizations.organization_id"), 
+                               primary_key=True),
+                        Column("moderator", 
+                               UUID, 
+                               ForeignKey("users.user_id"), 
+                               primary_key=True))
 
 user_table = Table("user_table",
                    Base.metadata,
-                   Column("event", 
+                   Column("organization", 
                           UUID, 
-                          ForeignKey("events.event_id"), 
+                          ForeignKey("organizations.organization_id"), 
                           primary_key=True),
                    Column("user", 
                           UUID, 
                           ForeignKey("users.user_id"), 
                           primary_key=True))
 
-tag_table = Table("tag_table",
-                  Base.metadata,
-                  Column("event", 
-                         UUID, 
-                         ForeignKey("events.event_id"), 
-                         primary_key=True),
-                  Column("tag", 
-                         String(32), 
-                         primary_key=True))
-
+event_table = Table("event_table",
+                    Base.metadata,
+                    Column("organization", 
+                           UUID, 
+                           ForeignKey("organizations.organization_id"), 
+                           primary_key=True),
+                    Column("user", 
+                           UUID, 
+                           ForeignKey("users.user_id"), 
+                           primary_key=True))
 
 class Organizations(Base):
     __tablename__ = "organizations"
 
     organization_id: Mapped[UUID] = mapped_column(UUID(as_uuid=True),
-                                         primary_key=True,
-                                         default=uuid.uuid4)
+                                                  primary_key=True,
+                                                  default=uuid.uuid4)
                             
     name: Mapped[str] = mapped_column(String(32))
 
@@ -66,29 +66,25 @@ class Organizations(Base):
 
     owner: Mapped[User] = relationship(back_populates="owns")
 
-    moderators: Mapped[list[User]] = relationship(secondary=event_moderator_table,
+    moderators: Mapped[list[User]] = relationship(secondary=moderator_table,
                                                     back_populates="moderates")
 
     users: Mapped[list[User]] = relationship(secondary=user_table)
 
-    events: Mapped[list[Events]] = relationship(secondary=events_table)
+    events: Mapped[list[Events]] = relationship(secondary=event_table)
 
     def get_JSON(self):
         return Events.to_JSON(self)
 
     @staticmethod
-    def to_JSON(user):
+    def to_JSON(organization):
         return {
-            "event_id": user.event_id,
-            "owner_id": user.owner_id,
-            "title": user.title,
-            "thumbnail": user.thumbnail,
-            "description": user.description,
-            "url": user.url,
-            "platform": user.platform,
-            "tags": user.tags,
-            "time_of_event": user.time_of_event.utcnow() if user.time_of_event else None,
-            "host": user.host,
-            "entry_fee": user.entry_fee,
-            "date_posted": user.date_posted.utcnow() if user.date_posted else None,
+            "organization_id": str(organization.organization_id),
+            "name": organization.name,
+            "image": organization.image,
+            "description": organization.description,
+            "owner": organization.owner.get_JSON(),
+            "moderators": [moderator.get_JSON() for moderator in organization.moderators],
+            "users": [user.get_JSON() for user in organization.users],
+            "events": [event.get_JSON() for event in organization.events]
         }
