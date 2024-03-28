@@ -9,6 +9,7 @@ import { FaRegUserCircle } from 'react-icons/fa';
 
 export const SidebarChannels = () => {
     const [channels, setChannels] = useState<User[]>([]);
+    const [showMore, setShowMore] = useState<boolean>(false);
     const { userData } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -22,24 +23,29 @@ export const SidebarChannels = () => {
         fetchData();
     }, [userData]);
 
+    const collapseLength = 5;
+
     return (
-        <SidebarSection title="My Channels">
-            {channels.map((channel, index) => (
-                <Button
-                    key={`sidebar-channel-${channel.id}-${index}`}
-                    variant="image"
-                    image={channel.profile_image}
-                    Icon={channel.profile_image ? undefined : FaRegUserCircle}
-                    handleClick={() => navigate(`/user/${channel.id}`)}
-                >
-                    {channel.username}
-                </Button>
-            ))}
-            <Button variant="text">
-                <small className="mt-2 uppercase text-hubba-600">
-                    Show more
-                </small>
-            </Button>
+        <SidebarSection
+            title="My Channels"
+            collapsible={channels.length > collapseLength}
+            showMoreState={[showMore, setShowMore]}
+        >
+            {channels
+                .map((channel, index) => (
+                    <Button
+                        key={`sidebar-channel-${channel.id}-${index}`}
+                        variant="image"
+                        image={channel.profile_image}
+                        Icon={
+                            channel.profile_image ? undefined : FaRegUserCircle
+                        }
+                        handleClick={() => navigate(`/user/${channel.id}`)}
+                    >
+                        {channel.username}
+                    </Button>
+                ))
+                .slice(0, showMore ? channels.length : 5)}
         </SidebarSection>
     );
 };

@@ -18,7 +18,7 @@ export const getUser = async (id: string): Promise<{ user: User }> => {
             video_urls: ['video_url1', 'video_url2'],
             joined_event_ids: ['event1', 'event2'],
             past_event_ids: ['event3', 'event4'],
-            joined_orgs: ['org1', 'org2'],
+            joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
             platforms: ['platform1', 'platform2'],
             inbox: (await getInbox()).messages,
         },

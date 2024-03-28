@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const SidebarEvents = () => {
     const [events, setEvents] = useState<Event[]>([]);
+    const [showMore, setShowMore] = useState<boolean>(false);
     const { userData } = useContext(UserContext);
     const navigate = useNavigate();
     useEffect(() => {
@@ -18,18 +19,27 @@ export const SidebarEvents = () => {
 
         fetchData();
     }, [userData]);
+
+    const collapseLength = 3;
+
     return (
-        <SidebarSection title="My Events">
-            {events.map((event, index) => (
-                <Button
-                    key={`sidebar-event-${event.id}-${index}`}
-                    variant="text"
-                    handleClick={() => navigate(`/events/${event.id}`)}
-                    // handleClick={() => window.open(event.url)} // make not open in new window when we got proper urls
-                >
-                    {event.title}
-                </Button>
-            ))}
+        <SidebarSection
+            title="My Events"
+            collapsible={events.length > collapseLength}
+            showMoreState={[showMore, setShowMore]}
+        >
+            {events
+                .map((event, index) => (
+                    <Button
+                        key={`sidebar-event-${event.id}-${index}`}
+                        variant="text"
+                        handleClick={() => navigate(`/events/${event.id}`)}
+                        // handleClick={() => window.open(event.url)} // make not open in new window when we got proper urls
+                    >
+                        {event.title}
+                    </Button>
+                ))
+                .slice(0, showMore ? events.length : collapseLength)}
         </SidebarSection>
     );
 };
