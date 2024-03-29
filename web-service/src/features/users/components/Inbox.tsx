@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Layout } from '@/components/layout';
+import { PageLayout } from '@/components/layout';
 import { Message, User } from '../types';
 import { getInbox, getUser } from '../api';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
-import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
+import clsx from 'clsx';
 
 type InboxMessageProps = {
     message: Message;
@@ -118,17 +118,15 @@ export const Inbox = () => {
     if (error) return <div>error</div>;
 
     return (
-        <Layout>
-            <div className="flex h-full w-full flex-col p-12">
-                <div className="scroll-gutter space-y-4 overflow-y-auto">
-                    {messages.map((message) => (
-                        <InboxMessage
-                            key={`message-{message.id}`}
-                            message={message}
-                        />
-                    ))}
-                </div>
+        <PageLayout>
+            <div className="scroll-gutter space-y-4 overflow-y-auto">
+                {messages.map((message) => (
+                    <InboxMessage
+                        key={`message-{message.id}`}
+                        message={message}
+                    />
+                ))}
             </div>
-        </Layout>
+        </PageLayout>
     );
 };

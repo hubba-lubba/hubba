@@ -7,7 +7,7 @@ type LayoutProps = {
 
 export const AuthLayout = ({ children }: LayoutProps) => {
     return (
-        <Layout>
+        <Layout style="flex-col h-screen items-center">
             <Navbar bare={true} />
             <div className="my-auto">{children}</div>
         </Layout>

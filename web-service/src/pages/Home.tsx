@@ -1,4 +1,4 @@
-import { Card } from '@/components/layout';
+import { Card, Layout } from '@/components/layout';
 import { Shelf } from '@/components/layout';
 import { useEffect, useState } from 'react';
 import { getUpcomingEvents, getCurrentEvents } from '@/features/events/api';
@@ -16,29 +16,33 @@ export const Home = () => {
         const fetchData = async () => {
             const currentEventsData = await getCurrentEvents();
             setCurrentEvents(currentEventsData.events);
-            
+
             const upcomingEventsData = await getUpcomingEvents();
             setUpcomingEvents(upcomingEventsData.events);
 
             const liveData = await getLiveUsers();
             setLive(liveData.live);
-        }
+        };
 
         fetchData();
     }, []);
+
     return (
-        <div className="flex h-full w-full flex-col items-start justify-start">
-            {/* Current Events */}
-            {/* Upcoming Events */}
-            {/* Live */}
-            <Shelf title="Current Events">
+        <Layout style="w-full flex-col">
+            <Shelf title="Current Events" variant="large">
                 {currentEvents.map((event, index) => (
-                    <Card key={`current-${event.id}-${index}`} variant="large" {...event}></Card>
+                    <Card
+                        key={`current-${event.id}-${index}`}
+                        {...event}
+                    ></Card>
                 ))}
             </Shelf>
             <Shelf title="Upcoming Events">
                 {upcomingEvents.map((event, index) => (
-                    <Card key={`upcoming-${event.id}-${index}`} {...event}></Card>
+                    <Card
+                        key={`upcoming-${event.id}-${index}`}
+                        {...event}
+                    ></Card>
                 ))}
             </Shelf>
             <Shelf title="Live">
@@ -46,6 +50,6 @@ export const Home = () => {
                     <Card key={`live-${live.id}-${index}`} {...live}></Card>
                 ))}
             </Shelf>
-        </div>
+        </Layout>
     );
 };

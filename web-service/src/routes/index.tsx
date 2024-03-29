@@ -13,7 +13,7 @@ import { App } from './App'
 export const AppRoutes = () => {
     const user = useContext(AuthContext);
     // log current location
-    console.log('location', window.location.pathname);
+    // console.log('location', window.location.pathname);
 
     // TODO: reroute to /signin for user protected routes when not signed in
     const commonRoutes = [
