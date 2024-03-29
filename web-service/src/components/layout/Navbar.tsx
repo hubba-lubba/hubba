@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { UserContext } from '@/contexts/UserProvider';
 import Logo from '../elements/Logo';
@@ -10,6 +10,7 @@ import { signout } from '@/lib/auth';
 
 const NavDropdown = () => {
     const user = useContext(AuthContext);
+    const navigate = useNavigate();
 
     return (
         <div className="fixed right-6 top-24 flex w-[110px] flex-col gap-4 bg-hubba-900">
@@ -20,7 +21,7 @@ const NavDropdown = () => {
                     </Link>
                     <span
                         className="h-full w-full px-6 pb-6"
-                        onClick={() => signout()}
+                        onClick={() => signout().then(() => navigate('/'))}
                     >
                         Sign Out
                     </span>
