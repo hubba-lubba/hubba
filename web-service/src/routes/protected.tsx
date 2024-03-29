@@ -1,4 +1,4 @@
-import { UserProtectedRoutes } from '@/features/users/routes';
+import { UserProtectedRoutes } from '@/features/users';
 import { NotFound } from '@/pages/NotFound';
 import { App } from './App.tsx'
 
