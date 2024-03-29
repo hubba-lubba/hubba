@@ -30,7 +30,7 @@ export const Profile = () => {
             setLoading(false);
         };
         fetchData();
-    }, [id, currentUser.uid]);
+    }, [id, currentUser?.uid]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
