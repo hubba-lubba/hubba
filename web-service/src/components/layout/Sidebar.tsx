@@ -23,7 +23,11 @@ export const Sidebar = () => {
                 >
                     Feed
                 </Button>
-                <Button variant="image" Icon={BsRss}>
+                <Button
+                    variant="image"
+                    Icon={BsRss}
+                    handleClick={() => navigate('/discover')}
+                >
                     Discover
                 </Button>
                 <Button
