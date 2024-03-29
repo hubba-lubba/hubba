@@ -1,27 +1,16 @@
 import React from 'react';
 import clsx from 'clsx';
 
-const variants = {
-    left: 'justify-start',
-    center: 'justify-center',
-};
-
 type LayoutProps = {
-    variant?: 'left' | 'center';
     style?: string;
     children: React.ReactNode;
 };
 
-export const Layout = ({
-    variant = 'center',
-    style,
-    children,
-}: LayoutProps) => {
+export const Layout = ({ style, children }: LayoutProps) => {
     return (
         <div
             className={clsx(
-                'flex h-full border-none bg-none',
-                variants[variant],
+                'scroll-gutter flex overflow-y-auto border-none bg-none',
                 style,
             )}
         >
@@ -30,9 +19,9 @@ export const Layout = ({
     );
 };
 
-export const PageLayout = ({ variant = 'center', children }: LayoutProps) => {
+export const PageLayout = ({ children }: LayoutProps) => {
     return (
-        <Layout variant={variant} style="w-full">
+        <Layout style="w-full justify-center">
             <div className="w-full max-w-[1200px]">{children}</div>
         </Layout>
     );

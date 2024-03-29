@@ -5,7 +5,6 @@ import { Profile } from '../components/Profile';
 import { SettingsForm } from '../components/SettingsForm';
 
 export const UserProtectedRoutes = () => {
-    console.log('protected');
     return (
         <Routes>
             <Route path="update" element={<EditProfileForm />} />
@@ -17,7 +16,6 @@ export const UserProtectedRoutes = () => {
 };
 
 export const UserCommonRoutes = () => {
-    console.log('common routes');
     return (
         <Routes>
             <Route path=":id" element={<Profile />} />
