@@ -8,7 +8,7 @@ import { NotFound } from '@/pages/NotFound';
 export const UserProtectedRoutes = () => {
     return (
         <Routes>
-            <Route path="update" element={<EditProfileForm />} />
+            <Route path="edit" element={<EditProfileForm />} />
             <Route path="inbox" element={<Inbox />} />
             <Route path="settings" element={<SettingsForm />} />
             <Route path="profile" element={<Profile />} />
