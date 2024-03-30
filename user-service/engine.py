@@ -19,5 +19,5 @@ if RESET_DB:
     with Session(engine) as session:
 
         #TODO: Write a script to populate the database with some users
-
+        
         session.commit()
