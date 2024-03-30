@@ -1,6 +1,6 @@
 import { UserProtectedRoutes } from '@/features/users';
 import { NotFound } from '@/pages/NotFound';
-import { App } from './App.tsx'
+import { App } from './App.tsx';
 
 export const protectedRoutes = [
     {
