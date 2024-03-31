@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy_utils import database_exists, create_database
 from config import *
 from domains.models.events import event_moderator_table
-from google.cloud import pubsub
+from events.publisher_factory import PublisherFactory
 
 #WARNING!!! DO NOT USE THIS IN PRODUCTION uwu. EVEN HAVING THIS HERE IS VERY BAD PRACTICE FOR OBVIOUS REASONS
 RESET_DB = True
@@ -19,7 +19,7 @@ if RESET_DB:
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
     # Create a publisher factory.
-    publisher_factory = pubsub.PublisherFactory()
+    publisher_factory = PublisherFactory()
 
     # Create a publisher.
     publisher = publisher_factory.create_publisher(topic_name='events-mockdata')
