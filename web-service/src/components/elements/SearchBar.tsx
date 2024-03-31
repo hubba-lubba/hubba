@@ -1,7 +1,10 @@
+// autosuggest is no longer maintained and old (hence the errors). switch to DownshiftJS
 import Autosuggest from 'react-autosuggest';
-import { RenderInputComponent,
+import {
+    RenderInputComponent,
     InputProps,
-    RenderSuggestionsContainer } from 'react-autosuggest'
+    RenderSuggestionsContainer,
+} from 'react-autosuggest';
 
 export type searchContainer = {
     containerProps: object;
@@ -42,12 +45,10 @@ export default function SearchBar(props: searchBarProps) {
         <Autosuggest
             multiSection={true}
             suggestions={props.suggestions}
-
             onSuggestionsFetchRequested={props.fetchSuggestions}
             onSuggestionsClearRequested={props.clearSuggestions}
             getSuggestionValue={getSuggestionValue}
             getSectionSuggestions={getSectionSuggestions}
-
             renderSuggestion={renderSuggestion}
             renderSectionTitle={renderSectionTitle}
             renderInputComponent={props.renderInputComponent}

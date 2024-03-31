@@ -7,6 +7,7 @@ import { Button } from '@/components/elements/buttons';
 import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import Linkify from 'linkify-react';
+import { PageLayout } from '@/components/layout';
 
 const MemberCard = ({ user }: { user: User }) => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const MemberCard = ({ user }: { user: User }) => {
             image={user.profile_image}
             Icon={user.profile_image ? undefined : FaRegUserCircle}
             handleClick={() => navigate(`/user/${user.id}`)}
-            style="w-full p-2 !h-12 flex align-center rounded bg-hubba-800"
+            style="w-[225px] p-2 !h-12 flex align-center rounded bg-hubba-800"
         >
             {user.username}
         </Button>
@@ -48,27 +49,45 @@ export const OrgPage = () => {
     if (error) return <div>{error}</div>;
 
     return (
-        <div className="flex h-full flex-row p-24">
-            <div className="flex w-9/12 flex-row">
-                <div>
-                    <img className="rounded" src={org.image} alt={org.name} />
+        <PageLayout>
+            <div className="flex flex-col lg:flex-row">
+                <div className="flex w-8/12 flex-row items-center">
+                    <div className="min-w-[250px]">
+                        <img
+                            className="rounded"
+                            src={org.image}
+                            alt={org.name}
+                            width={250}
+                        />
+                    </div>
+                    <div className="space-y-6 px-4">
+                        <h1 className="text-4xl font-bold">{org.name}</h1>
+                        <div>{org.users.length} members</div>
+                        <Linkify
+                            as="div"
+                            options={{
+                                target: '_blank',
+                                className: 'underline',
+                            }}
+                        >
+                            {org.description}
+                        </Linkify>
+                        <div className="flex w-full items-center justify-center">
+                            <button className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold">
+                                JOIN
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div className="space-y-2 px-4">
-                    <h1 className="text-3xl">{org.name}</h1>
-                    <div>{org.users.length} members</div>
-                    <Linkify
-                        as="div"
-                        options={{ target: '_blank', className: 'underline' }}
-                    >
-                        {org.description}
-                    </Linkify>
+                <div className="scroll-gutter mt-6 flex w-full min-w-[300px] flex-col items-center justify-start space-y-4 overflow-y-auto lg:mt-0 lg:w-4/12 lg:px-8">
+                    {org.users.map((user, index) => (
+                        <MemberCard
+                            key={`member-${org.id}-${index}`}
+                            user={user}
+                        />
+                    ))}
                 </div>
             </div>
-            <div className="scroll-gutter flex w-3/12 flex-col space-y-4 overflow-y-auto px-8">
-                {org.users.map((user, index) => (
-                    <MemberCard key={`member-${org.id}-${index}`} user={user} />
-                ))}
-            </div>
-        </div>
+        </PageLayout>
     );
 };

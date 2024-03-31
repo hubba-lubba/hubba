@@ -1,6 +1,6 @@
 import { Button } from '@/components/elements/buttons';
 import { SidebarSection } from '@/components/layout';
-import { CiCirclePlus } from 'react-icons/ci';
+import { LuPlusCircle } from 'react-icons/lu';
 import { useEffect, useState, useContext } from 'react';
 import { Org } from '../types';
 import { getSidebarOrgs } from '../api';
@@ -43,7 +43,7 @@ export const SidebarOrgs = () => {
                 .slice(0, showMore ? orgs.length : collapseLength)}
             <Button
                 variant="image"
-                Icon={CiCirclePlus}
+                Icon={LuPlusCircle}
                 handleClick={() => navigate('/orgs')}
             >
                 Join an Org

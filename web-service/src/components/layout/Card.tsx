@@ -1,14 +1,4 @@
-import clsx from 'clsx';
-
-// use some js to have these decrease with screen width
-const variants = {
-    full: 'w-full',
-    large: 'w-1/3',
-    medium: 'w-1/5',
-};
-
 export type CardProps = {
-    variant?: 'full' | 'large' | 'medium';
     title?: string;
     description?: string;
     thumbnail?: string;
@@ -19,7 +9,6 @@ export type CardProps = {
 };
 
 export const Card = ({
-    variant = 'medium',
     title,
     description,
     thumbnail,
@@ -30,7 +19,7 @@ export const Card = ({
 }: CardProps) => {
     return (
         <div
-            className={clsx('flex cursor-pointer flex-col', variants[variant])}
+            className="flex w-full cursor-pointer flex-col"
             onClick={() => window.open(url, '_blank')}
         >
             {/* add org/user pfp here too */}

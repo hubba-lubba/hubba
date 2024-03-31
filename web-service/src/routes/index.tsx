@@ -7,8 +7,9 @@ import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { EventRoutes } from '@/features/events';
 import { OrgRoutes } from '@/features/orgs';
-import { UserCommonRoutes } from '@/features/users/routes';
-import { App } from './App'
+import { UserCommonRoutes } from '@/features/users';
+import { DiscoverRoutes } from '@/features/discover';
+import { App } from './App';
 
 export const AppRoutes = () => {
     const user = useContext(AuthContext);
@@ -36,6 +37,10 @@ export const AppRoutes = () => {
                 {
                     path: '/orgs/*',
                     element: <OrgRoutes />,
+                },
+                {
+                    path: '/discover/*',
+                    element: <DiscoverRoutes />,
                 },
             ],
         },
