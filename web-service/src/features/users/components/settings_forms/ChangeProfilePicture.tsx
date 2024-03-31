@@ -17,7 +17,7 @@ export function ChangeProfilePicture() {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Email</h2>
+            <h2 className="mb-2 text-3xl">Change Profile Picture</h2>
             <Form<ChangeProfilePictureFields>
                 onSubmit={handleSubmit}
             >
