@@ -7,9 +7,7 @@ export type Event = {
     thumbnail: string;
     description: string;
     url: string;
-    platform: string;
     tags: string[];
-    viewer_count: number;
     time_of_event: Date;
     status: string;
     host: string;
