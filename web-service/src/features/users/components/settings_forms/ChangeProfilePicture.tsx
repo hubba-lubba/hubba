@@ -25,16 +25,15 @@ export function ChangeProfilePicture() {
                     <FieldWrapper
                         label="Choose File"
                         error={formState.errors['newProfilePicture']}
-                        children={
-                            <>
-                                <input
-                                    type="file"
-                                    {...register('newProfilePicture', { required: true })}
-                                />
-                                <SubmitButton text="Submit" />
-                            </>
-                        }
                     >
+                        <input
+                            type="file"
+                            {...register('newProfilePicture', {
+                                //include other pfp file requirements
+                                required: "Please choose a file."
+                            })}
+                        />
+                        <SubmitButton text="Submit" />
                     </FieldWrapper>
                 )}
             </Form>
