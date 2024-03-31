@@ -1,13 +1,16 @@
 import { Button } from '@/components/elements/buttons';
 import { SidebarSection } from '.';
+import { UserContext } from '@/contexts/UserProvider';
 import { SidebarOrgs } from '@/features/orgs/components';
 import { SidebarEvents } from '@/features/events/components';
 import { SidebarChannels } from '@/features/users/components';
 import { BsHouseDoor, BsCalendarEvent, BsRss, BsPeople } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 
 export const Sidebar = () => {
     const navigate = useNavigate();
+    const { userData } = useContext(UserContext);
 
     return (
         <aside className="fixed inset-0 top-32 w-sidebar space-y-8 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-hubba-800">
@@ -40,9 +43,13 @@ export const Sidebar = () => {
                 {/* <Button icon="/icons/community-icon.svg">Community</Button>
                     <Button icon="/icons/education-icon.svg">Education</Button> */}
             </SidebarSection>
-            <SidebarChannels />
-            <SidebarEvents />
-            <SidebarOrgs />
+            {userData && (
+                <>
+                    <SidebarChannels />
+                    <SidebarEvents />
+                    <SidebarOrgs />
+                </>
+            )}
         </aside>
     );
 };

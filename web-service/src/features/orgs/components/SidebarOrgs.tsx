@@ -22,26 +22,25 @@ export const SidebarOrgs = () => {
         fetchData();
     }, [userData]);
 
-    function toggleShowMore() {
-        setShowMore((prevState) => !prevState);
-    }
+    const collapseLength = 3;
 
     return (
-        <SidebarSection title="My Orgs">
-            {orgs.map((org, index) => (
-                <Button
-                    key={`sidebar-org-${org.id}-${index}`}
-                    variant="text"
-                    handleClick={() => navigate(`/orgs/${org.id}`)}
-                >
-                    {org.name}
-                </Button>
-            )).slice(0, showMore ? 3 : 2)}
-            <Button variant="text" handleClick={toggleShowMore}>
-                <small className="mt-2 uppercase text-hubba-600">
-                    {showMore ? 'Hide' : 'Show more'}
-                </small>
-            </Button>
+        <SidebarSection
+            title="My Orgs"
+            collapsible={orgs.length > collapseLength}
+            showMoreState={[showMore, setShowMore]}
+        >
+            {orgs
+                .map((org, index) => (
+                    <Button
+                        key={`sidebar-org-${org.id}-${index}`}
+                        variant="text"
+                        handleClick={() => navigate(`/orgs/${org.id}`)}
+                    >
+                        {org.name}
+                    </Button>
+                ))
+                .slice(0, showMore ? orgs.length : collapseLength)}
             <Button
                 variant="image"
                 Icon={CiCirclePlus}
