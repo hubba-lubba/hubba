@@ -1,29 +1,47 @@
-import { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthProvider';
 import { UserContext } from '@/contexts/UserProvider';
+import { ModalContext } from '@/contexts/ModalProvider';
 import Logo from '../elements/Logo';
 import NavbarSearchBar from '../elements/NavbarSearchBar';
-import { BsPencil, BsInbox, BsThreeDots } from 'react-icons/bs';
+import { BsInbox } from 'react-icons/bs';
 import { FaRegUserCircle } from 'react-icons/fa';
+import { LuPlusSquare } from 'react-icons/lu';
 import { signout } from '@/lib/auth';
+
+type DropdownOptionProps = {
+    children: React.ReactNode;
+    to: string;
+    onClick?: () => void;
+};
+
+const DropdownOption = ({ children, to, onClick }: DropdownOptionProps) => {
+    // React Router Link fires onClick before rerouting. Flipped in Nextjs.
+    return (
+        <Link
+            to={to}
+            onClick={onClick}
+            className="h-full w-full px-6 py-1 first:pt-2 last:pb-2"
+        >
+            {children}
+        </Link>
+    );
+};
 
 const NavDropdown = () => {
     const user = useContext(AuthContext);
 
     return (
-        <div className="fixed right-6 top-24 flex w-[110px] flex-col gap-4 bg-hubba-900">
+        <div className="fixed right-6 top-24 flex w-[110px] flex-col rounded-b bg-hubba-900">
             {user ? (
                 <>
-                    <Link to="/profile" className="h-full w-full px-6 pt-6">
-                        Profile
-                    </Link>
-                    <span
-                        className="h-full w-full px-6 pb-6"
-                        onClick={() => signout()}
-                    >
+                    <DropdownOption to="/profile">Profile</DropdownOption>
+                    <DropdownOption to="/edit">Edit</DropdownOption>
+                    <DropdownOption to="/settings">Settings</DropdownOption>
+                    <DropdownOption to="/" onClick={() => signout()}>
                         Sign Out
-                    </span>
+                    </DropdownOption>
                 </>
             ) : (
                 <Link to="/auth/signin" className="h-full w-full p-6">
@@ -40,8 +58,9 @@ type NavbarProps = {
 
 export const Navbar = ({ bare = false }: NavbarProps) => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
-    const user = useContext(AuthContext);
+    const { setShowUploadModal } = useContext(ModalContext);
     const { userData } = useContext(UserContext);
+    const user = useContext(AuthContext);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -70,14 +89,13 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                     <div className="flex flex-row items-center justify-end gap-4">
                         {userData && (
                             <>
-                                <Link to="/update">
-                                    <BsPencil size={24} />
-                                </Link>
+                                <LuPlusSquare
+                                    className="cursor-pointer"
+                                    size={24}
+                                    onClick={() => setShowUploadModal(true)}
+                                />
                                 <Link to="/inbox">
                                     <BsInbox size={24} />
-                                </Link>
-                                <Link to="/settings">
-                                    <BsThreeDots size={24} />
                                 </Link>
                             </>
                         )}

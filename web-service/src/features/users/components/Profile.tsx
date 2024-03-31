@@ -1,4 +1,4 @@
-import { Card, Grid } from '@/components/layout';
+import { Card, Grid, Layout } from '@/components/layout';
 import { VideoLink } from '../types';
 import { useEffect, useState } from 'react';
 import { getVideoLinks, getUser } from '../api';
@@ -30,14 +30,14 @@ export const Profile = () => {
             setLoading(false);
         };
         fetchData();
-    }, [id, currentUser.uid]);
+    }, [id, currentUser?.uid]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!user) return <div>Error: User not found</div>;
 
     return (
-        <div className="p-2">
+        <Layout style="flex-col">
             <div className="flex flex-row items-center space-x-8 pb-8">
                 {user.profile_image ? (
                     <img src={user.profile_image!} alt="pfp" width={100} />
@@ -64,13 +64,9 @@ export const Profile = () => {
             </div>
             <Grid>
                 {videos.map((vid, index) => (
-                    <Card
-                        key={`${vid.id}-${index}`}
-                        variant="full"
-                        {...vid}
-                    ></Card>
+                    <Card key={`${vid.id}-${index}`} {...vid}></Card>
                 ))}
             </Grid>
-        </div>
+        </Layout>
     );
 };

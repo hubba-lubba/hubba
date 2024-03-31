@@ -155,7 +155,7 @@ export const getEvent = async (id: string): Promise<{ event: Event }> => {
         event: {
             id: id,
             title: `event XD ${id}`,
-            thumbnail: 'https://placehold.co/300x200',
+            thumbnail: 'https://placehold.co/500x300',
             description: 'This is a description',
             url: 'https://www.google.com',
             platform: 'Twitch',

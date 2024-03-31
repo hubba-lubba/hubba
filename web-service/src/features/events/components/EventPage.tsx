@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { getEvent } from '../api';
 import { Event } from '../types';
 import { Link } from 'react-router-dom';
+import { PageLayout } from '@/components/layout';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -57,58 +58,51 @@ export const EventPage = () => {
     });
 
     return (
-        <div>
-            <div className="lg:grid lg:grid-cols-[400px_1fr] lg:grid-rows-4 lg:gap-4">
-                <main
-                    className="mb-4 overflow-hidden lg:col-start-2 lg:row-span-3
-                    lg:flex lg:flex-col lg:gap-2 lg:px-6"
-                >
-                    <h1 className="mb-6 text-4xl font-bold lg:m-0">
-                        {event.title || `Event ${event.id}`}
-                    </h1>
-                    <div className="my-4 flex flex-row gap-2">{tags}</div>
-                    <p className="text-2xl font-bold lg:text-xl">
-                        {event.status}
-                    </p>
-                    <p className="">{time}</p>
-                    <p className="">Host: {event.host}</p>
-                </main>
-
-                <div className="lg:row-span-full">
-                    <Link to={event.url}>
+        <PageLayout>
+            <div className="flex flex-col">
+                <section className="flex flex-row items-center space-x-4">
+                    <Link to={event.url} className="w-[500px]">
                         <img
                             src={
                                 event.thumbnail || '/public/image_not_found.jpg'
                             }
-                            className="w-full"
+                            className="rounded"
+                            width={500}
                         />
                     </Link>
-                </div>
 
-                <button
-                    className="mt-6 w-full rounded-2xl bg-hubba-500 px-3 py-2 font-bold
-                    lg:relative lg:bottom-4 lg:left-6 lg:col-start-2 lg:mt-0 lg:w-1/3"
-                >
-                    {'ENTER'}
-                </button>
+                    <div className="flex w-6/12 flex-col space-y-6">
+                        <h1 className="text-4xl font-bold">
+                            [{event.status}]{event.title || `Event ${event.id}`}
+                        </h1>
+                        <div className="flex flex-row gap-2">{tags}</div>
+                        <p className="">Hosted by {event.host}</p>
+                        <p className="">{time}</p>
+                        <div className="flex w-full items-center justify-center">
+                            <button className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold">
+                                ENTER
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                <section className="scroll-gutter flex flex-col space-y-4 overflow-y-auto">
+                    <div className="mt-4">
+                        <h2 className="mb-4 text-2xl font-bold">DETAILS</h2>
+                        <p className="px-4">{event.description}</p>
+                    </div>
+                    <div>
+                        <h2 className="mb-4 text-2xl font-bold">PRIZES</h2>
+                        <div className="grid grid-cols-[180px_1fr] gap-8 px-6">
+                            <p className="inline font-bold">First Place:</p>
+                            <p className="self-end">{event.prizes?.[0]}</p>
+                            <p className="inline font-bold">Second Place:</p>
+                            {event.prizes?.[1]}
+                            <p className="inline font-bold">Third Place:</p>
+                            {event.prizes?.[2]}
+                        </div>
+                    </div>
+                </section>
             </div>
-
-            <section className="my-12">
-                <h2 className="mb-4 text-4xl font-bold">DETAILS</h2>
-                <p className="px-4">{event.description || <></>}</p>
-            </section>
-
-            <section>
-                <h2 className="mb-4 text-4xl font-bold">PRIZES</h2>
-                <div className="grid grid-cols-[180px_1fr] gap-8 px-6">
-                    <p className="inline text-3xl font-bold">First Place:</p>
-                    <p className="self-end">{event.prizes?.[0]}</p>
-                    <p className="inline text-xl font-bold">Second Place:</p>
-                    {event.prizes?.[1]}
-                    <p className="inline text-xl font-bold">Third Place:</p>
-                    {event.prizes?.[2]}
-                </div>
-            </section>
-        </div>
+        </PageLayout>
     );
 };

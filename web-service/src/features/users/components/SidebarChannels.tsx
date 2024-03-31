@@ -16,7 +16,6 @@ export const SidebarChannels = () => {
     useEffect(() => {
         const fetchData = async () => {
             const channels = await getFollowingChannels(userData);
-            console.log(channels);
             setChannels(channels);
         };
 
