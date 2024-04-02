@@ -44,11 +44,11 @@ ENV SERVICE_ACCOUNT $SERVICE_ACCOUNT
 
 RUN pip install --upgrade pip
 
-COPY . /opt/events-service
-WORKDIR /opt/events-service
+COPY . /opt/organizations-service
+WORKDIR /opt/organizations-service
 RUN pip install -r requirements.txt
 
-WORKDIR /opt/events-service
+WORKDIR /opt/organizations-service
 CMD ["gunicorn", "-b", "0.0.0.0:8002", "--preload", "-w", "4", "wsgi:app"]
 
 EXPOSE 8002

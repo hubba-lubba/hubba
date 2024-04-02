@@ -1,11 +1,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from domains.models.events import Events, event_moderator_table
+    from domains.models.organizations import Organizations
 else:
-    Events = "Events"
+    Organizations = "Organizations"
 from domains.models.base import Base
-import domains.models.events as events
+import domains.models.organizations as organizations 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
@@ -17,7 +17,10 @@ class User(Base):
                                          primary_key=True,
                                          default=uuid.uuid4)
  
-    moderates: Mapped[list[Events]] = relationship(secondary=events.event_moderator_table,
+    in_org: Mapped[list[Organizations]] = relationship(secondary=organizations.moderator_table,
+                                                    back_populates="users")
+
+    moderates: Mapped[list[Organizations]] = relationship(secondary=organizations.moderator_table,
                                                     back_populates="moderators")
     
-    owns: Mapped[list[Events]] = relationship(back_populates="owner")
+    owns: Mapped[list[Organizations]] = relationship(back_populates="owner")

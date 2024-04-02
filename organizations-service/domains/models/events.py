@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from domains.models.organizations import Organizations, event_table
+    from domains.models.organizations import Organizations
 else:
     Organizations = "Organizations"
+import domains.models.organizations as organizations
 from domains.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID
@@ -16,5 +17,5 @@ class Events(Base):
                                            primary_key=True,
                                            default=uuid.uuid4)
 
-    has_event: Mapped[list[Organizations]] = relationship(secondary=event_table,
-                                                   back_populates="events")
+    has_event: Mapped[list[Organizations]] = relationship(secondary=organizations.event_table,
+                                                          back_populates="events")

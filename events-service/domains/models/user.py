@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from domains.models.events import Events, event_moderator_table
+    from domains.models.events import Events
 else:
     Events = "Events"
 from domains.models.base import Base

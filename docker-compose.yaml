@@ -78,7 +78,7 @@ services:
         DB_USER: "hubba"
         DB_PASSWORD: "hubba" 
         DB_PORT: 5432
-        DB_NAME: "hubba-user"
+        DB_NAME: "hubba-organizations"
         VERSION: "DEV"
         PROJECT_ID: hubba-412704
         USER_EVENT_SUBSCRIPTION_ID: dev-user-event
