@@ -26,6 +26,18 @@ def version():
     })
     return result
 
+@user_blueprint.route("/all", methods=["GET"])
+@ensure_authorized()
+def get_all_users():
+    with Session(engine) as session:
+        user_repository = UserRepository(session)
+        users = user_repository.get_all_users()
+        response = jsonify({
+            "status": "success",
+            "users": [user.get_JSON() for user in users]
+        })
+        return response
+
 @user_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
 @require_json_params(["username"])
