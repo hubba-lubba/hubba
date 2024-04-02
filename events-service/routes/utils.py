@@ -61,13 +61,15 @@ def ensure_authorized():
             if request_json.get("admin") is not None and request_json.get("admin") == "true":
                 return func(*args, **kwargs)
 
-            if request_json.get("id_token") is None:
+            id_token = request.headers.get("id_token")
+
+            if id_token is None:
                 return jsonify({
                     "status": "failure", 
                     "reason": "missing id_token header"
                 })
             try: 
-                auth.verify_id_token(request_json.get("id_token"))
+                auth.verify_id_token(id_token)
             except (auth.ExpiredIdTokenError, auth.InvalidIdTokenError) as e:
                 return jsonify({
                     "status": "failure", 
