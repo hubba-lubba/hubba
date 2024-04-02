@@ -27,7 +27,7 @@ def version():
     return result
 
 @user_blueprint.route("/", methods=["PUT"])
-@ensureAuthorized()
+@ensure_authorized()
 @require_json_params(["username"])
 def add_user():
     context = request.get_json()
@@ -62,7 +62,7 @@ def add_user():
 
 @user_blueprint.route("/", methods=["GET"])
 @require_query_params(["user_id"])
-@ensureUUID("user_id")
+@ensure_UUID("user_id")
 def get_user():
     user_id = request.args.get("user_id")
     with Session(engine) as session:
@@ -82,9 +82,9 @@ def get_user():
             return result, 400
 
 @user_blueprint.route("/", methods=["DELETE"])
-@ensureAuthorized()
+@ensure_authorized()
 @require_query_params(["user_id"])
-@ensureUUID("user_id")
+@ensure_UUID("user_id")
 def delete_user():
     user_id = request.args.get("user_id")
     with Session(engine) as session:
@@ -104,10 +104,10 @@ def delete_user():
             return result, 400
 
 @user_blueprint.route("/add_following", methods=["POST"])
-@ensureAuthorized()
+@ensure_authorized()
 @require_json_params(["user_id", "following"])
-@ensureUUID("user_id")
-@ensureUUID("following")
+@ensure_UUID("user_id")
+@ensure_UUID("following")
 def add_following():
     context = request.get_json()
 

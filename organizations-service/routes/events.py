@@ -6,7 +6,7 @@ from engine import engine
 from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
-from routes.utils import ensure_UUID, require_json_params, require_query_params, ensure_authorized
+from routes.utils import ensure_authorized, ensure_UUID, require_json_params, require_query_params 
 
 events_blueprint = Blueprint('events_api', __name__, url_prefix="/")
 CORS(events_blueprint)
