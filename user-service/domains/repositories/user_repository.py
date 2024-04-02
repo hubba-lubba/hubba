@@ -44,6 +44,8 @@ class UserRepository:
 
     """
     Gets all User objects
+
+    :return: list of User objects obtained from persisted data
     """
     def get_all_users(self):
         users = self.session.query(User).all()
