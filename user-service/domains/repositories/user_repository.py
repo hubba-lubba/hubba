@@ -16,7 +16,6 @@ class UserRepository:
 
         publisher_factory = PublisherFactory()
         self.publisher = publisher_factory.get_publisher()
-        
 
     """
     Adds new User object to be persisted using User object
@@ -43,6 +42,15 @@ class UserRepository:
         new_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
         return self._add_user(new_user)
 
+    """
+    Gets all User objects
+
+    :return: list of User objects obtained from persisted data
+    """
+    def get_all_users(self):
+        users = self.session.query(User).all()
+        return users
+    
     """
     Gets an existing User
 
