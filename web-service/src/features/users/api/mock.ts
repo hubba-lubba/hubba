@@ -1,4 +1,9 @@
 import { Message, User } from '../types';
+import { getidtoken } from '@/features/auth/api';
+import { USER_API_URL } from '@/config';
+
+
+// BELOW ARE MOCK FUNCTIONS
 
 export const getUser = async (id: string): Promise<{ user: User }> => {
     const data = {

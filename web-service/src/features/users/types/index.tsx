@@ -14,8 +14,8 @@ export type User = {
     num_following: number;
 
     streaming_status: number;
-    channel_url: string;
-    stream_url: string;
+    channel_url?: string;
+    stream_url?: string;
     video_urls: string[];
 
     joined_event_ids: string[];
