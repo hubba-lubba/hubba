@@ -1,22 +1,21 @@
 from domains.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, Table, Column
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import String
 import uuid
 
 following_table = Table(
     "following_table",
     Base.metadata,
-    Column("user", UUID, ForeignKey("users.user_id"), primary_key=True),
-    Column("follows", UUID, ForeignKey("users.user_id"), primary_key=True),
+    Column("user", String(32), ForeignKey("users.user_id"), primary_key=True),
+    Column("follows", String(32), ForeignKey("users.user_id"), primary_key=True),
 )
 
 
 class User(Base):
     __tablename__ = "users"
 
-    user_id: Mapped[UUID] = mapped_column(UUID(as_uuid=True),
+    user_id: Mapped[str] = mapped_column(String(32),
                                          primary_key=True,
                                          default=uuid.uuid4)
 

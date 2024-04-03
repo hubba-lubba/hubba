@@ -16,7 +16,6 @@ class UserRepository:
 
         publisher_factory = PublisherFactory()
         self.publisher = publisher_factory.get_publisher()
-        
 
     """
     Adds new User object to be persisted using User object
@@ -38,11 +37,21 @@ class UserRepository:
     :optional param streaming_status: str of streaming status
     :return: User of added user
     """
+    @check_id_not_exists(User, ["user_id"])
     @check_unique(User, User.username, ["username"])
     def add_user(self, username, user_id=None, streaming_status=None):
         new_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
         return self._add_user(new_user)
 
+    """
+    Gets all User objects
+
+    :return: list of User objects obtained from persisted data
+    """
+    def get_all_users(self):
+        users = self.session.query(User).all()
+        return users
+    
     """
     Gets an existing User
 

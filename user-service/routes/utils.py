@@ -32,7 +32,7 @@ def require_query_params(query_args):
         return returned_func
     return decorator
 
-def ensureUUID(field):
+def ensure_UUID(field):
     def decorator(func):
         @wraps(func)
         def returned_func(*args, **kwargs):
@@ -53,21 +53,19 @@ def ensureUUID(field):
         return returned_func
     return decorator
 
-def ensureAuthorized():
+def ensure_authorized():
     def decorator(func):
         @wraps(func)
         def returned_func(*args, **kwargs):
-            request_json = request.get_json()
-            if request_json.get("admin") is not None and request_json.get("admin") == "true":
-                return func(*args, **kwargs)
+            id_token = request.headers.get("id_token")
 
-            if request_json.get("id_token") is None:
+            if id_token is None:
                 return jsonify({
                     "status": "failure", 
                     "reason": "missing id_token header"
                 })
             try: 
-                auth.verify_id_token(request_json.get("id_token"))
+                auth.verify_id_token(id_token)
             except (auth.ExpiredIdTokenError, auth.InvalidIdTokenError) as e:
                 return jsonify({
                     "status": "failure", 
