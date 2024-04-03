@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
 from routes.utils import *
-from firebase_admin import auth
 
 user_blueprint = Blueprint('user_api', __name__, url_prefix="/")
 CORS(user_blueprint)
@@ -44,16 +43,6 @@ def get_all_users():
 @require_json_params(["username"])
 def add_user():
     context = request.get_json()
-    id_token = request.headers.get("id_token")    
-
-    try: 
-        user = auth.verify_id_token(id_token)
-    except (auth.ExpiredIdTokenError, auth.InvalidIdTokenError) as e:
-        return jsonify({
-            "status": "failure", 
-            "reason": "unable to verify id_token",
-            "message": str(e)
-        })
 
     username = context.get("username")
     if not username:
@@ -62,30 +51,30 @@ def add_user():
             "reason": "missing username or username is empty"
         })
         return result, 400
-    user_id = user.get("uid")
+    user_id = context.get("user_id")
     streaming_status = context.get("streaming_status")
 
     with Session(engine) as session:
         user_repository = UserRepository(session)
         try:
-            new_user = user_repository.add_user(username=username, 
-                                                user_id=user_id, 
+            new_user = user_repository.add_user(username=username, user_id=user_id, 
                                                 streaming_status=streaming_status)
             response = jsonify({
                 "status": "success",
                 "user": new_user.get_JSON(),
-                })
+            })
             return response
         except (IdExistsException, NonUniqueException) as e:
             result = jsonify({
-                "status": "failure",
-                "reason": str(e)
+                    "status": "failure",
+                    "reason": str(e)
                 })
             return result, 400
 
 
 @user_blueprint.route("/", methods=["GET"])
 @require_query_params(["user_id"])
+@ensure_UUID("user_id")
 @ensure_authorized()
 def get_user():
     user_id = request.args.get("user_id")
@@ -96,18 +85,19 @@ def get_user():
             response = jsonify({
                 "status": "success",
                 "user": user.get_JSON(),
-                })
+            })
             return response
         except IdMissingException as e:
             result = jsonify({
                 "status": "failure",
                 "reason": str(e)
-                })
+            })
             return result, 400
 
 @user_blueprint.route("/", methods=["DELETE"])
 @ensure_authorized()
 @require_query_params(["user_id"])
+@ensure_UUID("user_id")
 def delete_user():
     user_id = request.args.get("user_id")
     with Session(engine) as session:
@@ -117,18 +107,20 @@ def delete_user():
             response = jsonify({
                 "status": "success",
                 "user_id": user_id
-                })
+            })
             return response
         except IdMissingException as e:
             result = jsonify({
                 "status": "failure",
                 "reason": str(e)
-                })
+            })
             return result, 400
 
 @user_blueprint.route("/add_following", methods=["POST"])
 @ensure_authorized()
 @require_json_params(["user_id", "following"])
+@ensure_UUID("user_id")
+@ensure_UUID("following")
 def add_following():
     context = request.get_json()
 
@@ -142,12 +134,12 @@ def add_following():
             response = jsonify({
                 "status": "success",
                 "user": user.get_JSON(),
-                })
+            })
             return response
         except (IdMissingException, SelfReferentialFollowException) as e:
             result = jsonify({
                 "status": "failure",
                 "reason": str(e)
-                })
-
+            })
+            
             return result, 400

@@ -32,7 +32,7 @@ export const DevDropdown = () => {
             <DropdownOption onClick={() => logUserDevInfo()}>
                 userDevInfo
             </DropdownOption>
-            <DropdownOption onClick={() => createUserData()}>
+            <DropdownOption onClick={() => createUserData({ username: text })}>
                 createUserData
             </DropdownOption>
             <DropdownOption onClick={() => getCurrentUserData()}>
@@ -42,7 +42,7 @@ export const DevDropdown = () => {
                 getUserData
             </DropdownOption>
             <DropdownOption onClick={() => console.log(text)}>
-                Verify Text
+                verify text
             </DropdownOption>
             <input
                 type="text"

@@ -3,7 +3,11 @@ import { getidtoken } from '@/features/auth/api';
 import { getAuth } from 'firebase/auth';
 import { USER_API_URL } from '@/config';
 
-export const createUserData = async (): Promise<void> => {
+export const createUserData = async ({
+    username,
+}: {
+    username: string;
+}): Promise<void> => {
     const idToken = await getidtoken();
 
     const headers = {
@@ -11,9 +15,14 @@ export const createUserData = async (): Promise<void> => {
         id_token: idToken,
     };
 
+    const body = {
+        username: username,
+    };
+
     const res = await fetch(`${USER_API_URL}/`, {
-        method: 'POST',
+        method: 'PUT',
         headers: headers,
+        body: JSON.stringify(body),
     });
 
     if (res.status !== 200) throw res;
@@ -26,12 +35,15 @@ export const createUserData = async (): Promise<void> => {
 
 export const getCurrentUserData = async (): Promise<User> => {
     const idToken = await getidtoken();
+    const auth = getAuth();
+    const id = auth.currentUser?.uid;
 
     const headers = {
         'Content-Type': 'application/json',
         id_token: idToken,
     };
-    const res = await fetch(`${USER_API_URL}/`, {
+    // TODO: remove id query param in future (backend problem)
+    const res = await fetch(`${USER_API_URL}/?user_id=${id}`, {
         method: 'GET',
         headers: headers,
     });
@@ -44,16 +56,19 @@ export const getCurrentUserData = async (): Promise<User> => {
     console.log(`get ${JSON.stringify(data)}`);
 
     const userData = data.user;
-    console.log(userData);
+    userData['email'] = 'poop@gmail.com';
+
+    console.log(new User(...userData));
     return userData;
 };
 
-export const getUserData = async ({ id }: { id?: string }): Promise<User> => {
-    const auth = getAuth();
-    if (!id) id = auth.currentUser?.uid;
+export const getUserData = async ({ id }: { id: string }): Promise<User> => {
+    // TODO: remove need for idToken in future (backend problem)
+    const idToken = await getidtoken();
 
     const headers = {
         'Content-Type': 'application/json',
+        id_token: idToken,
     };
     const res = await fetch(`${USER_API_URL}?user_id=${id}`, {
         method: 'GET',
