@@ -37,6 +37,7 @@ class UserRepository:
     :optional param streaming_status: str of streaming status
     :return: User of added user
     """
+    @check_id_not_exists(User, ["user_id"])
     @check_unique(User, User.username, ["username"])
     def add_user(self, username, user_id=None, streaming_status=None):
         new_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
