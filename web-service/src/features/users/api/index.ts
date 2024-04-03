@@ -1,4 +1,4 @@
-import { User } from '../classes';
+import { User } from '../types';
 import { getidtoken } from '@/features/auth/api';
 import { getAuth } from 'firebase/auth';
 import { USER_API_URL } from '@/config';
@@ -56,9 +56,7 @@ export const getCurrentUserData = async (): Promise<User> => {
     console.log(`get ${JSON.stringify(data)}`);
 
     const userData = data.user;
-    userData['email'] = 'poop@gmail.com';
-
-    console.log(new User(...userData));
+    console.log(new User({ id: userData.user_id, ...userData }));
     return userData;
 };
 

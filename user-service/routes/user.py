@@ -74,8 +74,6 @@ def add_user():
 
 @user_blueprint.route("/", methods=["GET"])
 @require_query_params(["user_id"])
-@ensure_UUID("user_id")
-@ensure_authorized()
 def get_user():
     user_id = request.args.get("user_id")
     with Session(engine) as session:
