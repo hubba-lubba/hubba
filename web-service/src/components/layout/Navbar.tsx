@@ -8,7 +8,8 @@ import NavbarSearchBar from '../elements/NavbarSearchBar';
 import { BsInbox } from 'react-icons/bs';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { LuPlusSquare } from 'react-icons/lu';
-import { signout } from '@/lib/auth';
+import { TbBrandAmongUs } from 'react-icons/tb';
+import { signout, logUserDevInfo } from '@/lib/auth';
 
 type DropdownOptionProps = {
     children: React.ReactNode;
@@ -89,6 +90,13 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                     <div className="flex flex-row items-center justify-end gap-4">
                         {userData && (
                             <>
+                                {import.meta.env.DEV && (
+                                    <TbBrandAmongUs
+                                        className="cursor-pointer"
+                                        size={24}
+                                        onClick={() => logUserDevInfo()}
+                                    />
+                                )}
                                 <LuPlusSquare
                                     className="cursor-pointer"
                                     size={24}
