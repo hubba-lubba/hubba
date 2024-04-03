@@ -1,10 +1,8 @@
 import { useContext } from 'react';
+import { UpdateUserInfoForm } from './UpdateUserInfoForm'
 import { AuthContext } from '@/contexts/AuthProvider';
 import { Layout } from '@/components/layout';
 import { BsTwitch, BsDiscord, BsYoutube, BsTencentQq } from 'react-icons/bs';
-import { Form, TextField, SubmitButton } from '@/components/form';
-import { password, confirmPassword } from '@/lib/validation';
-import Joi from 'joi';
 
 function ConnectedApp(props: { platform: string; username?: string }) {
     const { platform, username } = props;
@@ -36,54 +34,7 @@ function ConnectedApp(props: { platform: string; username?: string }) {
     );
 }
 
-const schema = Joi.object({
-    password: password,
-    confirmPassword: confirmPassword,
-});
-
-type ChangePasswordValues = {
-    password: string;
-    confirmPassword: string;
-};
-
-function ChangePassword() {
-    async function handleSubmit(data: ChangePasswordValues) {
-        const { password, confirmPassword } = data;
-        try {
-            console.log('change password: ', password, confirmPassword);
-        } catch (error) {
-            console.log(`Error: ${(error as Error).message}`);
-        }
-    }
-
-    return (
-        <Form<ChangePasswordValues, typeof schema>
-            onSubmit={handleSubmit}
-            schema={schema}
-        >
-            {({ register, formState }) => (
-                <>
-                    <TextField
-                        type="password"
-                        label="Password"
-                        error={formState.errors['password']}
-                        registration={register('password')}
-                    />
-                    <TextField
-                        type="password"
-                        label="Confirm Password"
-                        error={formState.errors['confirmPassword']}
-                        registration={register('confirmPassword')}
-                    />
-                    <SubmitButton text="Submit" />
-                </>
-            )}
-        </Form>
-    );
-}
-
 type userSettings = {
-    notifications?: boolean;
     connections?: { platform: string; username?: string }[];
 };
 
@@ -104,10 +55,7 @@ export const SettingsForm = () => {
     return (
         <Layout style="flex-col items-center">
             <h1 className="mb-8 text-5xl font-bold">Settings</h1>
-            <section className="mb-6">
-                <h2 className="mb-2 text-2xl">Change Password</h2>
-                <ChangePassword />
-            </section>
+            <UpdateUserInfoForm />
             <section className="mb-6">
                 <h2 className="mb-2 text-2xl">Connected Apps</h2>
                 {connections}
