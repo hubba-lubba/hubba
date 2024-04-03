@@ -21,7 +21,7 @@ moderator_table = Table("organization_moderator_table",
                                ForeignKey("organizations.organization_id"), 
                                primary_key=True),
                         Column("moderator", 
-                               UUID, 
+                               String(32), 
                                ForeignKey("users.user_id"), 
                                primary_key=True))
 
@@ -32,7 +32,7 @@ user_table = Table("user_table",
                           ForeignKey("organizations.organization_id"), 
                           primary_key=True),
                    Column("user", 
-                          UUID, 
+                          String(32), 
                           ForeignKey("users.user_id"), 
                           primary_key=True))
 
@@ -43,7 +43,7 @@ event_table = Table("event_table",
                            ForeignKey("organizations.organization_id"), 
                            primary_key=True),
                     Column("user", 
-                           UUID, 
+                           String(32), 
                            ForeignKey("users.user_id"), 
                            primary_key=True))
 
@@ -62,7 +62,7 @@ class Organizations(Base):
     description: Mapped[str] = mapped_column(String(128), 
                                              nullable=True)
 
-    owner_id: Mapped[UUID] = mapped_column(ForeignKey("users.user_id"))
+    owner_id: Mapped[str] = mapped_column(ForeignKey("users.user_id"))
 
     owner: Mapped[User] = relationship(back_populates="owns")
 

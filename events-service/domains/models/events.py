@@ -15,12 +15,12 @@ import uuid
 event_moderator_table = Table("event_moderator_table",
                               Base.metadata,
                               Column("event", UUID, ForeignKey("events.event_id"), primary_key=True),
-                              Column("moderator", UUID, ForeignKey("users.user_id"), primary_key=True))
+                              Column("moderator", String(32), ForeignKey("users.user_id"), primary_key=True))
 
 user_table = Table("user_table",
                    Base.metadata,
                    Column("event", UUID, ForeignKey("events.event_id"), primary_key=True),
-                   Column("user", UUID, ForeignKey("users.user_id"), primary_key=True))
+                   Column("user", String(32), ForeignKey("users.user_id"), primary_key=True))
 
 tag_table = Table("tag_table",
                   Base.metadata,
@@ -58,7 +58,7 @@ class Events(Base):
     date_posted: Mapped[DateTime] = mapped_column(DateTime(timezone=True),
                                                     server_default=func.now())
 
-    owner_id: Mapped[UUID] = mapped_column(ForeignKey("users.user_id"))
+    owner_id: Mapped[str] = mapped_column(ForeignKey("users.user_id"))
 
     owner: Mapped[User] = relationship(back_populates="owns")
 
