@@ -57,10 +57,6 @@ def ensure_authorized():
     def decorator(func):
         @wraps(func)
         def returned_func(*args, **kwargs):
-            request_json = request.get_json()
-            if request_json.get("admin") is not None and request_json.get("admin") == "true":
-                return func(*args, **kwargs)
-
             id_token = request.headers.get("id_token")
 
             if id_token is None:
