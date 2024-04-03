@@ -3,14 +3,14 @@ import { FieldWrapper } from '@/components/form/FieldWrapper';
 import { AnySchema } from 'joi'
 
 type ChangeProfilePictureFields = {
-    newProfilePicture: File;
+    newProfilePicture: FileList;
 };
 
 export function ChangeProfilePicture() {
     async function handleSubmit(data: ChangeProfilePictureFields) {
         const { newProfilePicture } = data;
         try {
-            console.log(`new pfp: ${newProfilePicture}`);
+            console.log(`new pfp: ${newProfilePicture.item(0)}`);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
