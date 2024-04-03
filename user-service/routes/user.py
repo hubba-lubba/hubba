@@ -124,12 +124,12 @@ def delete_user():
 def add_following():
     context = request.get_json()
 
-    user_id = context.get("user_id")
+    curr_user_id = auth.verify_id_token(request.headers.get("id_token")).get("uid")
     new_following = context.get("following")
     with Session(engine) as session:
         try:
             user_repository = UserRepository(session)
-            user = user_repository.add_following(user_id=user_id,
+            user = user_repository.add_following(user_id=curr_user_id,
                                                  following=new_following)
             response = jsonify({
                 "status": "success",
@@ -142,4 +142,25 @@ def add_following():
                 "reason": str(e)
             })
             
+            return result, 400
+
+@user_blueprint.route("/get_current_user", methods=["GET"])
+@ensure_authorized()
+def get_current_user():
+    user_id = auth.verify_id_token(request.headers.get("id_token")).get("uid")
+    with Session(engine) as session:
+        try:
+            user_repository = UserRepository(session)
+            user = user_repository.get_user(user_id=user_id)
+            response = jsonify({
+                "status": "success",
+                "user": user.get_JSON(),
+                })
+            return response
+        except IdMissingException as e:
+            result = jsonify({
+                "status": "failure",
+                "reason": str(e)
+                })
+
             return result, 400
