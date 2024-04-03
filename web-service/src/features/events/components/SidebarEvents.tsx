@@ -31,9 +31,9 @@ export const SidebarEvents = () => {
             {events
                 .map((event, index) => (
                     <Button
-                        key={`sidebar-event-${event.id}-${index}`}
+                        key={`sidebar-event-${event.event_id}-${index}`}
                         variant="text"
-                        handleClick={() => navigate(`/events/${event.id}`)}
+                        handleClick={() => navigate(`/events/${event.event_id}`)}
                         // handleClick={() => window.open(event.url)} // make not open in new window when we got proper urls
                     >
                         {event.title}

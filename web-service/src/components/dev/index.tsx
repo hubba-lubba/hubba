@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { TbBrandAmongUs } from 'react-icons/tb';
+import { useState, useContext } from 'react';
+import { UserContext } from '@/contexts/UserProvider';
 import { logUserDevInfo } from '@/lib/auth';
 import {
-    createUserData,
-    getCurrentUserData,
-    getUserData,
+    createUser,
+    getCurrentUser,
+    getUser,
 } from '@/features/users/api';
+import { TbBrandAmongUs } from 'react-icons/tb';
 
 const DropdownOption = ({
     children,
@@ -26,20 +27,24 @@ const DropdownOption = ({
 
 export const DevDropdown = () => {
     const [text, setText] = useState('');
+    const { userData } = useContext(UserContext);
 
     return (
         <div className="fixed right-28 top-24 flex w-[200px] flex-col rounded-b bg-hubba-900">
             <DropdownOption onClick={() => logUserDevInfo()}>
                 userDevInfo
             </DropdownOption>
-            <DropdownOption onClick={() => createUserData({ username: text })}>
-                createUserData
+            <DropdownOption onClick={() => console.log(userData)}>
+                userContextData
             </DropdownOption>
-            <DropdownOption onClick={() => getCurrentUserData()}>
-                getCurrentUserData
+            <DropdownOption onClick={() => createUser({ username: text })}>
+                createUser
             </DropdownOption>
-            <DropdownOption onClick={() => getUserData({ id: text })}>
-                getUserData
+            <DropdownOption onClick={() => getCurrentUser()}>
+                getCurrentUser
+            </DropdownOption>
+            <DropdownOption onClick={() => getUser({ id: text })}>
+                getUser
             </DropdownOption>
             <DropdownOption onClick={() => console.log(text)}>
                 verify text

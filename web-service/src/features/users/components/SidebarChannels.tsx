@@ -33,13 +33,13 @@ export const SidebarChannels = () => {
             {channels
                 .map((channel, index) => (
                     <Button
-                        key={`sidebar-channel-${channel.id}-${index}`}
+                        key={`sidebar-channel-${channel.user_id}-${index}`}
                         variant="image"
                         image={channel.profile_image}
                         Icon={
                             channel.profile_image ? undefined : FaRegUserCircle
                         }
-                        handleClick={() => navigate(`/user/${channel.id}`)}
+                        handleClick={() => navigate(`/user/${channel.user_id}`)}
                     >
                         {channel.username}
                     </Button>

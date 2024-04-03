@@ -92,9 +92,9 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                         <NavbarSearchBar />
                     </div>
                     <div className="flex flex-row items-center justify-end gap-4">
+                        {import.meta.env.DEV && <DevTool />}
                         {userData && (
                             <>
-                                {import.meta.env.DEV && <DevTool />}
                                 <LuPlusSquare
                                     className="cursor-pointer"
                                     size={24}

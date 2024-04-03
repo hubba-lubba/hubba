@@ -27,7 +27,7 @@ export const DiscoverFeed = () => {
             <Shelf title="Upcoming Events">
                 {upcomingEvents.map((event, index) => (
                     <Card
-                        key={`upcoming-${event.id}-${index}`}
+                        key={`upcoming-${event.event_id}-${index}`}
                         {...event}
                     ></Card>
                 ))}
@@ -40,7 +40,7 @@ export const DiscoverFeed = () => {
             <Shelf title="Upcoming Events">
                 {upcomingEvents.map((event, index) => (
                     <Card
-                        key={`upcoming2-${event.id}-${index}`}
+                        key={`upcoming2-${event.event_id}-${index}`}
                         {...event}
                     ></Card>
                 ))}

@@ -1,14 +1,10 @@
 import { Message, User } from '../types';
-import { getidtoken } from '@/features/auth/api';
-import { USER_API_URL } from '@/config';
-
 
 // BELOW ARE MOCK FUNCTIONS
-
-export const getUser = async (id: string): Promise<{ user: User }> => {
+export const getMockUser = async (id: string): Promise<{ user: User }> => {
     const data = {
         user: {
-            id: id,
+            user_id: id,
             username: `user with id ${id}`,
             email: 'email1',
             profile_image: undefined,
@@ -21,11 +17,11 @@ export const getUser = async (id: string): Promise<{ user: User }> => {
             channel_url: 'https://www.google.com',
             stream_url: 'stream_url1',
             video_urls: ['video_url1', 'video_url2'],
-            joined_event_ids: ['event1', 'event2'],
-            past_event_ids: ['event3', 'event4'],
+            joined_events: ['event1', 'event2'],
+            past_events: ['event3', 'event4'],
             joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
             platforms: ['platform1', 'platform2'],
-            inbox: (await getInbox()).messages,
+            inbox: (await getMockInbox()).messages,
         },
     };
     return data;
@@ -34,12 +30,12 @@ export const getUser = async (id: string): Promise<{ user: User }> => {
 // for invitations or requests, create a button componoent that extends button
 // specifically for this: contains link with info and token.
 // content will simply hold a react component with said values.
-export const getInbox = async (): Promise<{ messages: Message[] }> => {
+export const getMockInbox = async (): Promise<{ messages: Message[] }> => {
     const data = {
         // order by time
         messages: [
             {
-                id: '1',
+                message_id: '1',
                 sender: 'sen1',
                 receiver: 'rec1',
                 subject:
@@ -50,7 +46,7 @@ export const getInbox = async (): Promise<{ messages: Message[] }> => {
                 read: false,
             },
             {
-                id: '2',
+                message_id: '2',
                 sender: 'sen2',
                 receiver: 'rec2',
                 subject: 'Fitness gram',
@@ -60,7 +56,7 @@ export const getInbox = async (): Promise<{ messages: Message[] }> => {
                 read: false,
             },
             {
-                id: '3',
+                message_id: '3',
                 sender: 'aaa',
                 receiver: 'receiver1',
                 subject: 'This is a subject line',
@@ -69,7 +65,7 @@ export const getInbox = async (): Promise<{ messages: Message[] }> => {
                 read: true,
             },
             {
-                id: '4',
+                message_id: '4',
                 sender: 'sender1',
                 receiver: 'receiver1',
                 subject: 'subject1',
@@ -86,7 +82,7 @@ export const getInbox = async (): Promise<{ messages: Message[] }> => {
 
 export const getFollowingChannels = async (user: User): Promise<User[]> => {
     const data = await Promise.all(
-        user.following.map(async (id) => (await getUser(id)).user),
+        user.following.map(async (id) => (await getMockUser(id)).user),
     );
     return data;
 };

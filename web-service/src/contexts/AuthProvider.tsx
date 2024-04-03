@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from './UserProvider';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
-import { getUser } from '@/features/users/api';
+import { createUser, getCurrentUser } from '@/features/users/api';
 
 export const AuthContext = React.createContext<firebase.User>(null!);
 
@@ -26,8 +26,8 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         const loadUserData = async () => {
             if (user) {
                 try {
-                    const userData = await getUser(user.uid);
-                    setUserData(userData.user);
+                    const userData = await getCurrentUser();
+                    setUserData(userData);
                 } catch (error) {
                     console.log(error);
                     throw error;
@@ -42,7 +42,9 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
             } catch (error: any) {
                 if (error.status === 404 || error.status === 403) {
                     try {
-                        //   await createUserData();
+                        await createUser({
+                            username: user.displayName ?? user.email ?? 'User',
+                        });
                         await loadUserData();
                         return;
                     } catch (error) {
