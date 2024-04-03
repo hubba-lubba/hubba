@@ -106,6 +106,17 @@ services:
       ports:
         - "80:80"
       restart: unless-stopped
+  file-service:
+      build:
+        context: ./file-service
+        dockerfile: ./Dockerfile
+      image: "file-service"
+      container_name: "file-service"
+      networks:
+         - hubba-subnet
+      ports:
+        - "8010:8010"
+      restart: unless-stopped
 
 volumes:
   hubba-db:

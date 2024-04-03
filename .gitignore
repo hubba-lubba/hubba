@@ -138,9 +138,11 @@ dist
 user-service/events/hubba-credentials.json
 events-service/events/hubba-credentials.json
 organizations-service/events/hubba-credentials.json
+file-service/hubba-credentials.json
 ./user-service/events/hubba-credentials.json
 ./events-service/events/hubba-credentials.json
 ./organizations-service/events/hubba-credentials.json
+./file-service/hubba-credentials.json
 
 user-service/firebase-sa-cred.json
 events-service/firebase-sa-cred.json
