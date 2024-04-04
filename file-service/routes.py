@@ -8,6 +8,10 @@ import string
 
 blob_url_generator = Blueprint("blob_url_generator", __name__, url_prefix="/")
 
+@blob_url_generator.route("/", methods=["GET"])
+def health_check():
+    return jsonify({"status": "success"})
+
 @blob_url_generator.route("/get_profile_picture_upload_url", methods=["GET"])
 @ensure_authorized()
 def get_profile_picture_upload_url():
