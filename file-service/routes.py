@@ -21,7 +21,7 @@ def get_profile_picture_upload_url():
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
 
-    blob_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=32))
+    blob_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=32)) + ".jpg"
 
     blob = bucket.blob(blob_name)
 
@@ -34,4 +34,4 @@ def get_profile_picture_upload_url():
     return jsonify({
         "status": "success",
         "url": url,
-        "blob-name": blob_name})
+        "blob-url": f"https://storage.googleapis.com/hubba-profile-pictures/{blob_name}"})
