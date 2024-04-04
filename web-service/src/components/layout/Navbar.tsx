@@ -7,6 +7,7 @@ import Logo from '../elements/Logo';
 import NavbarSearchBar from '../elements/NavbarSearchBar';
 import { BsInbox } from 'react-icons/bs';
 import { FaRegUserCircle } from 'react-icons/fa';
+import { HiMiniSignal } from 'react-icons/hi2';
 import { LuPlusSquare } from 'react-icons/lu';
 import { DevTool } from '../dev';
 import { signout } from '@/lib/auth';
@@ -63,7 +64,7 @@ type NavbarProps = {
 
 export const Navbar = ({ bare = false }: NavbarProps) => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
-    const { setShowUploadModal } = useContext(ModalContext);
+    const { setShowUploadModal, setShowStreamModal } = useContext(ModalContext);
     const { userData } = useContext(UserContext);
     const user = useContext(AuthContext);
 
@@ -99,6 +100,11 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     className="cursor-pointer"
                                     size={24}
                                     onClick={() => setShowUploadModal(true)}
+                                />
+                                <HiMiniSignal
+                                    className="cursor-pointer"
+                                    size={24}
+                                    onClick={() => setShowStreamModal(true)}
                                 />
                                 <Link to="/inbox">
                                     <BsInbox size={24} />

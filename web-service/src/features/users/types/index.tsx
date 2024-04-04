@@ -4,13 +4,13 @@ export class User {
         public username: string,
         public email: string,
         public profile_image: string | undefined = undefined,
-        public bio: string = "No bio.",
+        public bio: string = 'No bio.',
         public followers: string[] = [],
         public num_followers: number = 0,
         public following: string[] = [],
         public num_following: number = 0,
         public streaming_status: number = 0,
-        public channel_url: string = "",
+        public channel_url: string = '',
         public video_urls: string[] = [],
         public joined_events: string[] = [],
         public past_events: string[] = [],
@@ -28,7 +28,7 @@ export class User {
         this.following = following;
         this.num_following = num_following;
         this.streaming_status = streaming_status;
-        this.channel_url = channel_url;
+        this.channel_url = channel_url; //may not need if connect platforms
         this.video_urls = video_urls;
         this.joined_events = joined_events;
         this.past_events = past_events;
@@ -43,8 +43,8 @@ export class Message {
         public message_id: string,
         public sender: string,
         public receiver: string,
-        public subject: string = "No Subject.",
-        public content: string = "No Content.",
+        public subject: string = 'No Subject.',
+        public content: string = 'No Content.',
         public timestamp: Date = new Date(),
         public read: boolean = false,
     ) {
