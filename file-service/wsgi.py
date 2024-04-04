@@ -10,7 +10,7 @@ def init_firebase():
     initialize_app(cred)
 
 def init_app():
-    initialize_app()
+    init_firebase()
     app = Flask(__name__)
     app.register_blueprint(blob_url_generator)
     cors = CORS(app)
