@@ -5,12 +5,12 @@ import { UserContext } from '@/contexts/UserProvider';
 import { ModalContext } from '@/contexts/ModalProvider';
 import Logo from '../elements/Logo';
 import NavbarSearchBar from '../elements/NavbarSearchBar';
-import { BsInbox } from 'react-icons/bs';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { HiMiniSignal } from 'react-icons/hi2';
 import { LuPlusSquare } from 'react-icons/lu';
 import { DevTool } from '../dev';
 import { signout } from '@/lib/auth';
+// import { BsInbox } from 'react-icons/bs';
 
 type DropdownOptionProps = {
     children: React.ReactNode;
@@ -106,9 +106,9 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     size={24}
                                     onClick={() => setShowStreamModal(true)}
                                 />
-                                <Link to="/inbox">
+                                {/* <Link to="/inbox">
                                     <BsInbox size={24} />
-                                </Link>
+                                </Link> */}
                             </>
                         )}
                         <div
