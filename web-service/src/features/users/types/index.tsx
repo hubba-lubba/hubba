@@ -16,7 +16,7 @@ export class User {
         public past_events: string[] = [],
         public joined_orgs: string[] = [],
         public platforms: string[] = [],
-        public inbox: Message[] = [],
+        // public inbox: Message[] = [],
     ) {
         this.user_id = user_id;
         this.username = username;
@@ -34,27 +34,27 @@ export class User {
         this.past_events = past_events;
         this.joined_orgs = joined_orgs;
         this.platforms = platforms;
-        this.inbox = inbox;
+        // this.inbox = inbox;
     }
 }
 
-export class Message {
-    constructor(
-        public message_id: string,
-        public sender: string,
-        public receiver: string,
-        public subject: string = 'No Subject.',
-        public content: string = 'No Content.',
-        public timestamp: Date = new Date(),
-        public read: boolean = false,
-    ) {
-        this.message_id = message_id;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.content = content;
-        this.timestamp = timestamp;
-    }
-}
+// export class Message {
+//     constructor(
+//         public message_id: string,
+//         public sender: string,
+//         public receiver: string,
+//         public subject: string = 'No Subject.',
+//         public content: string = 'No Content.',
+//         public timestamp: Date = new Date(),
+//         public read: boolean = false,
+//     ) {
+//         this.message_id = message_id;
+//         this.sender = sender;
+//         this.receiver = receiver;
+//         this.content = content;
+//         this.timestamp = timestamp;
+//     }
+// }
 
 // do not implement on backend
 // only for YT rn, Twitch requires use of Twitch API which we dont wanna implement.
