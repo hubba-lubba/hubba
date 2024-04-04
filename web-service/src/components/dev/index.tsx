@@ -1,11 +1,7 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '@/contexts/UserProvider';
 import { logUserDevInfo } from '@/lib/auth';
-import {
-    createUser,
-    getCurrentUser,
-    getUser,
-} from '@/features/users/api';
+import { createUser, getCurrentUser, getUser } from '@/features/users/api';
 import { TbBrandAmongUs } from 'react-icons/tb';
 
 const DropdownOption = ({
@@ -52,6 +48,7 @@ export const DevDropdown = () => {
             <input
                 type="text"
                 name="text"
+                placeholder="params"
                 className="rounded-b border-2 border-hubba-800 bg-hubba-900 px-6 py-2 text-white"
                 onChange={(e) => setText(e.target.value)}
             />

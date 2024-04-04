@@ -1,5 +1,5 @@
 import { Navbar, Sidebar } from '@/components/layout';
-import { UploadModal } from '@/components/elements/modals';
+import { UploadModal, StreamModal } from '@/components/elements/modals';
 
 interface InterfaceProps {
     children: React.ReactNode;
@@ -9,6 +9,7 @@ export const Interface = ({ children }: InterfaceProps) => {
     return (
         <>
             <UploadModal />
+            <StreamModal />
             <div className="flex h-screen flex-col">
                 <Navbar />
                 {/* margin spacing for sidebar and nav */}
