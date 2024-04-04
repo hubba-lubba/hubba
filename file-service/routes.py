@@ -26,10 +26,32 @@ storage_client = storage.Client(credentials=credentials)
 def health_check():
     return jsonify({"status": "success"})
 
-@blob_url_generator.route("/get_profile_picture_upload_url", methods=["GET"])
+@blob_url_generator.route("/get_profile_upload_url", methods=["GET"])
 @ensure_authorized()
-def get_profile_picture_upload_url():
+def get_profile_upload_url():
     bucket_name = "hubba-profile-pictures"
+
+    bucket = storage_client.bucket(bucket_name)
+    random_32 = ''.join(random.choices(string.ascii_lowercase + string.digits, k=32))
+    blob_name =  f"{random_32}.jpeg"
+    blob = bucket.blob(blob_name)
+
+    url = blob.generate_signed_url(
+        version="v4",
+        expiration=datetime.timedelta(minutes=15),
+        method="PUT",
+        content_type="image/jpeg"
+    )
+    logger.info(f"Generated signed URL for {blob_name}")
+    return jsonify({
+        "status": "success",
+        "url": url,
+        "blob-url": f"https://storage.googleapis.com/hubba-profile-pictures/{blob_name}"})
+
+@blob_url_generator.route("/get_organizations_upload_url", methods=["GET"])
+@ensure_authorized()
+def get_organizations_upload_url():
+    bucket_name = "hubba-organizations-pictures"
 
     bucket = storage_client.bucket(bucket_name)
     random_32 = ''.join(random.choices(string.ascii_lowercase + string.digits, k=32))
