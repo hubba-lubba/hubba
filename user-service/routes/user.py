@@ -51,7 +51,8 @@ def add_user():
             "reason": "missing username or username is empty"
         })
         return result, 400
-    user_id = context.get("user_id")
+    id_token = request.headers.get("id_token")
+    user_id = auth.verify_id_token(id_token)["uid"]
     streaming_status = context.get("streaming_status")
 
     with Session(engine) as session:
@@ -75,8 +76,7 @@ def add_user():
 @user_blueprint.route("/", methods=["GET"])
 @require_query_params(["user_id"])
 def get_user():
-    id_token = request.headers.get("id_token")
-    user_id = auth.verify_id_token(id_token)["uid"]
+    user_id = request.args.get("user_id")
     
     with Session(engine) as session:
         try:
