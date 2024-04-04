@@ -1,36 +1,47 @@
-import { Card, Grid, Layout } from '@/components/layout';
-import { VideoLink } from '../types';
+import { Layout } from '@/components/layout';
+import { Grid } from '@/components/library';
 import { useEffect, useState } from 'react';
-import { getVideoLinks, getMockUser } from '../api';
+import { getVideos, getMockUser } from '../api';
 import { Button } from '@/components/elements/buttons';
 import { useContext } from 'react';
-import { AuthContext } from '@/contexts/AuthProvider';
+import { VideoCard } from './VideoCard';
+import { UserContext } from '@/contexts/UserProvider';
 import { useParams } from 'react-router-dom';
 import { User } from '../types';
 import { FaRegUserCircle } from 'react-icons/fa';
+import { Video } from '../types';
 
 export const Profile = () => {
     const { id } = useParams<{ id: string }>();
-    const [videos, setVideos] = useState<VideoLink[]>([]);
-    const currentUser = useContext(AuthContext);
+    const [videos, setVideos] = useState<Video[]>([]);
     const [user, setUser] = useState<User>();
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
             // if id is specified, gather information about a different user
-            const data = (await getMockUser(id ?? currentUser.uid)).user;
-            if (data) setUser(data);
-            else setError('User not found');
-
-            const videoLinksData = await getVideoLinks();
-            setVideos(videoLinksData.videos);
-
+            if (id) {
+                const data = (await getMockUser(id)).user;
+                if (data) setUser(data);
+                else setError('User not found');
+            } else {
+                setUser(userData);
+            }
             setLoading(false);
         };
         fetchData();
-    }, [id, currentUser?.uid]);
+    }, [id, userData]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!user) return;
+            const videosData = await getVideos(user);
+            setVideos(videosData);
+        };
+        fetchData();
+    }, [user]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -63,8 +74,12 @@ export const Profile = () => {
                 )}
             </div>
             <Grid>
-                {videos.map((vid, index) => (
-                    <Card key={`${vid.id}-${index}`} {...vid}></Card>
+                {videos.map((video, index) => (
+                    <VideoCard
+                        key={`${video.video_id}-${index}`}
+                        user={user}
+                        video={video}
+                    ></VideoCard>
                 ))}
             </Grid>
         </Layout>

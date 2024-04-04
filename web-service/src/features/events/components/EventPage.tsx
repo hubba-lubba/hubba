@@ -46,7 +46,7 @@ export const EventPage = () => {
     if (loading) return <p>Loading events...</p>;
     if (error) return <div>error</div>;
 
-    const time = event.time_of_event.toLocaleString('en-US', {
+    const time = event.time_of.toLocaleString('en-US', {
         weekday: 'short',
         month: 'short',
         day: 'numeric',
@@ -73,10 +73,10 @@ export const EventPage = () => {
 
                     <div className="flex w-6/12 flex-col space-y-6">
                         <h1 className="text-4xl font-bold">
-                            [{event.status}]{event.title || `Event ${event.event_id}`}
+                            [{event.status}]{event.name || `Event ${event.event_id}`}
                         </h1>
                         <div className="flex flex-row gap-2">{tags}</div>
-                        <p className="">Hosted by {event.host}</p>
+                        <p className="">Hosted by {event.host_org}</p>
                         <p className="">{time}</p>
                         <div className="flex w-full items-center justify-center">
                             <button className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold">

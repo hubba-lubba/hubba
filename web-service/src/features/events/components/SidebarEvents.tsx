@@ -36,7 +36,7 @@ export const SidebarEvents = () => {
                         handleClick={() => navigate(`/events/${event.event_id}`)}
                         // handleClick={() => window.open(event.url)} // make not open in new window when we got proper urls
                     >
-                        {event.title}
+                        {event.name}
                     </Button>
                 ))
                 .slice(0, showMore ? events.length : collapseLength)}

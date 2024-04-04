@@ -1,29 +1,31 @@
-import { Card, Grid, Layout } from '@/components/layout';
+import { Layout } from '@/components/layout';
+import { Grid } from '@/components/library';
 import { useEffect, useState } from 'react';
-import { getUpcomingEvents } from '@/features/events/api';
-import { Event } from '@/features/events/types';
+import { getDiscoverOrgs } from '../api';
+import { Org } from '../types';
+import { OrgCard } from './OrgCard';
 
 export const OrgsFeed = () => {
-    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+    const [discoverOrgs, setDiscoverOrgs] = useState<Org[]>([]);
 
     // put this into each feature as a component
     useEffect(() => {
         // once this is complete, move into individual features as a component
         const fetchData = async () => {
-            const upcomingEventsData = await getUpcomingEvents();
-            setUpcomingEvents(upcomingEventsData.events);
+            const discoverOrgsData = await getDiscoverOrgs();
+            setDiscoverOrgs(discoverOrgsData.orgs);
         };
 
         fetchData();
     }, []);
     return (
         <Layout style="w-full flex-col">
-            <Grid title="Upcoming Events">
-                {upcomingEvents!.map((event, index) => (
-                    <Card
-                        key={`upcoming-${event.event_id}-${index}`}
-                        {...event}
-                    ></Card>
+            <Grid title="Orgs">
+                {discoverOrgs!.map((org, index) => (
+                    <OrgCard
+                        key={`upcoming-${org.org_id}-${index}`}
+                        org={org}
+                    ></OrgCard>
                 ))}
             </Grid>
         </Layout>
