@@ -75,7 +75,9 @@ def add_user():
 @user_blueprint.route("/", methods=["GET"])
 @require_query_params(["user_id"])
 def get_user():
-    user_id = request.args.get("user_id")
+    id_token = request.headers.get("id_token")
+    user_id = auth.verify_id_token(id_token)["uid"]
+    
     with Session(engine) as session:
         try:
             user_repository = UserRepository(session)
