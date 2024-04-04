@@ -3,8 +3,14 @@ from flask import Flask
 from config import PORT
 from routes import blob_url_generator
 from flask_cors import CORS
+from firebase_admin import credentials, initialize_app
+
+def init_firebase():
+    cred = credentials.Certificate('firebase-sa-cred.json')
+    initialize_app(cred)
 
 def init_app():
+    initialize_app()
     app = Flask(__name__)
     app.register_blueprint(blob_url_generator)
     cors = CORS(app)
