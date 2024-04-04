@@ -147,6 +147,7 @@ file-service/hubba-credentials.json
 user-service/firebase-sa-cred.json
 events-service/firebase-sa-cred.json
 organizations-service/firebase-sa-cred.json
+file-service/firebase-sa-cred.json
 
 *.code-workspace
 package-lock.json
