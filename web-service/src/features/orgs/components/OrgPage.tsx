@@ -46,7 +46,7 @@ export const OrgPage = () => {
     useEffect(() => {
         if (!id) return;
         const fetchData = async () => {
-            const orgData = (await getMockOrg(id)).org;
+            const orgData = (await getMockOrg(id, 'faide')).org;
             setOrg(orgData);
             setLoading(false);
         };
