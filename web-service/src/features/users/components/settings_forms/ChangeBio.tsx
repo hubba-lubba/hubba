@@ -8,7 +8,13 @@ type ChangeBioFields = {
 }
 
 export function ChangeBio() {
-    async function handleSubmit() {
+    async function handleSubmit(data: ChangeBioFields) {
+        const { bio } = data
+        try {
+            console.log(`new bio: ${bio}`);
+        } catch (error) {
+            console.log(`Error: ${(error as Error).message}`);
+        }
     }
 
     return (
