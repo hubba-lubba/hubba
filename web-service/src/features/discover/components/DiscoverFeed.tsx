@@ -60,7 +60,6 @@ export const DiscoverFeed = () => {
                         ></OrgCard>
                     ))
                     .slice(0, 3)}
-                <TwitchLiveEmbed channel="caseoh_" />
             </Shelf>
         </Layout>
     );
