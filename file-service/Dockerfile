@@ -1,5 +1,8 @@
 FROM python:3.11-bullseye
 
+ARG BUCKET_SERVICE_ACCOUNT
+ENV BUCKET_SERVICE_ACCOUNT $BUCKET_SERVICE_ACCOUNT
+
 RUN pip install --upgrade pip
 
 COPY . /opt/file-service
