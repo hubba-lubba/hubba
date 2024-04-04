@@ -1,4 +1,6 @@
-import { Card, Shelf, Grid, Layout } from '@/components/layout';
+import { Layout } from '@/components/layout';
+import { Shelf, Grid } from '@/components/library';
+import { EventCard } from './EventCard';
 import { useEffect, useState } from 'react';
 import { getUpcomingEvents, getCurrentEvents } from '../api';
 import { Event } from '../types';
@@ -42,19 +44,19 @@ export const EventsFeed = () => {
         <Layout style="w-full flex-col">
             <Shelf title="Current Events" variant="large">
                 {currentEvents.map((event, index) => (
-                    <Card
+                    <EventCard
                         key={`current-${event.event_id}-${index}`}
-                        {...event}
-                    ></Card>
+                        event={event}
+                    ></EventCard>
                 ))}
             </Shelf>
             {/* can render shelves by category later. for now just grid */}
             <Grid title="Upcoming Events">
                 {upcomingEvents!.map((event, index) => (
-                    <Card
+                    <EventCard
                         key={`upcoming-${event.event_id}-${index}`}
-                        {...event}
-                    ></Card>
+                        event={event}
+                    ></EventCard>
                 ))}
             </Grid>
         </Layout>

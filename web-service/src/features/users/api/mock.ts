@@ -1,4 +1,4 @@
-import { Message, User } from '../types';
+import { Message, User, Video } from '../types';
 
 // BELOW ARE MOCK FUNCTIONS
 export const getMockUser = async (id: string): Promise<{ user: User }> => {
@@ -14,15 +14,17 @@ export const getMockUser = async (id: string): Promise<{ user: User }> => {
             following: ['following1', 'following2'],
             num_following: 2,
             streaming_status: 1,
-            channel_url: 'https://www.google.com',
-            stream_url: 'stream_url1',
-            video_urls: ['video_url1', 'video_url2'],
+            channel: 'https://www.google.com',
+            video_urls: [
+                'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            ],
             joined_events: ['event1', 'event2'],
             past_events: ['event3', 'event4'],
             joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
             platforms: ['platform1', 'platform2'],
             inbox: (await getMockInbox()).messages,
-        },
+        } as User,
     };
     return data;
 };
@@ -87,134 +89,86 @@ export const getFollowingChannels = async (user: User): Promise<User[]> => {
     return data;
 };
 
-export const getLiveUsers = async () => {
+export const getLiveUsers = async (): Promise<{ users: User[] }> => {
     const data = {
-        live: [
+        users: [
             {
-                id: '7',
-                title: 'Live 1',
-                thumbnail: 'https://placehold.co/300x200',
-                description: 'This is a description',
-                url: 'https://www.https://www.google.com',
-                platform: 'Twitch',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
+                user_id: '1',
+                username: 'user with id 1',
+                email: 'email1',
+                profile_image: undefined,
+                bio: 'bio1',
+                followers: ['follower1', 'follower2'],
+                num_followers: 2,
+                following: ['following1', 'following2'],
+                num_following: 2,
+                streaming_status: 1,
+                channel: 'caseoh_',
+                video_urls: ['video_url1', 'video_url2'],
+                joined_events: ['event1', 'event2'],
+                past_events: ['event3', 'event4'],
+                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                platforms: ['platform1', 'platform2'],
+                inbox: (await getMockInbox()).messages,
+            } as User,
             {
-                id: '8',
-                title: 'Event 8',
-                thumbnail: 'https://placehold.co/300x200',
-                description: 'This is a description',
-                url: 'https://www.https://www.google.com',
-                platform: 'Twitch',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
+                user_id: '2',
+                username: 'user with id 2',
+                email: 'email1',
+                profile_image: undefined,
+                bio: 'bio1',
+                followers: ['follower1', 'follower2'],
+                num_followers: 2,
+                following: ['following1', 'following2'],
+                num_following: 2,
+                streaming_status: 1,
+                channel: 'faide',
+                video_urls: ['video_url1', 'video_url2'],
+                joined_events: ['event1', 'event2'],
+                past_events: ['event3', 'event4'],
+                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                platforms: ['platform1', 'platform2'],
+                inbox: (await getMockInbox()).messages,
+            } as User,
             {
-                id: '9',
-                title: 'Event 9',
-                thumbnail: 'https://placehold.co/300x200',
-                description: 'This is a description',
-                url: 'https://www.https://www.google.com',
-                platform: 'Twitch',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-            {
-                id: '9',
-                title: 'Event 9',
-                thumbnail: 'https://placehold.co/300x200',
-                description: 'This is a description',
-                url: 'https://www.https://www.google.com',
-                platform: 'Twitch',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-            {
-                id: '9',
-                title: 'Event 9',
-                thumbnail: 'https://placehold.co/300x200',
-                description: 'This is a description',
-                url: 'https://www.https://www.google.com',
-                platform: 'Twitch',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
+                user_id: '3',
+                username: 'user with id 3',
+                email: 'email1',
+                profile_image: undefined,
+                bio: 'bio1',
+                followers: ['follower1', 'follower2'],
+                num_followers: 2,
+                following: ['following1', 'following2'],
+                num_following: 2,
+                streaming_status: 1,
+                channel: 'xQc',
+                video_urls: ['video_url1', 'video_url2'],
+                joined_events: ['event1', 'event2'],
+                past_events: ['event3', 'event4'],
+                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                platforms: ['platform1', 'platform2'],
+                inbox: (await getMockInbox()).messages,
+            } as User,
         ],
     };
     return data;
 };
 
-export const getVideoLinks = async () => {
+export const getVideo = async (url: string): Promise<{ video: Video }> => {
     const data = {
-        videos: [
-            {
-                id: 'vid1',
-                title: 'title1',
-                name: 'vid1',
-                thumbnail: 'https://placehold.co/600x400',
-                description: 'vid desc',
-                url: 'https://www.youtube.com/watch?v=f8p7RR-IPGY',
-                platform: 'YouTube',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-            {
-                id: 'vid2',
-                title: 'title2',
-                name: 'vid2',
-                thumbnail: 'https://placehold.co/600x400',
-                description: 'vid desc',
-                url: 'https://www.youtube.com/watch?v=ZdhLGlIDNPs',
-                platform: 'YouTube',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-            {
-                id: 'vid3',
-                title: 'title3',
-                name: 'vid3',
-                thumbnail: 'https://placehold.co/600x400',
-                description: 'vid desc',
-                url: 'https://www.youtube.com/watch?v=Bkstj0BtjXE',
-                platform: 'YouTube',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-            {
-                id: 'vid4',
-                title: 'title4',
-                name: 'vid4',
-                thumbnail: 'https://placehold.co/600x400',
-                description: 'vid desc',
-                url: 'https://www.youtube.com/watch?v=Bkstj0BtjXE',
-                platform: 'YouTube',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-            {
-                id: 'vid5',
-                title: 'title4',
-                name: 'vid4',
-                thumbnail: 'https://placehold.co/600x400',
-                description: 'vid desc',
-                url: 'https://www.youtube.com/watch?v=Bkstj0BtjXE',
-                platform: 'YouTube',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-            {
-                id: 'vid6',
-                title: 'title4',
-                name: 'vid4',
-                thumbnail: 'https://placehold.co/600x400',
-                description: 'vid desc',
-                url: 'https://www.youtube.com/watch?v=Bkstj0BtjXE',
-                platform: 'YouTube',
-                tags: ['tag1', 'tag2', 'tag3'],
-                viewer_count: 100,
-            },
-        ],
+        video: {
+            video_id: 'dQw4w9WgXcQ',
+            url: url,
+            title: 'Click This Video',
+            thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/default.jpg',
+        } as Video,
     };
+    return data;
+};
+
+export const getVideos = async (user: User): Promise<Video[]> => {
+    const data = await Promise.all(
+        user.video_urls.map(async (url) => (await getVideo(url)).video),
+    );
     return data;
 };

@@ -9,8 +9,8 @@ export class User {
         public num_followers: number = 0,
         public following: string[] = [],
         public num_following: number = 0,
-        public streaming_status: number = 0,
-        public channel_url: string = '',
+        public streaming_status: 0 | 1 = 0,
+        public channel: string = '',
         public video_urls: string[] = [],
         public joined_events: string[] = [],
         public past_events: string[] = [],
@@ -28,7 +28,7 @@ export class User {
         this.following = following;
         this.num_following = num_following;
         this.streaming_status = streaming_status;
-        this.channel_url = channel_url; //may not need if connect platforms
+        this.channel = channel; //may not need if connect platforms
         this.video_urls = video_urls;
         this.joined_events = joined_events;
         this.past_events = past_events;
@@ -56,25 +56,19 @@ export class Message {
     }
 }
 
-// TODO: figure out what to do with these when you implement twitch api
-export type Live = {
-    id: string;
-    title: string;
-    thumbnail: string;
-    description: string;
-    url: string;
-    platform: string;
-    tags: string[];
-    viewer_count: number;
-};
-
-export type VideoLink = {
-    id: string;
-    title: string;
-    thumbnail: string;
-    description: string;
-    url: string;
-    platform: string;
-    tags: string[];
-    viewer_count: number;
-};
+// do not implement on backend
+// only for YT rn, Twitch requires use of Twitch API which we dont wanna implement.
+// https://stackoverflow.com/questions/46722459/how-to-get-twitch-video-thumbnail-url
+export class Video {
+    constructor(
+        public video_id: string,
+        public url: string,
+        public title: string,
+        public thumbnail: string,
+    ) {
+        this.video_id = video_id;
+        this.url = url;
+        this.title = title;
+        this.thumbnail = thumbnail;
+    }
+}

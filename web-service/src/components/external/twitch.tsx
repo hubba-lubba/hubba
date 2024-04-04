@@ -1,8 +1,9 @@
-export const TwitchLiveEmbed = () => {
-    const parent = import.meta.env.DEV ? 'localhost' : 'hubba.eddisonso.com';
+import { DOMAIN } from '@/config';
+
+export const TwitchLiveEmbed = ({channel}: {channel: string}) => {
     return (
         <iframe
-            src={`https://player.twitch.tv/?channel=caseoh_&parent=${parent}&autoplay=false&muted=true`}
+            src={`https://player.twitch.tv/?channel=${channel}&parent=${DOMAIN}&autoplay=false`}
             height="200"
             width="300"
         ></iframe>
