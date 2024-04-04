@@ -46,7 +46,7 @@ def get_profile_upload_url():
     return jsonify({
         "status": "success",
         "url": url,
-        "blob-url": f"https://storage.googleapis.com/hubba-profile-pictures/{blob_name}"})
+        "blob-url": f"https://storage.googleapis.com/{bucket_name}/{blob_name}"})
 
 @blob_url_generator.route("/get_organizations_upload_url", methods=["GET"])
 @ensure_authorized()
@@ -68,4 +68,4 @@ def get_organizations_upload_url():
     return jsonify({
         "status": "success",
         "url": url,
-        "blob-url": f"https://storage.googleapis.com/hubba-profile-pictures/{blob_name}"})
+        "blob-url": f"https://storage.googleapis.com/{bucket_name}/{blob_name}"})
