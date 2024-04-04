@@ -22,6 +22,7 @@ export function ChangeBio() {
             <h2 className="mb-2 text-3xl">Update Bio</h2>
             <Form<ChangeBioFields, AnySchema>
                 onSubmit={handleSubmit}
+                style="lg:w-[500px]"
             >
                 {({ register, formState }) => (
                     <>
@@ -29,7 +30,7 @@ export function ChangeBio() {
                             error={formState.errors['bio']}
                         >
                             <textarea
-                                className="w-full h-[200px] text-hubba-900"
+                                className="w-full h-[200px] max-h-[400px] text-hubba-900"
                                 {...register('bio')}
                             />
                         </FieldWrapper>

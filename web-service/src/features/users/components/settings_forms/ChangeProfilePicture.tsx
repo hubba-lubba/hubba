@@ -1,6 +1,6 @@
 import { Form, SubmitButton } from '@/components/form';
 import { FieldWrapper } from '@/components/form/FieldWrapper';
-import { AnySchema } from 'joi'
+import { AnySchema } from 'joi';
 
 type ChangeProfilePictureFields = {
     newProfilePicture: FileList;
@@ -35,7 +35,7 @@ export function ChangeProfilePicture() {
                                 accept="image/*"
                                 {...register('newProfilePicture', {
                                     //include other pfp file requirements
-                                    required: "Please choose a file."
+                                    required: 'Please choose a file.',
                                 })}
                             />
                         </FieldWrapper>
@@ -44,5 +44,5 @@ export function ChangeProfilePicture() {
                 )}
             </Form>
         </div>
-    )
+    );
 }
