@@ -42,7 +42,7 @@ def get_profile_upload_url():
         method="PUT",
         content_type="image/jpeg"
     )
-    logger.info(f"Generated signed URL for {blob_name}")
+    logger.info(f"Generated signed URL for {blob_name} in bucket {bucket_name}")
     return jsonify({
         "status": "success",
         "url": url,
@@ -64,7 +64,7 @@ def get_organizations_upload_url():
         method="PUT",
         content_type="image/jpeg"
     )
-    logger.info(f"Generated signed URL for {blob_name}")
+    logger.info(f"Generated signed URL for {blob_name} in bucket {bucket_name}")
     return jsonify({
         "status": "success",
         "url": url,
