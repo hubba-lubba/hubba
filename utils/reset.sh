@@ -4,6 +4,7 @@ docker rm -f user-service
 docker rm -f web-service
 docker rm -f events-service
 docker rm -f organizations-service
+docker rm -f file-service
 docker rm -f hubba-db
 docker image prune -af
 
