@@ -4,6 +4,7 @@ import { getUpcomingEvents } from '@/features/events/api';
 import { Event } from '@/features/events/types';
 import { getLiveUsers } from '@/features/users/api';
 import { Live } from '@/features/users/types';
+import { TwitchLiveEmbed } from '@/components/external';
 
 export const DiscoverFeed = () => {
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
@@ -38,12 +39,15 @@ export const DiscoverFeed = () => {
                 ))}
             </Shelf>
             <Shelf title="Upcoming Events">
-                {upcomingEvents.map((event, index) => (
-                    <Card
-                        key={`upcoming2-${event.event_id}-${index}`}
-                        {...event}
-                    ></Card>
-                ))}
+                {upcomingEvents
+                    .map((event, index) => (
+                        <Card
+                            key={`upcoming2-${event.event_id}-${index}`}
+                            {...event}
+                        ></Card>
+                    ))
+                    .slice(0, 3)}
+                <TwitchLiveEmbed />
             </Shelf>
         </Layout>
     );
