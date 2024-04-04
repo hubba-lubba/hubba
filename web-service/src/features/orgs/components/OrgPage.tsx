@@ -2,25 +2,36 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Org } from '../types';
 import { User } from '@/features/users/types';
-import { getOrg } from '../api';
+import { getMockOrg } from '../api';
 import { Button } from '@/components/elements/buttons';
 import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import Linkify from 'linkify-react';
 import { PageLayout } from '@/components/layout';
+import { getMockUser } from '@/features/users/api';
 
-const MemberCard = ({ user }: { user: User }) => {
+const MemberCard = ({ user_id }: { user_id: string }) => {
+    const [user, setUser] = useState<User>();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const userData = (await getMockUser(user_id)).user;
+            setUser(userData);
+        };
+
+        fetchData();
+    }, [user_id]);
 
     return (
         <Button
             variant="image"
-            image={user.profile_image}
-            Icon={user.profile_image ? undefined : FaRegUserCircle}
-            handleClick={() => navigate(`/user/${user.id}`)}
+            image={user?.profile_image}
+            Icon={user?.profile_image ? undefined : FaRegUserCircle}
+            handleClick={() => navigate(`/user/${user_id}`)}
             style="w-[225px] p-2 !h-12 flex align-center rounded bg-hubba-800"
         >
-            {user.username}
+            {user?.username ?? `User ${user_id}`}
         </Button>
     );
 };
@@ -35,7 +46,7 @@ export const OrgPage = () => {
     useEffect(() => {
         if (!id) return;
         const fetchData = async () => {
-            const orgData = (await getOrg(id)).org;
+            const orgData = (await getMockOrg(id)).org;
             setOrg(orgData);
             setLoading(false);
         };
@@ -80,10 +91,10 @@ export const OrgPage = () => {
                     </div>
                 </div>
                 <div className="scroll-gutter mt-6 flex w-full min-w-[300px] flex-col items-center justify-start space-y-4 overflow-y-auto lg:mt-0 lg:w-4/12 lg:px-8">
-                    {org.users.map((user, index) => (
+                    {org.users.map((user_id, index) => (
                         <MemberCard
-                            key={`member-${org.id}-${index}`}
-                            user={user}
+                            key={`member-${org.org_id}-${index}`}
+                            user_id={user_id}
                         />
                     ))}
                 </div>

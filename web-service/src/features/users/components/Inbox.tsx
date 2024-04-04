@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PageLayout } from '@/components/layout';
 import { Message, User } from '../types';
-import { getInbox, getUser } from '../api';
+import { getMockInbox, getMockUser } from '../api';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
@@ -32,11 +32,11 @@ const InboxMessage = (props: InboxMessageProps) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const sender = await getUser(message.sender);
-            setSender(sender.user);
+            const sender = (await getMockUser(message.sender)).user;
+            setSender(sender);
         };
         fetchData();
-    }, [message.sender]);
+    }, [message]);
 
     return (
         // change style (background color or opacity) based on read status
@@ -54,7 +54,7 @@ const InboxMessage = (props: InboxMessageProps) => {
             >
                 <div
                     className="flex w-1/12 cursor-pointer flex-col items-center justify-center"
-                    onClick={() => navigate(`/user/${sender?.id}`)}
+                    onClick={() => navigate(`/user/${sender?.user_id}`)}
                 >
                     {sender?.profile_image ? (
                         <img src={sender?.profile_image} alt="" width={50} />
@@ -103,7 +103,7 @@ export const Inbox = () => {
     useEffect(() => {
         // fetch messages
         const fetchMessages = async () => {
-            const messagesData = await getInbox();
+            const messagesData = await getMockInbox();
             setMessages(messagesData.messages);
 
             setLoading(false);
@@ -122,7 +122,7 @@ export const Inbox = () => {
             <div className="scroll-gutter space-y-4 overflow-y-auto">
                 {messages.map((message) => (
                     <InboxMessage
-                        key={`message-{message.id}`}
+                        key={`message-${message.message_id}`}
                         message={message}
                     />
                 ))}

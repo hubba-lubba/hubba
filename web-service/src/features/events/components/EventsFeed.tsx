@@ -43,7 +43,7 @@ export const EventsFeed = () => {
             <Shelf title="Current Events" variant="large">
                 {currentEvents.map((event, index) => (
                     <Card
-                        key={`current-${event.id}-${index}`}
+                        key={`current-${event.event_id}-${index}`}
                         {...event}
                     ></Card>
                 ))}
@@ -52,7 +52,7 @@ export const EventsFeed = () => {
             <Grid title="Upcoming Events">
                 {upcomingEvents!.map((event, index) => (
                     <Card
-                        key={`upcoming-${event.id}-${index}`}
+                        key={`upcoming-${event.event_id}-${index}`}
                         {...event}
                     ></Card>
                 ))}

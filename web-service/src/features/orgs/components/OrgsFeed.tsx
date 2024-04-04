@@ -21,7 +21,7 @@ export const OrgsFeed = () => {
             <Grid title="Upcoming Events">
                 {upcomingEvents!.map((event, index) => (
                     <Card
-                        key={`upcoming-${event.id}-${index}`}
+                        key={`upcoming-${event.event_id}-${index}`}
                         {...event}
                     ></Card>
                 ))}

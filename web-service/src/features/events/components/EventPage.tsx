@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { getEvent } from '../api';
+import { getMockEvent } from '../api';
 import { Event } from '../types';
 import { Link } from 'react-router-dom';
 import { PageLayout } from '@/components/layout';
@@ -16,7 +16,7 @@ export const EventPage = () => {
         if (!id) return; //do smt else abt this (but safer)
 
         const fetchEventData = async (id: string) => {
-            const eventData = (await getEvent(id)).event;
+            const eventData = (await getMockEvent(id)).event;
             setEvent(eventData);
 
             //make Tag feature and component
@@ -24,7 +24,7 @@ export const EventPage = () => {
             for (let i = 0; i < eventData.tags.length; i++) {
                 tags.push(
                     <div
-                        key={`tag-${eventData.id}-${i}`}
+                        key={`tag-${eventData.event_id}-${i}`}
                         className="rounded-2xl border px-3 py-1"
                     >
                         {eventData.tags[i]}
@@ -73,7 +73,7 @@ export const EventPage = () => {
 
                     <div className="flex w-6/12 flex-col space-y-6">
                         <h1 className="text-4xl font-bold">
-                            [{event.status}]{event.title || `Event ${event.id}`}
+                            [{event.status}]{event.title || `Event ${event.event_id}`}
                         </h1>
                         <div className="flex flex-row gap-2">{tags}</div>
                         <p className="">Hosted by {event.host}</p>

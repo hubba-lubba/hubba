@@ -8,22 +8,26 @@ import NavbarSearchBar from '../elements/NavbarSearchBar';
 import { BsInbox } from 'react-icons/bs';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { LuPlusSquare } from 'react-icons/lu';
-import { TbBrandAmongUs } from 'react-icons/tb';
-import { signout, logUserDevInfo } from '@/lib/auth';
+import { DevTool } from '../dev';
+import { signout } from '@/lib/auth';
 
 type DropdownOptionProps = {
     children: React.ReactNode;
-    to: string;
+    to?: string;
     onClick?: () => void;
 };
 
-const DropdownOption = ({ children, to, onClick }: DropdownOptionProps) => {
+const DropdownOption = ({
+    children,
+    to = '.',
+    onClick,
+}: DropdownOptionProps) => {
     // React Router Link fires onClick before rerouting. Flipped in Nextjs.
     return (
         <Link
             to={to}
             onClick={onClick}
-            className="h-full w-full px-6 py-1 first:pt-2 last:pb-2"
+            className="h-full w-full px-6 py-1 first:pt-4 last:pb-4"
         >
             {children}
         </Link>
@@ -88,15 +92,9 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                         <NavbarSearchBar />
                     </div>
                     <div className="flex flex-row items-center justify-end gap-4">
+                        {import.meta.env.DEV && <DevTool />}
                         {userData && (
                             <>
-                                {import.meta.env.DEV && (
-                                    <TbBrandAmongUs
-                                        className="cursor-pointer"
-                                        size={24}
-                                        onClick={() => logUserDevInfo()}
-                                    />
-                                )}
                                 <LuPlusSquare
                                     className="cursor-pointer"
                                     size={24}

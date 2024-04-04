@@ -33,9 +33,9 @@ export const SidebarOrgs = () => {
             {orgs
                 .map((org, index) => (
                     <Button
-                        key={`sidebar-org-${org.id}-${index}`}
+                        key={`sidebar-org-${org.org_id}-${index}`}
                         variant="text"
-                        handleClick={() => navigate(`/orgs/${org.id}`)}
+                        handleClick={() => navigate(`/orgs/${org.org_id}`)}
                     >
                         {org.name}
                     </Button>

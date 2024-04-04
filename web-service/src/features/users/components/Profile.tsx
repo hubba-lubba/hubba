@@ -1,7 +1,7 @@
 import { Card, Grid, Layout } from '@/components/layout';
 import { VideoLink } from '../types';
 import { useEffect, useState } from 'react';
-import { getVideoLinks, getUser } from '../api';
+import { getVideoLinks, getMockUser } from '../api';
 import { Button } from '@/components/elements/buttons';
 import { useContext } from 'react';
 import { AuthContext } from '@/contexts/AuthProvider';
@@ -20,8 +20,8 @@ export const Profile = () => {
     useEffect(() => {
         const fetchData = async () => {
             // if id is specified, gather information about a different user
-            const data = await getUser(id ?? currentUser.uid);
-            if (data.user) setUser(data.user);
+            const data = (await getMockUser(id ?? currentUser.uid)).user;
+            if (data) setUser(data);
             else setError('User not found');
 
             const videoLinksData = await getVideoLinks();
