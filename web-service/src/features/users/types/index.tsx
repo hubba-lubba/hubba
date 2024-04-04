@@ -10,7 +10,7 @@ export class User {
         public following: string[] = [],
         public num_following: number = 0,
         public streaming_status: number = 0,
-        public channel_url: string = '',
+        public channel: string = '',
         public video_urls: string[] = [],
         public joined_events: string[] = [],
         public past_events: string[] = [],
@@ -28,7 +28,7 @@ export class User {
         this.following = following;
         this.num_following = num_following;
         this.streaming_status = streaming_status;
-        this.channel_url = channel_url; //may not need if connect platforms
+        this.channel = channel; //may not need if connect platforms
         this.video_urls = video_urls;
         this.joined_events = joined_events;
         this.past_events = past_events;

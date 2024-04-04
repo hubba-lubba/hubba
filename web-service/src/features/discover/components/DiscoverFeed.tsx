@@ -35,7 +35,11 @@ export const DiscoverFeed = () => {
             </Shelf>
             <Shelf title="Live">
                 {live.map((live, index) => (
-                    <Card key={`live-${live.id}-${index}`} {...live}></Card>
+                    <Card
+                        key={`live-${live.id}-${index}`}
+                        {...live}
+                        channel="faide"
+                    ></Card>
                 ))}
             </Shelf>
             <Shelf title="Upcoming Events">
@@ -47,7 +51,7 @@ export const DiscoverFeed = () => {
                         ></Card>
                     ))
                     .slice(0, 3)}
-                <TwitchLiveEmbed />
+                <TwitchLiveEmbed channel="caseoh_" />
             </Shelf>
         </Layout>
     );
