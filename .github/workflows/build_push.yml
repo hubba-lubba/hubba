@@ -265,6 +265,8 @@ jobs:
       - name: Build and Push file-service
         uses: docker/build-push-action@v5
         with:
+          build-args: |
+            BUCKET_SERVICE_ACCOUNT=${{ secrets.BUCKET_SERVICE_ACCOUNT }}
           context: file-service
           platforms: linux/amd64
           push: true
