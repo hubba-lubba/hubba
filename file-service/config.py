@@ -1,4 +1,4 @@
 import os 
 
 PORT = 8010
-SERVICE_ACCOUNT = os.environ.get("SERVICE_ACCOUNT", None)
+BUCKET_SERVICE_ACCOUNT = os.environ.get("BUCKET_SERVICE_ACCOUNT", None)

@@ -5,7 +5,7 @@ import datetime
 from authorization import ensure_authorized
 import random
 import string
-from config import SERVICE_ACCOUNT
+from config import BUCKET_SERVICE_ACCOUNT
 import json
 from logger import LoggerFactory
 
@@ -13,11 +13,11 @@ logger_factory = LoggerFactory()
 logger = logger_factory.get_logger()
 blob_url_generator = Blueprint("blob_url_generator", __name__, url_prefix="/")
 
-if SERVICE_ACCOUNT is None or not SERVICE_ACCOUNT:
+if BUCKET_SERVICE_ACCOUNT is None or not BUCKET_SERVICE_ACCOUNT:
     credentials = service_account.Credentials.from_service_account_file("./hubba-credentials.json")
 else:
     logger.info("Using service account from environment variable")
-    SA_json = json.loads(SERVICE_ACCOUNT)
+    SA_json = json.loads(BUCKET_SERVICE_ACCOUNT)
     credentials = service_account.Credentials.from_service_account_info(SA_json)
 
 storage_client = storage.Client(credentials=credentials)
