@@ -30,7 +30,7 @@ export const Home = () => {
             setLiveUsers(liveUsersData.users);
 
             const discoverOrgsData = await getDiscoverOrgs();
-            setDiscoverOrgs(discoverOrgsData.orgs)
+            setDiscoverOrgs(discoverOrgsData.orgs);
         };
 
         fetchData();
@@ -62,15 +62,13 @@ export const Home = () => {
                     ></ChannelCard>
                 ))}
             </Shelf>
-            <Shelf title="Orgs">
-                {discoverOrgs
-                    .map((org, index) => (
-                        <OrgCard
-                            key={`org-${org.org_id}-${index}`}
-                            org={org}
-                        ></OrgCard>
-                    ))
-                    .slice(0, 3)}
+            <Shelf title="Orgs" variant="small">
+                {discoverOrgs.map((org, index) => (
+                    <OrgCard
+                        key={`org-${org.org_id}-${index}`}
+                        org={org}
+                    ></OrgCard>
+                ))}
             </Shelf>
         </Layout>
     );

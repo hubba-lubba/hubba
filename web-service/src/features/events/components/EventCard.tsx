@@ -1,4 +1,4 @@
-import { Card } from '@/components/library';
+import { Thumbnail, Card } from '@/components/library';
 import { Event } from '@/features/events/types';
 import { useState, useEffect } from 'react';
 import { statuses } from '@/lib/constants';
@@ -20,18 +20,22 @@ export const EventCard = ({ event }: { event: Event }) => {
     }, [event]);
 
     return (
-        <Card url={`events/${event.event_id}`}>
-            {event.status === 0 || !org ? (
-                <img src={event.thumbnail} />
-            ) : (
-                <TwitchLiveEmbed channel={org.channel} />
-            )}
-
-            <div>
-                <h2>{org?.name}</h2>
-                <h2>{event.time_of.toISOString()}</h2>
-                <h2>{statuses[event.status]}</h2>
-            </div>
-        </Card>
+        <Card
+            url={`events/${event.event_id}`}
+            media={
+                event.status === 0 || !org ? (
+                    <Thumbnail src={event.thumbnail} />
+                ) : (
+                    <TwitchLiveEmbed channel={org.channel} />
+                )
+            }
+            footer={
+                <>
+                    <h2>{org?.name}</h2>
+                    <h2>{event.time_of.toISOString()}</h2>
+                    <h2>{statuses[event.status]}</h2>
+                </>
+            }
+        />
     );
 };

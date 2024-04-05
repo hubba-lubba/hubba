@@ -9,7 +9,6 @@ import { User } from '@/features/users/types';
 import { Org } from '@/features/orgs/types';
 import { getLiveUsers } from '@/features/users/api';
 import { getDiscoverOrgs } from '@/features/orgs/api';
-import { TwitchLiveEmbed } from '@/components/external';
 import { OrgCard } from '@/features/orgs/components/OrgCard';
 
 export const DiscoverFeed = () => {
@@ -27,7 +26,7 @@ export const DiscoverFeed = () => {
             setLiveUsers(liveUsersData.users);
 
             const discoverOrgsData = await getDiscoverOrgs();
-            setDiscoverOrgs(discoverOrgsData.orgs)
+            setDiscoverOrgs(discoverOrgsData.orgs);
         };
 
         fetchData();
