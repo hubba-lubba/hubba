@@ -311,7 +311,8 @@ jobs:
 
       - name: Seed
         env:
-            VERSION: ${{ needs.setup.outputs.TIMESTAMP }}
+          VERSION: ${{ needs.setup.outputs.TIMESTAMP }}
+        working-directory: utils/seeder
         run: |-
-          docker build -t seeder utils/seeder/Dockerfile
+          docker build -t seeder .
           docker run seeder
