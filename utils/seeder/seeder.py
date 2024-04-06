@@ -39,7 +39,7 @@ def seed(users):
                 ready = True
         except:
             pass
-        print("Incorrect user-api version. Got {curr_version} need {VERSION}. Retrying...", flush=True)
+        print(f"Incorrect user-api version. Got {curr_version} need {VERSION}. Retrying...", flush=True)
         attempts += 1
         sleep(5)
     
