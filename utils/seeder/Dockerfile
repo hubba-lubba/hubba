@@ -3,6 +3,9 @@ FROM python:3.11-bullseye
 ARG VERSION
 ENV VERSION $VERSION
 
+ARG api_key
+ENV api_key $api_key
+
 COPY . /opt/seeder
 WORKDIR /opt/seeder
 
