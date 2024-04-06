@@ -321,5 +321,5 @@ jobs:
       - name: Seed
         working-directory: utils/seeder
         run: |-
-          docker build --build-arg api_key=${{ secrets.api_key }} --build-arg VERSION=${{ secrets.api_key }} -t seeder .
+          docker build --build-arg api_key=${{ secrets.api_key }} --build-arg VERSION=${{ needs.setup.outputs.TIMESTAMP }} -t seeder .
           docker run seeder
