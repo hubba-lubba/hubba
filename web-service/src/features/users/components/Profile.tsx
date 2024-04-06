@@ -8,8 +8,8 @@ import { VideoCard } from './VideoCard';
 import { UserContext } from '@/contexts/UserProvider';
 import { useParams } from 'react-router-dom';
 import { User } from '../types';
-import { FaRegUserCircle } from 'react-icons/fa';
 import { Video } from '../types';
+import { Pfp } from '@/components/elements';
 
 export const Profile = () => {
     const { id } = useParams<{ id: string }>();
@@ -50,11 +50,7 @@ export const Profile = () => {
     return (
         <Layout style="flex-col">
             <div className="flex flex-row items-center space-x-8 pb-8">
-                {user.profile_image ? (
-                    <img src={user.profile_image!} alt="pfp" width={100} />
-                ) : (
-                    <FaRegUserCircle size={100} />
-                )}
+                <Pfp image={user?.profile_image} size={100} />
                 <div className="space-y-1">
                     <p className="text-lg font-bold">{user.username}</p>
                     <div className="flex flex-row space-x-2">

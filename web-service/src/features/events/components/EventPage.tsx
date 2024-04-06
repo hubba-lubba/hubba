@@ -4,6 +4,7 @@ import { getMockEvent } from '../api';
 import { Event } from '../types';
 import { Link } from 'react-router-dom';
 import { PageLayout } from '@/components/layout';
+import { formatTime } from '@/utils/time';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -46,17 +47,6 @@ export const EventPage = () => {
     if (loading) return <p>Loading events...</p>;
     if (error) return <div>error</div>;
 
-    const time = event.time_of.toLocaleString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        timeZone: 'UTC',
-        timeZoneName: 'short',
-        hour12: true,
-        hour: 'numeric',
-        minute: 'numeric',
-    });
-
     return (
         <PageLayout>
             <div className="flex flex-col">
@@ -73,11 +63,12 @@ export const EventPage = () => {
 
                     <div className="flex w-6/12 flex-col space-y-6">
                         <h1 className="text-4xl font-bold">
-                            [{event.status}]{event.name || `Event ${event.event_id}`}
+                            [{event.status}]
+                            {event.name || `Event ${event.event_id}`}
                         </h1>
                         <div className="flex flex-row gap-2">{tags}</div>
                         <p className="">Hosted by {event.host_org}</p>
-                        <p className="">{time}</p>
+                        <p className="">{formatTime(event.time_of)}</p>
                         <div className="flex w-full items-center justify-center">
                             <button className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold">
                                 ENTER

@@ -7,11 +7,11 @@ export const OrgCard = ({ org }: { org: Org }) => {
             url={`orgs/${org.org_id}`}
             media={<Thumbnail src={org.image} />}
             footer={
-                <>
-                    <h2>{org.name}</h2>
-                    <h2>{org.description}</h2>
-                    <h2>{org.tags}</h2>
-                </>
+                <div className='flex flex-col'>
+                    <div className="w-2/12">{org.name}</div>
+                    <div>{org.description}</div>
+                    {/* <div>{org.tags}</div> */}
+                </div>
             }
         />
     );

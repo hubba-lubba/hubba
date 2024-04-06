@@ -54,6 +54,14 @@ export const Home = () => {
                     ></EventCard>
                 ))}
             </Shelf>
+            <Shelf title="Orgs" variant="small">
+                {discoverOrgs.map((org, index) => (
+                    <OrgCard
+                        key={`org-${org.org_id}-${index}`}
+                        org={org}
+                    ></OrgCard>
+                ))}
+            </Shelf>
             <Shelf title="Live">
                 {liveUsers.map((user, index) => (
                     <ChannelCard

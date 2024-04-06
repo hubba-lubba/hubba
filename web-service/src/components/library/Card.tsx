@@ -11,12 +11,8 @@ const CardMedia = ({ children }: { children: React.ReactNode }) => {
     return <div className="h-5/6">{children}</div>;
 };
 
-const CardFooter = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <div className="flex h-1/6 items-center justify-between p-4">
-            {children}
-        </div>
-    );
+export const CardFooter = ({ children }: { children: React.ReactNode }) => {
+    return <div className="flex h-1/6 items-center p-1">{children}</div>;
 };
 
 export const Card = ({ url, internal = true, media, footer }: CardProps) => {

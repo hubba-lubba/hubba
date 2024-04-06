@@ -18,28 +18,28 @@ export const Sidebar = () => {
             <SidebarSection>
                 <Button
                     variant="image"
-                    Icon={BsHouseDoor}
+                    icon={<BsHouseDoor className="pr-2.5" size={32} />}
                     handleClick={() => navigate('/')}
                 >
                     Feed
                 </Button>
                 <Button
                     variant="image"
-                    Icon={BsRss}
+                    icon={<BsRss className="pr-2.5" size={32} />}
                     handleClick={() => navigate('/discover')}
                 >
                     Discover
                 </Button>
                 <Button
                     variant="image"
-                    Icon={BsCalendarEvent}
+                    icon={<BsCalendarEvent className="pr-2.5" size={32} />}
                     handleClick={() => navigate('/events')}
                 >
                     Events
                 </Button>
                 <Button
                     variant="image"
-                    Icon={BsPeople}
+                    icon={<BsPeople className="pr-2.5" size={32} />}
                     handleClick={() => navigate('/orgs')}
                 >
                     Organizations

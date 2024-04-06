@@ -9,9 +9,9 @@ const resizing = {
 };
 
 const styles = {
-    large: 'h-[400px]',
-    medium: 'h-[350px]',
-    small: 'h-[350px]',
+    large: 'h-[500px]',
+    medium: 'h-[400px]',
+    small: 'h-[400px]',
 };
 
 interface ShelfProps {
@@ -30,17 +30,18 @@ export const Shelf = ({ children, title, variant = 'medium' }: ShelfProps) => {
         );
     }, [width, variant]);
     return (
-        <section
-            className={clsx('flex w-full flex-col space-y-3', styles[variant])}
-        >
-            <div className="flex h-full flex-row space-x-3">
+        <section className={clsx('flex w-full flex-col', styles[variant])}>
+            {title && (
+                <div className="bold w-100 relative h-[5%] text-xs uppercase text-hubba-600">
+                    <div className="relative z-10 inline-block bg-hubba-900 pr-2">
+                        {title}
+                    </div>
+                    <span className="absolute left-0 top-[0.5rem] z-0 inline-block w-full border-t-[1px] border-solid border-hubba-600" />
+                </div>
+            )}
+            <div className="flex h-[95%] flex-row space-x-3">
                 {children.slice(0, numCards)}
             </div>
-            {title && (
-                <small className="bold text-xs uppercase text-hubba-600">
-                    {title}
-                </small>
-            )}
         </section>
     );
 };
