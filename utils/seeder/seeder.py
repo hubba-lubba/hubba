@@ -32,7 +32,7 @@ def seed(users):
     ready = False
     attempts = 0
     while not ready or attempts <= MAX_ATTEMPTS:
-        printf(f"Trying to correct version... ({attempts})")
+        print(f"Trying to correct version... ({attempts})", flush=True)
         try:
             if loads(get("http://user-api.eddisonso.com/version").content).get("version") == VERSION:
                 ready = True
