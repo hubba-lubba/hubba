@@ -30,7 +30,7 @@ services:
         DB_PORT: 5432
         DB_NAME: "hubba-user"
         VERSION: "DEV"
-        PROJECT_ID: hubba-412704
+        PROJECT_ID: hubba-419505
         USER_EVENT_SUBSCRIPTION_ID: dev-user-event
         EVENTS_EVENT_SUBSCRIPTION_ID: dev-events-event
         ORGANIZATIONS_EVENT_SUBSCRIPTION_ID: dev-organizations-event
@@ -55,7 +55,7 @@ services:
         DB_PORT: 5432
         DB_NAME: "hubba-events"
         VERSION: "DEV"
-        PROJECT_ID: hubba-412704
+        PROJECT_ID: hubba-419505
         USER_EVENT_SUBSCRIPTION_ID: dev-user-event
         EVENTS_EVENT_SUBSCRIPTION_ID: dev-events-event
         ORGANIZATIONS_EVENT_SUBSCRIPTION_ID: dev-organizations-event
@@ -80,7 +80,7 @@ services:
         DB_PORT: 5432
         DB_NAME: "hubba-organizations"
         VERSION: "DEV"
-        PROJECT_ID: hubba-412704
+        PROJECT_ID: hubba-419505
         USER_EVENT_SUBSCRIPTION_ID: dev-user-event
         EVENTS_EVENT_SUBSCRIPTION_ID: dev-events-event
         ORGANIZATIONS_EVENT_SUBSCRIPTION_ID: dev-organizations-event
