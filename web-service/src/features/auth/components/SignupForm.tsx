@@ -4,6 +4,7 @@ import { email, username, password, confirmPassword } from '@/lib/validation';
 import { signup } from '../api';
 import Joi from 'joi';
 import { AuthLinks } from './AuthLinks';
+import { useState } from 'react';
 
 const schema = Joi.object({
     email: email,
@@ -24,16 +25,19 @@ type SignupFormProps = {
 };
 
 export const SignupForm = ({ onSuccess }: SignupFormProps) => {
+    const [error, setError] = useState<string>();
+
     const doSignUp = async (data: SignupValues) => {
         console.log('signup');
         console.log(data);
         const { email, username, password } = data;
         try {
             await signup(email, username, password);
+            onSuccess();
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
+            setError((error as Error).message);
         }
-        onSuccess();
     };
 
     return (
@@ -73,6 +77,7 @@ export const SignupForm = ({ onSuccess }: SignupFormProps) => {
                     </>
                 )}
             </Form>
+            {error && <div className="mt-5 text-red-500">{error}</div>}
             <AuthLinks>
                 <TextButton
                     text="Already have an account?"

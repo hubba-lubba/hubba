@@ -1,6 +1,8 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
+import { UserContext } from '@/contexts/UserProvider';
 import { password, confirmPassword } from '@/lib/validation';
 import Joi from 'joi';
+import { useContext } from 'react';
 
 const schema = Joi.object({
     password: password,
@@ -9,15 +11,19 @@ const schema = Joi.object({
 
 type ChangePasswordValues = {
     password: string;
+    newPassword: string;
     confirmPassword: string;
 };
 
-
 export function ChangePassword() {
+    const { changePassword } = useContext(UserContext);
+
     async function handleSubmit(data: ChangePasswordValues) {
-        const { password, confirmPassword } = data;
+        const { password, newPassword } = data;
+
+        // TODO: implement (w/ async)
         try {
-            console.log('change password: ', password, confirmPassword);
+            changePassword(password, newPassword);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -29,6 +35,7 @@ export function ChangePassword() {
             <Form<ChangePasswordValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
+                style="!w-1/2"
             >
                 {({ register, formState }) => (
                     <>
@@ -37,6 +44,12 @@ export function ChangePassword() {
                             label="Password"
                             error={formState.errors['password']}
                             registration={register('password')}
+                        />
+                        <TextField
+                            type="password"
+                            label="New Password"
+                            error={formState.errors['newPassword']}
+                            registration={register('newPassword')}
                         />
                         <TextField
                             type="password"

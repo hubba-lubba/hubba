@@ -5,13 +5,16 @@ interface GridProps {
 
 export function Grid({ children, title }: GridProps) {
     return (
-        <section className="flex w-full flex-col space-y-3">
-            <div className="grid-autofit gap-3">{children}</div>
+        <section className="flex h-[400px] w-full flex-col space-y-3">
             {title && (
-                <small className="bold text-xs uppercase text-hubba-600">
-                    {title}
-                </small>
+                <div className="bold w-100 relative h-[5%] text-xs uppercase text-hubba-600">
+                    <div className="relative z-10 inline-block bg-hubba-900 pr-2">
+                        {title}
+                    </div>
+                    <span className="absolute left-0 top-[0.5rem] z-0 inline-block w-full border-t-[1px] border-solid border-hubba-600" />
+                </div>
             )}
+            <div className="grid-autofill h-[95%] gap-3">{children}</div>
         </section>
     );
 }

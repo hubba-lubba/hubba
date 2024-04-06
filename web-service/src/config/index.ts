@@ -1,7 +1,4 @@
 // clientside secrets
-export const sm = 560;
-export const md = 768;
-export const lg = 976;
 
 // set dev to import.meta.env.DEV when local server issues are fixed
 const dev = import.meta.env.DEV;

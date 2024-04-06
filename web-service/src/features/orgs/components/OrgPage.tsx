@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Org } from '../types';
 import { User } from '@/features/users/types';
 import { getMockOrg } from '../api';
@@ -9,6 +9,7 @@ import Linkify from 'linkify-react';
 import { PageLayout } from '@/components/layout';
 import { getMockUser } from '@/features/users/api';
 import { Pfp } from '@/components/elements';
+import { UserContext } from '@/contexts/UserProvider';
 
 const MemberCard = ({ user_id }: { user_id: string }) => {
     const [user, setUser] = useState<User>();
@@ -39,6 +40,7 @@ export const OrgPage = () => {
     const [org, setOrg] = useState<Org>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+    const { userData, joinOrg, leaveOrg } = useContext(UserContext);
 
     const { id } = useParams<{ id: string }>();
 
@@ -83,8 +85,17 @@ export const OrgPage = () => {
                             {org.description}
                         </Linkify>
                         <div className="flex w-full items-center justify-center">
-                            <button className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold">
-                                JOIN
+                            <button
+                                className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                onClick={() =>
+                                    userData.joined_orgs.includes(org.org_id)
+                                        ? leaveOrg(org.org_id)
+                                        : joinOrg(org.org_id)
+                                }
+                            >
+                                {userData.joined_orgs.includes(org.org_id)
+                                    ? 'LEAVE'
+                                    : 'JOIN'}
                             </button>
                         </div>
                     </div>

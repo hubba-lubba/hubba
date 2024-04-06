@@ -4,6 +4,7 @@ import { TextButton } from '@/components/elements/buttons';
 import { email, password } from '@/lib/validation';
 import { signin } from '../api';
 import Joi from 'joi';
+import { useState } from 'react';
 
 const schema = Joi.object({
     email: email,
@@ -22,15 +23,17 @@ type SigninFormProps = {
 export const SigninForm = ({ onSuccess }: SigninFormProps) => {
     // add button functions here
     // const navigate = useNavigate();
+    const [error, setError] = useState<string>();
 
     const doSignIn = async (data: SigninValues) => {
         const { email, password } = data;
         try {
             await signin(email, password);
+            onSuccess();
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
+            setError((error as Error).message);
         }
-        onSuccess();
     };
     return (
         <>
@@ -57,12 +60,13 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
                     </>
                 )}
             </Form>
+            {error && <div className="mt-5 text-red-500">{error}</div>}
             <AuthLinks>
                 <TextButton
                     text="Dont have an account?"
                     anchortext="Sign up"
                     path="/auth/signup"
-                    />
+                />
                 <TextButton anchortext="Forgot password?" path="/auth/forgot" />
             </AuthLinks>
         </>

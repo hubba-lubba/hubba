@@ -18,6 +18,7 @@ type ForgotFormProps = {
 
 export const ForgotPasswordForm = ({ onSuccess }: ForgotFormProps) => {
     // add button functions here
+    // TODO: implement
     const doForgotPassword = async (data: ForgotValues) => {
         console.log(data);
         onSuccess();
@@ -48,7 +49,7 @@ export const ForgotPasswordForm = ({ onSuccess }: ForgotFormProps) => {
                     text="Didn't?"
                     anchortext="Sign In"
                     path="/auth/signin"
-                    />
+                />
             </AuthLinks>
         </>
     );

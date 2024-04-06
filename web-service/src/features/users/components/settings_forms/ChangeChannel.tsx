@@ -1,24 +1,24 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
-import { UserContext } from '@/contexts/UserProvider';
-import { username } from '@/lib/validation';
+import { channel } from '@/lib/validation';
 import Joi from 'joi';
 import { useContext } from 'react';
+import { UserContext } from '@/contexts/UserProvider';
 
 const schema = Joi.object({
-    newUsername: username,
+    channel: channel,
 });
 
-type ChangeUsernameFields = {
-    newUsername: string;
+type ChangeChannelValues = {
+    channel: string;
 };
 
-export function ChangeUsername() {
-    const { editUsername } = useContext(UserContext);
+export function ChangeChannel() {
+    const { editChannel } = useContext(UserContext);
 
-    async function handleSubmit(data: ChangeUsernameFields) {
-        const { newUsername } = data;
+    async function handleSubmit(data: ChangeChannelValues) {
+        const { channel } = data;
         try {
-            editUsername(newUsername);
+            editChannel(channel);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -26,8 +26,8 @@ export function ChangeUsername() {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Username</h2>
-            <Form<ChangeUsernameFields, typeof schema>
+            <h2 className="mb-2 text-3xl">Update Channel</h2>
+            <Form<ChangeChannelValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
                 style="!w-1/2"
@@ -36,9 +36,9 @@ export function ChangeUsername() {
                     <>
                         <TextField
                             type="text"
-                            label="New Username"
-                            error={formState.errors['newUsername']}
-                            registration={register('newUsername')}
+                            label="Channel"
+                            error={formState.errors['channel']}
+                            registration={register('channel')}
                         />
                         <SubmitButton text="Submit" />
                     </>

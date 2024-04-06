@@ -38,23 +38,23 @@ export class User {
     }
 }
 
-// export class Message {
-//     constructor(
-//         public message_id: string,
-//         public sender: string,
-//         public receiver: string,
-//         public subject: string = 'No Subject.',
-//         public content: string = 'No Content.',
-//         public timestamp: Date = new Date(),
-//         public read: boolean = false,
-//     ) {
-//         this.message_id = message_id;
-//         this.sender = sender;
-//         this.receiver = receiver;
-//         this.content = content;
-//         this.timestamp = timestamp;
-//     }
-// }
+export class Message {
+    constructor(
+        public message_id: string,
+        public sender: string,
+        public receiver: string,
+        public subject: string = 'No Subject.',
+        public content: string = 'No Content.',
+        public timestamp: Date = new Date(),
+        public read: boolean = false,
+    ) {
+        this.message_id = message_id;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+        this.timestamp = timestamp;
+    }
+}
 
 // do not implement on backend
 // only for YT rn, Twitch requires use of Twitch API which we dont wanna implement.
