@@ -310,10 +310,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Seed
-        env:
-          VERSION: ${{ needs.setup.outputs.TIMESTAMP }}
-          api_key: ${{ secrets.api_key }}
         working-directory: utils/seeder
         run: |-
-          docker build -t seeder .
+          docker build --build-arg api_key=${{ secrets.api_key }} --build-arg VERSION=${{ secrets.api_key }} -t seeder .
           docker run seeder
