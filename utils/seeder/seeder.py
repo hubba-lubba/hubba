@@ -17,7 +17,7 @@ def create_user(user):
         "username": user["username"]
     }
     headers = {'content-type': 'application/json',
-               'id_token': f'{user["token_id"]'
+               'id_token': f'{user["token_id"]}'
     }
     res = put("http://user-api.eddisonso.com", json=res_body, headers=headers)
     return res.content
