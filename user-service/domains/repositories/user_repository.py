@@ -96,5 +96,36 @@ class UserRepository:
         self.session.merge(user)
         self.session.commit()
         return user
+    """
+    Helper for updating a User object
 
+    :param username
+    :return: 
+    """
+    @check_id_exists(User, ["user_id", "username"])
+    @check_unique(User, User.username, ["username"])
+    def _update_user(self, user: User, username, streaming_status):
+        user.username = username
+        if (streaming_status):
+            user.streaming_status = streaming_status
+        return user
 
+    """
+    Updates a User object
+
+    :optional param username: str of username
+    :optional param user_id: str of uuid (must be able to be parsed to uuidv4)
+    :optional param streaming_status: str of streaming status
+    :return: User of updated user
+    """
+    @check_id_exists(User, ["user_id"])
+    def update_user(self, username=None, user_id=None, streaming_status=None):
+        user = self.session.get(User, user_id)
+        if (not username):
+            return user
+        # updated_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
+        user = self._update_user(user, username, streaming_status)
+        self.session.add(user)
+        self.session.commit()
+        self.publisher.publish(action=True, uuid=str(user.user_id))
+        return user
