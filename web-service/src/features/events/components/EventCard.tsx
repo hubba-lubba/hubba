@@ -22,7 +22,7 @@ export const EventCard = ({ event }: { event: Event }) => {
 
     return (
         <Card
-            url={`events/${event.event_id}`}
+            url={`/events/${event.event_id}`}
             media={
                 event.status === 0 || !org ? (
                     <Thumbnail src={event.thumbnail} />

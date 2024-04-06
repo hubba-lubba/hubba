@@ -28,20 +28,25 @@ body {
 }
 
 .scroll-gutter {
-  scrollbar-gutter: stable;
+    scrollbar-gutter: stable;
+}
+
+.grid-autofill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 4fr));
 }
 
 @supports (scrollbar-color: auto) {
-  * {
-    scrollbar-color: #30313f transparent;
-  }
+    * {
+        scrollbar-color: #30313f transparent;
+    }
 }
 
 @supports selector(::-webkit-scrollbar) {
-  *::-webkit-scrollbar {
-    background: transparent;
-  }
-  *::-webkit-scrollbar-thumb {
-    background: #30313f;
-  }
+    *::-webkit-scrollbar {
+        background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+        background: #30313f;
+    }
 }

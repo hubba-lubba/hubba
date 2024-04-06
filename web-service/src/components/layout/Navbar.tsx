@@ -4,7 +4,7 @@ import { AuthContext } from '@/contexts/AuthProvider';
 import { UserContext } from '@/contexts/UserProvider';
 import { ModalContext } from '@/contexts/ModalProvider';
 import Logo from '../elements/Logo';
-import NavbarSearchBar from '../elements/NavbarSearchBar';
+// import NavbarSearchBar from '../elements/NavbarSearchBar';
 import { HiMiniSignal } from 'react-icons/hi2';
 import { LuPlusSquare } from 'react-icons/lu';
 import { DevTool } from '../dev';
@@ -39,11 +39,10 @@ const NavDropdown = () => {
     const user = useContext(AuthContext);
 
     return (
-        <div className="fixed right-6 top-24 flex w-[110px] flex-col rounded-b bg-hubba-900">
+        <div className="fixed right-6 top-24 z-10 flex w-[110px] flex-col rounded-b bg-hubba-900">
             {user ? (
                 <>
                     <DropdownOption to="/profile">Profile</DropdownOption>
-                    <DropdownOption to="/edit">Edit</DropdownOption>
                     <DropdownOption to="/settings">Settings</DropdownOption>
                     <DropdownOption to="/" onClick={() => signout()}>
                         Sign Out
@@ -85,12 +84,12 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
     }, [toggleDropdown]);
 
     return (
-        <nav className="fixed flex h-32 w-full flex-grow-0">
+        <nav className="fixed z-40 flex h-32 w-full flex-grow-0">
             <Logo />
             {!bare && (
                 <div className="grid w-full grid-cols-2 items-center px-16 py-8">
                     <div className="my-auto h-[36px]">
-                        <NavbarSearchBar />
+                        {/* <NavbarSearchBar /> */}
                     </div>
                     <div className="flex flex-row items-center justify-end gap-4">
                         {import.meta.env.DEV && <DevTool />}

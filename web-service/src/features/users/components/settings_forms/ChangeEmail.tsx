@@ -1,6 +1,8 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
+import { UserContext } from '@/contexts/UserProvider';
 import { email } from '@/lib/validation';
 import Joi from 'joi';
+import { useContext } from 'react';
 
 const schema = Joi.object({
     newEmail: email,
@@ -11,10 +13,13 @@ type ChangeEmailFields = {
 };
 
 export function ChangeEmail() {
+    const { editEmail } = useContext(UserContext);
+
     async function handleSubmit(data: ChangeEmailFields) {
         const { newEmail } = data;
+        // TODO: implement (w/ async)
         try {
-            console.log(`new email: ${newEmail}`);
+            editEmail(newEmail);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -26,6 +31,7 @@ export function ChangeEmail() {
             <Form<ChangeEmailFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
+                style="!w-1/2"
             >
                 {({ register, formState }) => (
                     <>
@@ -40,5 +46,5 @@ export function ChangeEmail() {
                 )}
             </Form>
         </div>
-    )
+    );
 }

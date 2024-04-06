@@ -4,6 +4,7 @@ import { Form, TextField, SubmitButton } from '@/components/form';
 import { ModalContext } from '@/contexts/ModalProvider';
 import Joi from 'joi';
 import { Layout } from '@/components/layout';
+import { UserContext } from '@/contexts/UserProvider';
 
 const schema = Joi.object({
     url: Joi.string().uri().required(),
@@ -15,8 +16,10 @@ type UploadFormValues = {
 
 export const UploadModal = () => {
     const { showUploadModal, setShowUploadModal } = useContext(ModalContext);
+    const { uploadVideo } = useContext(UserContext);
+    
     const addVideo = async (data: UploadFormValues) => {
-        console.log(data);
+        uploadVideo(data.url);
         setShowUploadModal(false);
     };
 

@@ -1,24 +1,24 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
-import { UserContext } from '@/contexts/UserProvider';
-import { username } from '@/lib/validation';
+import { bio } from '@/lib/validation';
 import Joi from 'joi';
 import { useContext } from 'react';
+import { UserContext } from '@/contexts/UserProvider';
 
 const schema = Joi.object({
-    newUsername: username,
+    bio: bio,
 });
 
-type ChangeUsernameFields = {
-    newUsername: string;
+type ChangeBioValues = {
+    bio: string;
 };
 
-export function ChangeUsername() {
-    const { editUsername } = useContext(UserContext);
+export function ChangeBio() {
+    const { editBio } = useContext(UserContext);
 
-    async function handleSubmit(data: ChangeUsernameFields) {
-        const { newUsername } = data;
+    async function handleSubmit(data: ChangeBioValues) {
+        const { bio } = data;
         try {
-            editUsername(newUsername);
+            editBio(bio);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -26,8 +26,8 @@ export function ChangeUsername() {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Username</h2>
-            <Form<ChangeUsernameFields, typeof schema>
+            <h2 className="mb-2 text-3xl">Update Bio</h2>
+            <Form<ChangeBioValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
                 style="!w-1/2"
@@ -36,9 +36,9 @@ export function ChangeUsername() {
                     <>
                         <TextField
                             type="text"
-                            label="New Username"
-                            error={formState.errors['newUsername']}
-                            registration={register('newUsername')}
+                            label="Bio"
+                            error={formState.errors['bio']}
+                            registration={register('bio')}
                         />
                         <SubmitButton text="Submit" />
                     </>

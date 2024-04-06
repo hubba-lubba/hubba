@@ -1,17 +1,19 @@
 import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getMockEvent } from '../api';
 import { Event } from '../types';
 import { Link } from 'react-router-dom';
 import { PageLayout } from '@/components/layout';
 import { formatTime } from '@/utils/time';
+import { UserContext } from '@/contexts/UserProvider';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
     const [event, setEvent] = useState<Event>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const [tags, setTags] = useState<React.ReactElement[]>([]);
+    const { userData, joinEvent, leaveEvent } = useContext(UserContext);
+    // const [tags, setTags] = useState<React.ReactElement[]>([]);
 
     useEffect(() => {
         if (!id) return; //do smt else abt this (but safer)
@@ -21,18 +23,18 @@ export const EventPage = () => {
             setEvent(eventData);
 
             //make Tag feature and component
-            const tags = [];
-            for (let i = 0; i < eventData.tags.length; i++) {
-                tags.push(
-                    <div
-                        key={`tag-${eventData.event_id}-${i}`}
-                        className="rounded-2xl border px-3 py-1"
-                    >
-                        {eventData.tags[i]}
-                    </div>,
-                );
-            }
-            setTags(tags);
+            // const tags = [];
+            // for (let i = 0; i < eventData.tags.length; i++) {
+            //     tags.push(
+            //         <div
+            //             key={`tag-${eventData.event_id}-${i}`}
+            //             className="rounded-2xl border px-3 py-1"
+            //         >
+            //             {eventData.tags[i]}
+            //         </div>,
+            //     );
+            // }
+            // setTags(tags);
 
             setLoading(false);
         };
@@ -66,12 +68,23 @@ export const EventPage = () => {
                             [{event.status}]
                             {event.name || `Event ${event.event_id}`}
                         </h1>
-                        <div className="flex flex-row gap-2">{tags}</div>
+                        {/* <div className="flex flex-row gap-2">{tags}</div> */}
                         <p className="">Hosted by {event.host_org}</p>
                         <p className="">{formatTime(event.time_of)}</p>
                         <div className="flex w-full items-center justify-center">
-                            <button className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold">
-                                ENTER
+                            <button
+                                className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                onClick={() =>
+                                    userData.joined_events.includes(
+                                        event.event_id,
+                                    )
+                                        ? leaveEvent(event.event_id)
+                                        : joinEvent(event.event_id)
+                                }
+                            >
+                                {userData.joined_events.includes(event.event_id)
+                                    ? 'LEAVE'
+                                    : 'ENTER'}
                             </button>
                         </div>
                     </div>

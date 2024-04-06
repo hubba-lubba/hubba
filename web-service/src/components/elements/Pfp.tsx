@@ -6,7 +6,6 @@ interface PfpProps {
 }
 
 export const Pfp = ({ image, size = 40 }: PfpProps) => {
-    console.log(size);
     return image ? (
         <img src={image} alt="image" className="h-6 pr-2.5" />
     ) : (

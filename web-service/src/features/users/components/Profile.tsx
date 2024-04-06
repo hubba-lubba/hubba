@@ -2,14 +2,14 @@ import { Layout } from '@/components/layout';
 import { Grid } from '@/components/library';
 import { useEffect, useState } from 'react';
 import { getVideos, getMockUser } from '../api';
-import { Button } from '@/components/elements/buttons';
 import { useContext } from 'react';
 import { VideoCard } from './VideoCard';
 import { UserContext } from '@/contexts/UserProvider';
 import { useParams } from 'react-router-dom';
-import { User } from '../types';
-import { Video } from '../types';
+import { User, Video } from '../types';
 import { Pfp } from '@/components/elements';
+import { statuses } from '@/lib/constants';
+import { ChannelCard } from './ChannelCard';
 
 export const Profile = () => {
     const { id } = useParams<{ id: string }>();
@@ -17,7 +17,7 @@ export const Profile = () => {
     const [user, setUser] = useState<User>();
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
-    const { userData } = useContext(UserContext);
+    const { userData, followUser, unfollowUser } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,26 +50,38 @@ export const Profile = () => {
     return (
         <Layout style="flex-col">
             <div className="flex flex-row items-center space-x-8 pb-8">
-                <Pfp image={user?.profile_image} size={100} />
+                <Pfp image={user.profile_image} size={100} />
                 <div className="space-y-1">
                     <p className="text-lg font-bold">{user.username}</p>
                     <div className="flex flex-row space-x-2">
-                        <p>Followers: {20}</p>
-                        {/* should be user.followers */}
-                        <p>Videos: {videos.length}</p>
+                        <p>{user.followers.length} Followers</p>
+                        <p>| {statuses[user.streaming_status]}</p>
                     </div>
-                    <p>user bio</p>
+                    <p>{user.bio}</p>
+                    {userData && user.user_id != userData.user_id && (
+                        // make this a button component (used in events and orgs as well)
+                        <button
+                            onClick={() =>
+                                userData.following.includes(user.user_id)
+                                    ? unfollowUser(user.user_id)
+                                    : followUser(user.user_id)
+                            }
+                            className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                        >
+                            {userData.following.includes(user.user_id)
+                                ? 'UNFOLLOW'
+                                : 'FOLLOW'}
+                        </button>
+                    )}
                 </div>
-                {!user && (
-                    <Button
-                        variant="base"
-                        style="h-11 w-1/6 bg-hubba-500 rounded-md justify-center items-center mx-4"
-                    >
-                        Follow
-                    </Button>
-                )}
             </div>
-            <Grid>
+            {user.streaming_status === 1 && (
+                <Grid title="live">
+                    {user.profile_image}
+                    <ChannelCard user={user} />
+                </Grid>
+            )}
+            <Grid title="videos">
                 {videos.map((video, index) => (
                     <VideoCard
                         key={`${video.video_id}-${index}`}
