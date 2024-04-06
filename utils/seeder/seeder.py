@@ -19,7 +19,7 @@ def create_user(user):
     headers = {"content-type": "application/json",
                "id_token": user["token_id"]
     }
-    res = put("http://user-api.eddisonso.com", json=res_body)
+    res = put("http://user-api.eddisonso.com", json=res_body, headers=headers)
     return res.content
 
 def seed_users(users):
