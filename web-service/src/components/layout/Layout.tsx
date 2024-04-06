@@ -10,7 +10,7 @@ export const Layout = ({ style, children }: LayoutProps) => {
     return (
         <div
             className={clsx(
-                'scroll-gutter flex overflow-y-auto border-none bg-none',
+                'flex border-none bg-none',
                 style,
             )}
         >

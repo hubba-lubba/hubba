@@ -1,4 +1,4 @@
-import { Message, User, Video } from '../types';
+import { User, Video } from '../types';
 
 // BELOW ARE MOCK FUNCTIONS
 export const getMockUser = async (id: string): Promise<{ user: User }> => {
@@ -23,62 +23,8 @@ export const getMockUser = async (id: string): Promise<{ user: User }> => {
             past_events: ['event3', 'event4'],
             joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
             platforms: ['platform1', 'platform2'],
-            inbox: (await getMockInbox()).messages,
         } as User,
     };
-    return data;
-};
-
-// for invitations or requests, create a button componoent that extends button
-// specifically for this: contains link with info and token.
-// content will simply hold a react component with said values.
-export const getMockInbox = async (): Promise<{ messages: Message[] }> => {
-    const data = {
-        // order by time
-        messages: [
-            {
-                message_id: '1',
-                sender: 'sen1',
-                receiver: 'rec1',
-                subject:
-                    'This is a long subject line for many reasons idk idk idk idk idk idk idk idk lorem ipsum fuckery boohoo poopoo',
-                content:
-                    "Hi x, we'd like to invite you to our organization. Our organization is The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding. Please click this button to join.",
-                timestamp: new Date('2021-09-22'),
-                read: false,
-            },
-            {
-                message_id: '2',
-                sender: 'sen2',
-                receiver: 'rec2',
-                subject: 'Fitness gram',
-                content:
-                    'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding',
-                timestamp: new Date('2021-09-08'),
-                read: false,
-            },
-            {
-                message_id: '3',
-                sender: 'aaa',
-                receiver: 'receiver1',
-                subject: 'This is a subject line',
-                content: 'content3',
-                timestamp: new Date('2021-09-04'),
-                read: true,
-            },
-            {
-                message_id: '4',
-                sender: 'sender1',
-                receiver: 'receiver1',
-                subject: 'subject1',
-                content:
-                    'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding',
-                timestamp: new Date('2021-09-01'),
-                read: true,
-            },
-        ],
-    };
-
     return data;
 };
 
@@ -109,7 +55,6 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
                 past_events: ['event3', 'event4'],
                 joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
                 platforms: ['platform1', 'platform2'],
-                inbox: (await getMockInbox()).messages,
             } as User,
             {
                 user_id: '2',
@@ -128,7 +73,6 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
                 past_events: ['event3', 'event4'],
                 joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
                 platforms: ['platform1', 'platform2'],
-                inbox: (await getMockInbox()).messages,
             } as User,
             {
                 user_id: '3',
@@ -147,7 +91,6 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
                 past_events: ['event3', 'event4'],
                 joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
                 platforms: ['platform1', 'platform2'],
-                inbox: (await getMockInbox()).messages,
             } as User,
         ],
     };
@@ -172,3 +115,56 @@ export const getVideos = async (user: User): Promise<Video[]> => {
     );
     return data;
 };
+
+// for invitations or requests, create a button componoent that extends button
+// specifically for this: contains link with info and token.
+// content will simply hold a react component with said values.
+// export const getMockInbox = async (): Promise<{ messages: Message[] }> => {
+//     const data = {
+//         // order by time
+//         messages: [
+//             {
+//                 message_id: '1',
+//                 sender: 'sen1',
+//                 receiver: 'rec1',
+//                 subject:
+//                     'This is a long subject line for many reasons idk idk idk idk idk idk idk idk lorem ipsum fuckery boohoo poopoo',
+//                 content:
+//                     "Hi x, we'd like to invite you to our organization. Our organization is The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding. Please click this button to join.",
+//                 timestamp: new Date('2021-09-22'),
+//                 read: false,
+//             },
+//             {
+//                 message_id: '2',
+//                 sender: 'sen2',
+//                 receiver: 'rec2',
+//                 subject: 'Fitness gram',
+//                 content:
+//                     'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding',
+//                 timestamp: new Date('2021-09-08'),
+//                 read: false,
+//             },
+//             {
+//                 message_id: '3',
+//                 sender: 'aaa',
+//                 receiver: 'receiver1',
+//                 subject: 'This is a subject line',
+//                 content: 'content3',
+//                 timestamp: new Date('2021-09-04'),
+//                 read: true,
+//             },
+//             {
+//                 message_id: '4',
+//                 sender: 'sender1',
+//                 receiver: 'receiver1',
+//                 subject: 'subject1',
+//                 content:
+//                     'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding',
+//                 timestamp: new Date('2021-09-01'),
+//                 read: true,
+//             },
+//         ],
+//     };
+
+//     return data;
+// };

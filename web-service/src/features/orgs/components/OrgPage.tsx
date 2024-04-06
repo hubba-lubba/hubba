@@ -5,10 +5,10 @@ import { User } from '@/features/users/types';
 import { getMockOrg } from '../api';
 import { Button } from '@/components/elements/buttons';
 import { useNavigate } from 'react-router-dom';
-import { FaRegUserCircle } from 'react-icons/fa';
 import Linkify from 'linkify-react';
 import { PageLayout } from '@/components/layout';
 import { getMockUser } from '@/features/users/api';
+import { Pfp } from '@/components/elements';
 
 const MemberCard = ({ user_id }: { user_id: string }) => {
     const [user, setUser] = useState<User>();
@@ -26,8 +26,7 @@ const MemberCard = ({ user_id }: { user_id: string }) => {
     return (
         <Button
             variant="image"
-            image={user?.profile_image}
-            Icon={user?.profile_image ? undefined : FaRegUserCircle}
+            icon={<Pfp image={user?.profile_image} />}
             handleClick={() => navigate(`/user/${user_id}`)}
             style="w-[225px] p-2 !h-12 flex align-center rounded bg-hubba-800"
         >

@@ -5,7 +5,7 @@ import { getFollowingChannels } from '../api';
 import { User } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@/contexts/UserProvider';
-import { FaRegUserCircle } from 'react-icons/fa';
+import { Pfp } from '@/components/elements';
 
 export const SidebarChannels = () => {
     const [channels, setChannels] = useState<User[]>([]);
@@ -35,10 +35,7 @@ export const SidebarChannels = () => {
                     <Button
                         key={`sidebar-channel-${channel.user_id}-${index}`}
                         variant="image"
-                        image={channel.profile_image}
-                        Icon={
-                            channel.profile_image ? undefined : FaRegUserCircle
-                        }
+                        icon={<Pfp image={channel?.profile_image} />}
                         handleClick={() => navigate(`/user/${channel.user_id}`)}
                     >
                         {channel.username}

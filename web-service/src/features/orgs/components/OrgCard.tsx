@@ -1,15 +1,18 @@
-import { Card } from '@/components/library';
+import { Card, Thumbnail } from '@/components/library';
 import { Org } from '@/features/orgs/types';
 
 export const OrgCard = ({ org }: { org: Org }) => {
     return (
-        <Card url={`orgs/${org.org_id}`}>
-            <img src={org.image} />
-            <div>
-                <h2>{org.name}</h2>
-                <h2>{org.description}</h2>
-                <h2>{org.tags}</h2>
-            </div>
-        </Card>
+        <Card
+            url={`orgs/${org.org_id}`}
+            media={<Thumbnail src={org.image} />}
+            footer={
+                <div className='flex flex-col'>
+                    <div className="w-2/12">{org.name}</div>
+                    <div>{org.description}</div>
+                    {/* <div>{org.tags}</div> */}
+                </div>
+            }
+        />
     );
 };
