@@ -32,13 +32,13 @@ def seed(users):
     ready = False
     attempts = 0
     while not ready or attempts <= MAX_ATTEMPTS:
+        printf(f"Trying to correct version... ({attempts})")
         try:
             if loads(get("http://user-api.eddisonso.com/version").content).get("version") == VERSION:
                 ready = True
         except:
             print("Incorrect user-api version. Retrying...", flush=True)
             attempts += 1
-            sleep(5)
     
 if __name__ == "__main__":
     print("Initializing Firebase...", flush=True)
