@@ -34,11 +34,12 @@ def seed(users):
     while not ready and attempts <= MAX_ATTEMPTS:
         print(f"Trying to correct version... ({attempts})", flush=True)
         try:
-            if loads(get("http://user-api.eddisonso.com/version").content).get("version") == VERSION:
+            curr_version = loads(get("http://user-api.eddisonso.com/version").content).get("version")
+            if curr_version == VERSION:
                 ready = True
         except:
             pass
-        print("Incorrect user-api version. Retrying...", flush=True)
+        print("Incorrect user-api version. Got {curr_version} need {VERSION}. Retrying...", flush=True)
         attempts += 1
         sleep(5)
     
