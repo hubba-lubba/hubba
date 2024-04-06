@@ -301,3 +301,15 @@ jobs:
           kubectl set image deployment/events-service events-service=eddisonso/events-service:${{needs.setup.outputs.TIMESTAMP}}
           kubectl set image deployment/organizations-service organizations-service=eddisonso/organizations-service:${{needs.setup.outputs.TIMESTAMP}}
           kubectl set image deployment/file-service file-service=eddisonso/file-service:${{needs.setup.outputs.TIMESTAMP}}
+
+  seed:
+    runs-on: ubuntu-latest
+    needs: ["deploy"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Seed
+        run: |-
+          docker build -t seeder .utils/seeder/Dockerfile
+          docker run seeder
