@@ -125,7 +125,7 @@ class UserRepository:
             return user
         # updated_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
         user = self._update_user(user, username, streaming_status)
-        self.session.add(user)
+        self.session.patch(user)
         self.session.commit()
         self.publisher.publish(action=True, uuid=str(user.user_id))
         return user
