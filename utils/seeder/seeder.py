@@ -16,6 +16,9 @@ def create_user(user):
     res_body = {
         "username": user["username"]
     }
+    headers = {"content-type": "application/json",
+               "id_token": user["token_id"]
+    }
     res = put("http://user-api.eddisonso.com", json=res_body)
     return res.content
 
@@ -24,6 +27,8 @@ def seed_users(users):
         create_user(user)
 
 def seed(users):
+    for user in users:
+        user["token_id"] = signin(user["username"], user["password"])
     ready = False
     attempts = 0
     while not ready or attempts <= MAX_ATTEMPTS:
@@ -34,8 +39,6 @@ def seed(users):
             print("Incorrect user-api version. Retrying...", flush=True)
             attempts += 1
             sleep(5)
-    for user in users:
-        user["token_id"] = signin(user["username"], user["password"])
     
 if __name__ == "__main__":
     print("Initializing Firebase...", flush=True)
