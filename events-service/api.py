@@ -5,6 +5,7 @@ import os
 from events.subscriber import EventSubscriber
 from engine import engine
 from firebase_admin import credentials, initialize_app
+from logger import LoggerFactory
 
 def init_subscriber():
     subscriber_pid = os.fork()
@@ -18,11 +19,16 @@ def init_firebase():
     initialize_app(cred)
 
 def init_app():
+    logger_factory = LoggerFactory()
+    logger = logger_factory.get_logger()
+    logger.info("Initializing Firebase")
     init_firebase()
     app = Flask(__name__)
+    logger.info("Registering Events Blueprint")
     app.register_blueprint(events_blueprint)
     cors = CORS(app)
 
+    logger.info("Initializing Subscriber")
     with app.app_context():
         init_subscriber()
 
