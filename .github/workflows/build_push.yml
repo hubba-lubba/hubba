@@ -312,6 +312,7 @@ jobs:
       - name: Seed
         env:
           VERSION: ${{ needs.setup.outputs.TIMESTAMP }}
+          api_key: ${{ secrets.api_key }}
         working-directory: utils/seeder
         run: |-
           docker build -t seeder .
