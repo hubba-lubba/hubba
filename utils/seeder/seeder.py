@@ -16,8 +16,8 @@ def create_user(user):
     res_body = {
         "username": user["username"]
     }
-    headers = {"content-type": "application/json",
-               "id_token": user["token_id"]
+    headers = {'content-type': 'application/json',
+               'id_token': f'{user["token_id"]'
     }
     res = put("http://user-api.eddisonso.com", json=res_body, headers=headers)
     return res.content
@@ -28,7 +28,7 @@ def seed_users(users):
 
 def seed(users):
     for user in users:
-        user["token_id"] = signin(user["username"], user["password"])
+        user["token_id"] = signin(user["email"], user["password"])
     ready = False
     attempts = 0
     while not ready and attempts <= MAX_ATTEMPTS:
