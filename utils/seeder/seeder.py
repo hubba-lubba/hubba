@@ -37,11 +37,14 @@ def seed(users):
             curr_version = loads(get("http://user-api.eddisonso.com/version").content).get("version")
             if curr_version == VERSION:
                 ready = True
+                print("Got correct version for user-api", flush=True)
+                break
         except:
             pass
         print(f"Incorrect user-api version. Got {curr_version} need {VERSION}. Retrying...", flush=True)
         attempts += 1
         sleep(5)
+    seed_users(users)
     
 if __name__ == "__main__":
     print("Initializing Firebase...", flush=True)
