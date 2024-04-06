@@ -8,4 +8,4 @@ WORKDIR /opt/seeder
 
 RUN pip install --upgrade pip
 
-CMD ["python3", "seeder.py"]
+CMD ["python3", "-u", "seeder.py"]

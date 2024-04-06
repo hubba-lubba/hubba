@@ -3,6 +3,7 @@ from user_creds import users, signin
 from requests import put, get
 from os import environ
 from json import loads
+from time import sleep
 
 VERSION = environ.get("VERSION")
 MAX_ATTEMPTS = 30
@@ -30,10 +31,14 @@ def seed(users):
             if loads(get("http://user-api.eddisonso.com/version").content).get("version") == VERSION:
                 ready = True
         except:
+            print("Incorrect user-api version. Retrying...", flush=True)
             attempts += 1
+            sleep(5)
     for user in users:
         user["token_id"] = signin(user["username"], user["password"])
     
 if __name__ == "__main__":
+    print("Initializing Firebase...", flush=True)
     init_firebase()
+    print("Seeding Users...", flush=True)
     seed(users)
