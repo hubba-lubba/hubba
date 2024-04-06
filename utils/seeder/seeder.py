@@ -24,7 +24,7 @@ def create_user(user):
 
 def seed_users(users):
     for user in users:
-        create_user(user)
+        print(create_user(user), flush=True)
 
 def seed(users):
     for user in users:
