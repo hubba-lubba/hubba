@@ -12,6 +12,7 @@ export class Event {
         public time_of: Date,
         public status: 0 | 1,
         public prizes: string[],
+        public attendees: string[],
     ) {
         this.event_id = event_id;
         this.host_org = host_org;
@@ -25,5 +26,6 @@ export class Event {
         this.time_of = time_of;
         this.status = status;
         this.prizes = prizes;
+        this.attendees = attendees;
     }
 }

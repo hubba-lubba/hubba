@@ -6,9 +6,7 @@ export class User {
         public profile_image: string | undefined = undefined,
         public bio: string = 'No bio.',
         public followers: string[] = [],
-        public num_followers: number = 0,
         public following: string[] = [],
-        public num_following: number = 0,
         public streaming_status: 0 | 1 = 0,
         public channel: string = '',
         public video_urls: string[] = [],
@@ -25,9 +23,7 @@ export class User {
         this.profile_image = profile_image;
         this.bio = bio;
         this.followers = followers;
-        this.num_followers = num_followers;
         this.following = following;
-        this.num_following = num_following;
         this.streaming_status = streaming_status;
         this.channel = channel; //may not need if connect platforms
         this.video_urls = video_urls;

@@ -101,13 +101,37 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
     return data;
 };
 
+// https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+const ytidParser = (url: string): string => {
+    var regExp =
+        /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return match && match[7].length == 11 ? match[7] : '';
+};
+
+export const getYoutubeVideoData = async (video_id: string): Promise<any> => {
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=${import.meta.env.VITE_GOOGLE_KEY}&id=${video_id}`;
+    try {
+        const googleData = await fetch(apiUrl);
+        if (!googleData.ok) throw new Error('failed to fetch video data');
+
+        console.log(googleData);
+        return googleData.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const getVideo = async (url: string): Promise<{ video: Video }> => {
+    const video_id = ytidParser(url);
+    if (!video_id) throw new Error('no video id found in url');
+
     const data = {
         video: {
-            video_id: 'dQw4w9WgXcQ',
+            video_id: video_id,
             url: url,
-            title: 'Click This Video',
-            thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/default.jpg',
+            // title: 'Click This Video',
+            thumbnail: `https://img.youtube.com/vi/${video_id}/default.jpg`,
         } as Video,
     };
     return data;
