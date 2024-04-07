@@ -6,6 +6,7 @@ import { changepassword } from '@/features/auth/api';
 
 interface UserContextType {
     userData: User;
+    createUser: (id: string, username: string, email: string) => Promise<User>;
     setUserData: (user: User) => void;
     setStreamStatus: (status: 0 | 1) => void;
     joinEvent: (event_id: string) => void;
@@ -27,6 +28,26 @@ export const UserContext = createContext<UserContextType>(null!);
 
 export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [userData, setUserData] = useState<User>(null!);
+
+    const createUser = async (id: string, username: string, email: string) => {
+        const user = new User(
+            id,
+            username,
+            email,
+            undefined,
+            '',
+            [],
+            [],
+            0,
+            '',
+            [],
+            [],
+            [],
+            [],
+            [],
+        );
+        return user;
+    };
 
     const setStreamStatus = (status: 0 | 1) => {
         setUserData({ ...userData, streaming_status: status });
@@ -52,7 +73,9 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         setUserData({
             ...userData,
             joined_orgs: [...userData.joined_orgs, org_id],
-            owned_orgs: owner ? [...userData.owned_orgs, org_id] : userData.owned_orgs,
+            owned_orgs: owner
+                ? [...userData.owned_orgs, org_id]
+                : userData.owned_orgs,
         });
     };
 
@@ -115,6 +138,7 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         <UserContext.Provider
             value={{
                 userData,
+                createUser,
                 setUserData,
                 setStreamStatus,
                 joinEvent,

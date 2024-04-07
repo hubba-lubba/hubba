@@ -2,21 +2,22 @@ import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { Org } from '../types';
 import { User } from '@/features/users/types';
-import { getMockOrg } from '../api';
 import { Button } from '@/components/elements/buttons';
 import { useNavigate } from 'react-router-dom';
 import Linkify from 'linkify-react';
 import { PageLayout } from '@/components/layout';
-import { getMockUser } from '@/features/users/api';
 import { Pfp } from '@/components/elements';
 import { UserContext } from '@/contexts/UserProvider';
+import { UsersContext } from '@/contexts/UsersProvider';
 import { Event } from '@/features/events/types';
-import { getSeveralEvents } from '@/features/events/api';
 import { statuses } from '@/lib/constants';
 import { formatTime } from '@/utils/time';
+import { OrgsContext } from '@/contexts/OrgsProvider';
+import { EventsContext } from '@/contexts/EventsProvider';
 
 const MemberCard = ({ user_id }: { user_id: string }) => {
     const [user, setUser] = useState<User>();
+    const { getMockUser } = useContext(UsersContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,7 +27,7 @@ const MemberCard = ({ user_id }: { user_id: string }) => {
         };
 
         fetchData();
-    }, [user_id]);
+    }, [user_id, getMockUser]);
 
     return (
         <Button
@@ -46,6 +47,8 @@ export const OrgPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     const { userData, joinOrg, leaveOrg } = useContext(UserContext);
+    const { getMockOrg } = useContext(OrgsContext);
+    const { getMockEvents } = useContext(EventsContext);
     const navigate = useNavigate();
 
     const { id } = useParams<{ id: string }>();
@@ -53,23 +56,23 @@ export const OrgPage = () => {
     useEffect(() => {
         if (!id) return;
         const fetchData = async () => {
-            const orgData = (await getMockOrg(id, 'faide')).org;
+            const orgData = (await getMockOrg(id)).org;
             setOrg(orgData);
             setLoading(false);
         };
 
         fetchData().catch((err) => setError('Error loading page: ' + err));
-    }, [id]);
+    }, [id, getMockOrg]);
 
     useEffect(() => {
         if (!org) return;
         const fetchEvents = async () => {
-            const eventsData = await getSeveralEvents(org.events);
+            const eventsData = await getMockEvents(org.events);
             setEvents(eventsData);
         };
 
         fetchEvents();
-    }, [org]);
+    }, [org, getMockEvents]);
 
     if (!id) return <div>Org not found</div>;
     if (!org) return <div>Org not found</div>;

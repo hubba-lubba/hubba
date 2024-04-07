@@ -2,14 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from './UserProvider';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
-import { createUser, getMockUser } from '@/features/users/api';
 
 export const AuthContext = React.createContext<firebase.User>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [user, setUser] = useState<firebase.User>(null!);
     const [loadingUser, setLoadingUser] = useState<boolean>(true);
-    const { setUserData } = useContext(UserContext);
+    const { setUserData, createUser } = useContext(UserContext);
 
     const auth = getAuth();
     useEffect(() => {
@@ -26,8 +25,13 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         const loadUserData = async () => {
             if (user) {
                 try {
-                    const userData = await getMockUser(user.uid);
-                    setUserData(userData.user);
+                    // TODO: replace with getUser
+                    const userData = await createUser(
+                        user.uid,
+                        user.displayName ?? 'User',
+                        user.email ?? '',
+                    );
+                    setUserData(userData);
                 } catch (error) {
                     console.log(error);
                     throw error;
@@ -40,11 +44,17 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
             try {
                 await loadUserData();
             } catch (error: any) {
-                if (error.status === 404 || error.status === 403 || error.status === 400) {
+                if (
+                    error.status === 404 ||
+                    error.status === 403 ||
+                    error.status === 400
+                ) {
                     try {
-                        await createUser({
-                            username: user.displayName ?? user.email ?? 'User',
-                        });
+                        await createUser(
+                            user.uid,
+                            user.displayName ?? 'User',
+                            user.email ?? '',
+                        );
                         await loadUserData();
                         return;
                     } catch (error) {
@@ -58,7 +68,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
             }
         };
         load();
-    }, [user, setUserData]);
+    }, [user, setUserData, createUser]);
 
     if (loadingUser) {
         return (

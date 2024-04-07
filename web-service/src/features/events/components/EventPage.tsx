@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { getMockEvent } from '../api';
 import { Event } from '../types';
 import { Link } from 'react-router-dom';
 import { PageLayout } from '@/components/layout';
 import { formatTime } from '@/utils/time';
 import { UserContext } from '@/contexts/UserProvider';
+import { EventsContext } from '@/contexts/EventsProvider';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -13,6 +13,7 @@ export const EventPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     const { userData, joinEvent, leaveEvent } = useContext(UserContext);
+    const { getMockEvent } = useContext(EventsContext);
     // const [tags, setTags] = useState<React.ReactElement[]>([]);
 
     useEffect(() => {
@@ -42,7 +43,7 @@ export const EventPage = () => {
         fetchEventData(id).catch((err) =>
             setError('Error loading page: ' + err),
         );
-    }, [id]);
+    }, [id, getMockEvent]);
 
     if (!id) return <div>Event not found</div>; //do smt else abt this i think
     if (!event) return <div>Event not found</div>;

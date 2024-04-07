@@ -1,4 +1,4 @@
-import { User, Video, Message } from '../types';
+import { User, Message } from '../types';
 
 // BELOW ARE MOCK FUNCTIONS
 export const getMockUser = async (id: string): Promise<{ user: User }> => {
@@ -8,22 +8,17 @@ export const getMockUser = async (id: string): Promise<{ user: User }> => {
             username: `user with id ${id}`,
             email: 'email1',
             profile_image: undefined,
-            bio: 'bio1',
-            followers: ['follower1', 'follower2'],
-            num_followers: 2,
-            following: ['following1', 'following2'],
-            num_following: 2,
+            bio: '',
+            followers: [],
+            following: [],
             streaming_status: 0,
-            channel: 'caseoh_',
-            video_urls: [
-                'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            ],
-            joined_events: ['event1', 'event2'],
-            past_events: ['event3', 'event4'],
-            joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+            channel: '',
+            video_urls: [],
+            joined_events: [],
+            past_events: [],
+            joined_orgs: [],
             owned_orgs: [],
-            platforms: ['platform1', 'platform2'],
+            platforms: [],
         } as User,
     };
     return data;
@@ -101,48 +96,18 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
     return data;
 };
 
-// https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
-const ytidParser = (url: string): string => {
-    var regExp =
-        /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    var match = url.match(regExp);
-    return match && match[7].length == 11 ? match[7] : '';
-};
+// export const getYoutubeVideoData = async (video_id: string): Promise<any> => {
+//     const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=${import.meta.env.VITE_GOOGLE_KEY}&id=${video_id}`;
+//     try {
+//         const googleData = await fetch(apiUrl);
+//         if (!googleData.ok) throw new Error('failed to fetch video data');
 
-export const getYoutubeVideoData = async (video_id: string): Promise<any> => {
-    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=${import.meta.env.VITE_GOOGLE_KEY}&id=${video_id}`;
-    try {
-        const googleData = await fetch(apiUrl);
-        if (!googleData.ok) throw new Error('failed to fetch video data');
-
-        console.log(googleData);
-        return googleData.json();
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const getVideo = async (url: string): Promise<{ video: Video }> => {
-    const video_id = ytidParser(url);
-    if (!video_id) throw new Error('no video id found in url');
-
-    const data = {
-        video: {
-            video_id: video_id,
-            url: url,
-            // title: 'Click This Video',
-            thumbnail: `https://img.youtube.com/vi/${video_id}/default.jpg`,
-        } as Video,
-    };
-    return data;
-};
-
-export const getVideos = async (user: User): Promise<Video[]> => {
-    const data = await Promise.all(
-        user.video_urls.map(async (url) => (await getVideo(url)).video),
-    );
-    return data;
-};
+//         console.log(googleData);
+//         return googleData.json();
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 
 // for invitations or requests, create a button componoent that extends button
 // specifically for this: contains link with info and token.

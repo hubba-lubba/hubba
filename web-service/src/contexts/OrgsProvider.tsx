@@ -3,21 +3,27 @@
 
 // user information to load onto webpage: username, profile image, followed streams, events, INBOX
 
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Org } from '@/features/orgs/types';
+import { UserContext } from './UserProvider';
 
 interface OrgsContextType {
     orgsData: Org[];
     setOrgsData: (org: Org[]) => void;
+    getMockOrg: (id: string) => Promise<{ org: Org }>;
+    getMockOrgs: (ids: string[]) => Promise<Org[]>;
+    getDiscoverOrgs: () => Promise<{ orgs: Org[] }>;
+    createOrg: (org: Org) => Promise<{ org: Org }>;
 }
 
 export const OrgsContext = createContext<OrgsContextType>(null!);
 
 export const OrgsProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [orgsData, setOrgsData] = useState<Org[]>([]);
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
-         const orgs = [
+        const orgs = [
             {
                 org_id: '1',
                 name: `org 1`,
@@ -88,11 +94,49 @@ export const OrgsProvider = ({ children }: React.PropsWithChildren<object>) => {
         setOrgsData(orgs as Org[]);
     }, []);
 
+    const getMockOrg = async (id: string): Promise<{ org: Org }> => {
+        const org = orgsData.find((org) => org.org_id === id);
+        if (org === undefined) throw new Error('Org not found');
+        const data = {
+            org: org,
+        };
+        return data;
+    };
+
+    const getMockOrgs = async (ids: string[]): Promise<Org[]> => {
+        const data = Promise.all(
+            ids.map(async (id) => (await getMockOrg(id)).org),
+        );
+        return data;
+    };
+
+    const getDiscoverOrgs = async (): Promise<{ orgs: Org[] }> => {
+        // get orgs that the user isn't in
+        const data = {
+            orgs: orgsData.filter(
+                (org) => !org.users.includes(userData.user_id),
+            ),
+        };
+        return data;
+    };
+
+    const createOrg = async (org: Org): Promise<{ org: Org }> => {
+        console.log('create org', org);
+        const data = {
+            org: org,
+        };
+        return data;
+    };
+
     return (
         <OrgsContext.Provider
             value={{
                 orgsData,
                 setOrgsData,
+                getMockOrg,
+                getMockOrgs,
+                getDiscoverOrgs,
+                createOrg,
             }}
         >
             {children}
