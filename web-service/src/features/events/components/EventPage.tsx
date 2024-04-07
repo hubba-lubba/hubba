@@ -6,14 +6,21 @@ import { PageLayout } from '@/components/layout';
 import { formatTime } from '@/utils/time';
 import { UserContext } from '@/contexts/UserProvider';
 import { EventsContext } from '@/contexts/EventsProvider';
+import { statuses } from '@/lib/constants';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
     const [event, setEvent] = useState<Event>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { userData, joinEvent, leaveEvent } = useContext(UserContext);
-    const { getMockEvent } = useContext(EventsContext);
+    const { userData, addEventToUser, removeEventFromUser } =
+        useContext(UserContext);
+    const {
+        getMockEvent,
+        addUserToEvent,
+        removeUserFromEvent,
+        setEventStreamingStatus,
+    } = useContext(EventsContext);
     // const [tags, setTags] = useState<React.ReactElement[]>([]);
 
     useEffect(() => {
@@ -45,6 +52,16 @@ export const EventPage = () => {
         );
     }, [id, getMockEvent]);
 
+    const joinEvent = async (event: Event) => {
+        await addUserToEvent(event.event_id);
+        await addEventToUser(event.event_id);
+    };
+
+    const leaveEvent = async (event: Event) => {
+        await removeUserFromEvent(event.event_id);
+        await removeEventFromUser(event.event_id);
+    };
+
     if (!id) return <div>Event not found</div>; //do smt else abt this i think
     if (!event) return <div>Event not found</div>;
     if (loading) return <p>Loading events...</p>;
@@ -66,28 +83,52 @@ export const EventPage = () => {
 
                     <div className="flex w-6/12 flex-col space-y-6">
                         <h1 className="text-4xl font-bold">
-                            [{event.status}]
+                            [{statuses[event.status]}] &nbsp;
                             {event.name || `Event ${event.event_id}`}
                         </h1>
                         {/* <div className="flex flex-row gap-2">{tags}</div> */}
                         <p className="">Hosted by {event.host_org}</p>
                         <p className="">{formatTime(event.time_of)}</p>
-                        <div className="flex w-full items-center justify-center">
-                            <button
-                                className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
-                                onClick={() =>
-                                    userData.joined_events.includes(
+                        {userData && (
+                            <div className="flex w-full items-center justify-center space-x-4">
+                                <button
+                                    className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                    onClick={() =>
+                                        userData.joined_events.includes(
+                                            event.event_id,
+                                        )
+                                            ? leaveEvent(event)
+                                            : joinEvent(event)
+                                    }
+                                >
+                                    {userData.joined_events.includes(
                                         event.event_id,
                                     )
-                                        ? leaveEvent(event.event_id)
-                                        : joinEvent(event.event_id)
-                                }
-                            >
-                                {userData.joined_events.includes(event.event_id)
-                                    ? 'LEAVE'
-                                    : 'ENTER'}
-                            </button>
-                        </div>
+                                        ? 'LEAVE'
+                                        : 'ENTER'}
+                                </button>
+                                {userData.owned_orgs.includes(
+                                    event.host_org,
+                                ) && (
+                                    <button
+                                        className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                        onClick={() =>
+                                            event.status == 0
+                                                ? setEventStreamingStatus(
+                                                      event.event_id,
+                                                      1,
+                                                  )
+                                                : setEventStreamingStatus(
+                                                      event.event_id,
+                                                      0,
+                                                  )
+                                        }
+                                    >
+                                        {event.status == 0 ? 'START' : 'STOP'}
+                                    </button>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </section>
                 <section className="scroll-gutter flex flex-col space-y-4 overflow-y-auto">

@@ -1,6 +1,6 @@
 // user information to load onto webpage: username, profile image, followed streams, events, INBOX
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { User } from '@/features/users/types';
 import { changepassword } from '@/features/auth/api';
 
@@ -8,20 +8,20 @@ interface UserContextType {
     userData: User;
     createUser: (id: string, username: string, email: string) => Promise<User>;
     setUserData: (user: User) => void;
-    setStreamStatus: (status: 0 | 1) => void;
-    joinEvent: (event_id: string) => void;
-    leaveEvent: (event_id: string) => void;
-    joinOrg: (org_id: string, owner?: boolean) => void;
-    leaveOrg: (org_id: string) => void;
-    followUser: (user_id: string) => void;
-    unfollowUser: (user_id: string) => void;
-    uploadVideo: (video_url: string) => void;
-    editUsername: (username: string) => void;
-    editBio: (bio: string) => void;
-    editProfileImage: (profile_image: string) => void;
-    editEmail: (email: string) => void;
-    editChannel: (channel: string) => void;
-    changePassword: (password: string, newPassword: string) => void;
+    setStreamStatus: (status: 0 | 1) => Promise<void>;
+    addEventToUser: (event_id: string) => Promise<void>;
+    removeEventFromUser: (event_id: string) => Promise<void>;
+    addOrgToUser: (org_id: string, owner?: boolean) => Promise<void>;
+    removeOrgFromUser: (org_id: string) => Promise<void>;
+    followUser: (user_id: string) => Promise<void>;
+    unfollowUser: (user_id: string) => Promise<void>;
+    uploadVideo: (video_url: string) => Promise<void>;
+    editUsername: (username: string) => Promise<void>;
+    editBio: (bio: string) => Promise<void>;
+    editProfileImage: (profile_image: string) => Promise<void>;
+    editEmail: (email: string) => Promise<void>;
+    editChannel: (channel: string) => Promise<void>;
+    changePassword: (password: string, newPassword: string) => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextType>(null!);
@@ -49,18 +49,24 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         return user;
     };
 
-    const setStreamStatus = (status: 0 | 1) => {
+    useEffect(() => {
+        console.log('user data', userData);
+    }, [userData]);
+
+    const setStreamStatus = async (status: 0 | 1) => {
         setUserData({ ...userData, streaming_status: status });
     };
 
-    const joinEvent = (event_id: string) => {
+    const addEventToUser = async (event_id: string) => {
+        console.log('adding event to user', event_id);
         setUserData({
             ...userData,
             joined_events: [...userData.joined_events, event_id],
         });
     };
 
-    const leaveEvent = (event_id: string) => {
+    const removeEventFromUser = async (event_id: string) => {
+        console.log('removing event from user', event_id);
         setUserData({
             ...userData,
             joined_events: userData.joined_events.filter(
@@ -69,7 +75,8 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         });
     };
 
-    const joinOrg = (org_id: string, owner: boolean = false) => {
+    const addOrgToUser = async (org_id: string, owner: boolean = false) => {
+        console.log('adding org to user', org_id);
         setUserData({
             ...userData,
             joined_orgs: [...userData.joined_orgs, org_id],
@@ -79,21 +86,22 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         });
     };
 
-    const leaveOrg = (org_id: string) => {
+    const removeOrgFromUser = async (org_id: string) => {
+        console.log('removing org from user', org_id);
         setUserData({
             ...userData,
             joined_orgs: userData.joined_orgs.filter((id) => id !== org_id),
         });
     };
 
-    const followUser = (user_id: string) => {
+    const followUser = async (user_id: string) => {
         setUserData({
             ...userData,
             following: [...userData.following, user_id],
         });
     };
 
-    const unfollowUser = (user_id: string) => {
+    const unfollowUser = async (user_id: string) => {
         setUserData({
             ...userData,
             following: userData.following.filter((id) => id !== user_id),
@@ -101,30 +109,30 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     };
 
     // TODO: implement thunmbnails, title
-    const uploadVideo = (video_url: string) => {
+    const uploadVideo = async (video_url: string) => {
         setUserData({
             ...userData,
             video_urls: [...userData.video_urls, video_url],
         });
     };
 
-    const editUsername = (username: string) => {
+    const editUsername = async (username: string) => {
         setUserData({ ...userData, username: username });
     };
 
-    const editBio = (bio: string) => {
+    const editBio = async (bio: string) => {
         setUserData({ ...userData, bio: bio });
     };
 
-    const editProfileImage = (profile_image: string) => {
+    const editProfileImage = async (profile_image: string) => {
         setUserData({ ...userData, profile_image: profile_image });
     };
 
-    const editEmail = (email: string) => {
+    const editEmail = async (email: string) => {
         setUserData({ ...userData, email: email });
     };
 
-    const editChannel = (channel: string) => {
+    const editChannel = async (channel: string) => {
         setUserData({ ...userData, channel: channel });
     };
 
@@ -141,10 +149,10 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
                 createUser,
                 setUserData,
                 setStreamStatus,
-                joinEvent,
-                leaveEvent,
-                joinOrg,
-                leaveOrg,
+                addEventToUser,
+                removeEventFromUser,
+                addOrgToUser,
+                removeOrgFromUser,
                 followUser,
                 unfollowUser,
                 uploadVideo,

@@ -46,7 +46,9 @@ export const OrgPage = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { userData, joinOrg, leaveOrg } = useContext(UserContext);
+    const { userData, addOrgToUser, removeOrgFromUser } =
+        useContext(UserContext);
+    const { addUserToOrg, removeUserFromOrg } = useContext(OrgsContext);
     const { getMockOrg } = useContext(OrgsContext);
     const { getMockEvents } = useContext(EventsContext);
     const navigate = useNavigate();
@@ -73,6 +75,15 @@ export const OrgPage = () => {
 
         fetchEvents();
     }, [org, getMockEvents]);
+
+    const joinOrg = async (org_id: string) => {
+        await addUserToOrg(org_id);
+        await addOrgToUser(org_id);
+    };
+    const leaveOrg = async (org_id: string) => {
+        await removeUserFromOrg(org_id);
+        await removeOrgFromUser(org_id);
+    };
 
     if (!id) return <div>Org not found</div>;
     if (!org) return <div>Org not found</div>;
@@ -104,22 +115,26 @@ export const OrgPage = () => {
                             >
                                 {org.description}
                             </Linkify>
-                            <div className="flex w-full items-center justify-center">
-                                <button
-                                    className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
-                                    onClick={() =>
-                                        userData.joined_orgs.includes(
+                            {userData && (
+                                <div className="flex w-full items-center justify-center">
+                                    <button
+                                        className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                        onClick={() =>
+                                            userData.joined_orgs.includes(
+                                                org.org_id,
+                                            )
+                                                ? leaveOrg(org.org_id)
+                                                : joinOrg(org.org_id)
+                                        }
+                                    >
+                                        {userData.joined_orgs.includes(
                                             org.org_id,
                                         )
-                                            ? leaveOrg(org.org_id)
-                                            : joinOrg(org.org_id)
-                                    }
-                                >
-                                    {userData.joined_orgs.includes(org.org_id)
-                                        ? 'LEAVE'
-                                        : 'JOIN'}
-                                </button>
-                            </div>
+                                            ? 'LEAVE'
+                                            : 'JOIN'}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="flex flex-col space-y-4 py-4">

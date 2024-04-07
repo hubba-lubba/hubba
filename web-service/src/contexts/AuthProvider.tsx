@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from './UserProvider';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
+import { UsersContext } from './UsersProvider';
 
 export const AuthContext = React.createContext<firebase.User>(null!);
 
@@ -9,6 +10,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [user, setUser] = useState<firebase.User>(null!);
     const [loadingUser, setLoadingUser] = useState<boolean>(true);
     const { setUserData, createUser } = useContext(UserContext);
+    const { usersData, setUsersData } = useContext(UsersContext);
 
     const auth = getAuth();
     useEffect(() => {
@@ -22,6 +24,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     }, [auth]);
 
     useEffect(() => {
+        console.log('load user data');
         const loadUserData = async () => {
             if (user) {
                 try {
@@ -32,6 +35,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
                         user.email ?? '',
                     );
                     setUserData(userData);
+                    setUsersData([...usersData, userData]);
                 } catch (error) {
                     console.log(error);
                     throw error;
@@ -68,7 +72,8 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
             }
         };
         load();
-    }, [user, setUserData, createUser]);
+        // NOTE: adding createUser and setUserData to dependencies causes infinite loop. ts throws a warning for it tho; ignore it.
+    }, [user]);
 
     if (loadingUser) {
         return (
