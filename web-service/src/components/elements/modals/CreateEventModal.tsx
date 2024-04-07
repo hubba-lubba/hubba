@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Modal } from '..';
 import { Form, TextField, SubmitButton } from '@/components/form';
 import { ModalContext } from '@/contexts/ModalProvider';
@@ -6,9 +6,11 @@ import Joi from 'joi';
 import { Layout } from '@/components/layout';
 import { UserContext } from '@/contexts/UserProvider';
 import { name, channel, desc } from '@/lib/validation';
-import { createEvent } from '@/features/events/api';
 import { Event } from '@/features/events/types';
 import { SelectField, DateField } from '@/components/form';
+import { EventsContext } from '@/contexts/EventsProvider';
+import { OrgsContext } from '@/contexts/OrgsProvider';
+import { Org } from '@/features/orgs/types';
 
 const prize = Joi.string().min(3).max(30).allow('');
 
@@ -37,9 +39,20 @@ type CreateEventValues = {
 };
 
 export const CreateEventModal = () => {
+    const [orgs, setOrgs] = useState<Org[]>([]);
     const { showCreateEventModal, setShowCreateEventModal } =
         useContext(ModalContext);
-    const { userData, joinEvent } = useContext(UserContext);
+    const { userData, addEventToUser } = useContext(UserContext);
+    const { getMockOrgs } = useContext(OrgsContext);
+    const { createEvent } = useContext(EventsContext);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const userOrgs = await getMockOrgs(userData.owned_orgs);
+            setOrgs(userOrgs);
+        };
+        fetchData();
+    }, [getMockOrgs, userData]);
 
     const handleSubmit = async (data: CreateEventValues) => {
         const {
@@ -58,20 +71,21 @@ export const CreateEventModal = () => {
 
         const event = new Event(
             `id ${name}`,
-            host_org,
+            host_org.split(' - ')[1],
             name,
-            '',
+            'https://placehold.co/600x400',
             description ?? '',
             channel ?? '',
             url ?? '',
             'Twitch',
             [],
             time_of,
-            1,
+            0,
             [prize1, prize2, prize3],
+            [userData.user_id],
         );
-        createEvent(event);
-        joinEvent(event.event_id);
+        await createEvent(event);
+        await addEventToUser(event.event_id);
 
         setShowCreateEventModal(false);
     };
@@ -79,11 +93,11 @@ export const CreateEventModal = () => {
     return (
         <Modal
             showState={[showCreateEventModal, setShowCreateEventModal]}
-            className="h-[600px] w-[1500px]"
+            className="h-[600px] !w-[1500px]"
         >
             <Layout style="items-center justify-center h-full w-full">
                 <Form<CreateEventValues, typeof schema>
-                    title="Create an Organization"
+                    title="Create an Event"
                     style="w-full"
                     onSubmit={handleSubmit}
                     schema={schema}
@@ -92,7 +106,9 @@ export const CreateEventModal = () => {
                         <div className="flex w-full flex-row justify-center space-x-4">
                             <div className="flex w-1/4 flex-col">
                                 <SelectField
-                                    options={userData.owned_orgs}
+                                    options={orgs.map(
+                                        (org) => `${org.name} - ${org.org_id}`,
+                                    )}
                                     label="Organization"
                                     error={formState.errors['host_org']}
                                     registration={register('host_org')}
@@ -147,7 +163,7 @@ export const CreateEventModal = () => {
                                     registration={register('prize3')}
                                 />
                                 <br />
-                                <SubmitButton text="Create Org" />
+                                <SubmitButton text="Create Event" />
                             </div>
                         </div>
                     )}

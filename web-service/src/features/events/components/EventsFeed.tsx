@@ -1,23 +1,28 @@
 import { Layout } from '@/components/layout';
 import { Shelf, Grid } from '@/components/library';
 import { EventCard } from './EventCard';
-import { useEffect, useState } from 'react';
-import { getUpcomingEvents, getCurrentEvents } from '../api';
+import { useContext, useEffect, useState } from 'react';
 import { Event } from '../types';
+import { EventsContext } from '@/contexts/EventsProvider';
 
 export const EventsFeed = () => {
     const [currentEvents, setCurrentEvents] = useState<Event[]>();
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>();
+    const [discoverEvents, setDiscoverEvents] = useState<Event[]>();
     const [loading, setLoading] = useState<boolean | string>(true);
+    const { getCurrentEvents, getUpcomingEvents, getDiscoverEvents } =
+        useContext(EventsContext);
 
     useEffect(() => {
         async function fetchData() {
             let currentEventsData;
             let upcomingEventsData;
+            let discoverEventsData;
 
             try {
                 currentEventsData = await getCurrentEvents();
                 upcomingEventsData = await getUpcomingEvents();
+                discoverEventsData = await getDiscoverEvents();
             } catch (err) {
                 console.log(err);
                 setLoading('Error loading page: ' + err);
@@ -26,11 +31,12 @@ export const EventsFeed = () => {
 
             setCurrentEvents(currentEventsData.events);
             setUpcomingEvents(upcomingEventsData.events);
+            setDiscoverEvents(discoverEventsData.events);
         }
 
         fetchData();
         setLoading(false);
-    }, []);
+    }, [getCurrentEvents, getUpcomingEvents, getDiscoverEvents]);
 
     if (typeof loading === 'string')
         //error
@@ -55,6 +61,14 @@ export const EventsFeed = () => {
                 {upcomingEvents!.map((event, index) => (
                     <EventCard
                         key={`upcoming-${event.event_id}-${index}`}
+                        event={event}
+                    ></EventCard>
+                ))}
+            </Grid>
+            <Grid title="Discover">
+                {discoverEvents!.map((event, index) => (
+                    <EventCard
+                        key={`discover-${event.event_id}-${index}`}
                         event={event}
                     ></EventCard>
                 ))}

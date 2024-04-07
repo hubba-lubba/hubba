@@ -6,8 +6,8 @@ import Joi from 'joi';
 import { Layout } from '@/components/layout';
 import { UserContext } from '@/contexts/UserProvider';
 import { channel, name, desc } from '@/lib/validation';
-import { createOrg } from '@/features/orgs/api';
 import { Org } from '@/features/orgs/types';
+import { OrgsContext } from '@/contexts/OrgsProvider';
 
 const schema = Joi.object({
     name: name,
@@ -24,25 +24,26 @@ type CreateOrgValues = {
 export const CreateOrgModal = () => {
     const { showCreateOrgModal, setShowCreateOrgModal } =
         useContext(ModalContext);
-    const { userData, joinOrg } = useContext(UserContext);
+    const { userData, addOrgToUser } = useContext(UserContext);
+    const { createOrg } = useContext(OrgsContext);
 
     const handleSubmit = async (data: CreateOrgValues) => {
         const { name, description, channel } = data;
         const org = new Org(
             `id ${name}`,
             name,
-            '',
+            'https://via.placeholder.com/250',
             description ?? '',
             channel ?? '',
             [],
             userData.user_id,
             [],
-            [],
+            [userData.user_id],
             [],
             new Date(),
         );
-        createOrg(org);
-        joinOrg(org.org_id, true);
+        await createOrg(org);
+        await addOrgToUser(org.org_id, true);
 
         setShowCreateOrgModal(false);
     };

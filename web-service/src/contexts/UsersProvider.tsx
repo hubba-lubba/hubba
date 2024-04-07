@@ -4,16 +4,22 @@
 // user information to load onto webpage: username, profile image, followed streams, events, INBOX
 
 import React, { createContext, useEffect, useState } from 'react';
-import { User } from '@/features/users/types';
+import { User, Video } from '@/features/users/types';
 
 interface UsersContextType {
     usersData: User[];
     setUsersData: (user: User[]) => void;
+    getMockUser: (user_id: string) => Promise<{ user: User }>;
+    getMockUsers: (user_ids: string[]) => Promise<User[]>;
+    getLiveUsers: () => Promise<{ users: User[] }>;
+    getVideos: (user: User) => Promise<Video[]>;
 }
 
 export const UsersContext = createContext<UsersContextType>(null!);
 
-export const UsersProvider = ({ children }: React.PropsWithChildren<object>) => {
+export const UsersProvider = ({
+    children,
+}: React.PropsWithChildren<object>) => {
     const [usersData, setUsersData] = useState<User[]>([]);
 
     useEffect(() => {
@@ -108,11 +114,69 @@ export const UsersProvider = ({ children }: React.PropsWithChildren<object>) => 
         setUsersData(users as User[]);
     }, []);
 
+    const getMockUser = async (user_id: string): Promise<{ user: User }> => {
+        const user = usersData.find((user) => user.user_id === user_id);
+        if (user === undefined) throw new Error('User not found');
+        const data = {
+            user: user,
+        };
+        return data;
+    };
+
+    const getMockUsers = async (user_ids: string[]): Promise<User[]> => {
+        const data = Promise.all(
+            user_ids.map(async (user_id) => (await getMockUser(user_id)).user),
+        );
+        return data;
+    };
+
+    const getLiveUsers = async (): Promise<{ users: User[] }> => {
+        // get users whose streaming_status is 1
+        const data = {
+            users: usersData.filter((user) => user.streaming_status === 1),
+        };
+        return data;
+    };
+
+    const getVideos = async (user: User): Promise<Video[]> => {
+        // https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+        const ytidParser = (url: string): string => {
+            const regExp =
+                /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const match = url.match(regExp);
+            return match && match[7].length == 11 ? match[7] : '';
+        };
+
+        const getVideo = async (url: string): Promise<{ video: Video }> => {
+            const video_id = ytidParser(url);
+            if (!video_id) throw new Error('no video id found in url');
+
+            const data = {
+                video: {
+                    video_id: video_id,
+                    url: url,
+                    title: video_id,
+                    thumbnail: `https://img.youtube.com/vi/${video_id}/default.jpg`,
+                } as Video,
+            };
+            return data;
+        };
+
+        const data = await Promise.all(
+            user.video_urls.map(async (url) => (await getVideo(url)).video),
+        );
+        return data;
+    };
+
     return (
         <UsersContext.Provider
             value={{
                 usersData,
                 setUsersData,
+                getMockUser,
+                getMockUsers,
+                getLiveUsers,
+                getVideos,
             }}
         >
             {children}

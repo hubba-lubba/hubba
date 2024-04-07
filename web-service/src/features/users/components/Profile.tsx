@@ -1,7 +1,6 @@
 import { Layout } from '@/components/layout';
 import { Grid } from '@/components/library';
 import { useEffect, useState } from 'react';
-import { getVideos, getMockUser } from '../api';
 import { useContext } from 'react';
 import { VideoCard } from './VideoCard';
 import { UserContext } from '@/contexts/UserProvider';
@@ -10,6 +9,7 @@ import { User, Video } from '../types';
 import { Pfp } from '@/components/elements';
 import { statuses } from '@/lib/constants';
 import { ChannelCard } from './ChannelCard';
+import { UsersContext } from '@/contexts/UsersProvider';
 
 export const Profile = () => {
     const { id } = useParams<{ id: string }>();
@@ -18,6 +18,7 @@ export const Profile = () => {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const { userData, followUser, unfollowUser } = useContext(UserContext);
+    const { getMockUser, getVideos } = useContext(UsersContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,7 +33,7 @@ export const Profile = () => {
             setLoading(false);
         };
         fetchData();
-    }, [id, userData]);
+    }, [id, userData, getMockUser]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,7 +42,7 @@ export const Profile = () => {
             setVideos(videosData);
         };
         fetchData();
-    }, [user]);
+    }, [user, getVideos]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
