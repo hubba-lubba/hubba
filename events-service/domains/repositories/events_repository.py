@@ -71,3 +71,30 @@ class EventsRepository:
         self.session.delete(event)
         self.session.commit()
         return event_id
+
+    """
+    Updates Event object to be persisted using event field parameters
+
+    :param event_id: uuid of event_uuid
+    :return: Event of updated event
+    """
+    @check_id_exists(User, ["event_id"])
+    def update_event(self, event_id, title=None, thumbnail=None, description=None,
+                  url=None, platform=None, tags=None, time_of_event=None,
+                  host=None, entry_fee=None, owner=None):
+        event = self.get_event(event_id)
+
+        event.title = title if title else event.title
+        event.thumbnail = thumbnail if thumbnail else event.thumbnail
+        event.description = description if description else event.description
+        event.url = url if url else event.url
+        event.platform = platform if platform else event.platform
+        event.tags = tags if tags else event.tags
+        event.time_of_event = time_of_event if time_of_event else event.time_of_event
+        event.host = host if host else event.host
+        event.entry_fee = entry_fee if entry_fee else event.entry_fee
+        event.owner = owner if owner else event.owner
+
+        self.session.patch(event)
+        self.session.commit()
+        return event
