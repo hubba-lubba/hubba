@@ -104,3 +104,39 @@ def delete_event():
             })
             response.status_code = 404
             return response
+
+@organizations_blueprint.route("/", methods=["PATCH"])
+@ensure_authorized()
+@require_query_params(["organization_id"])
+@ensure_UUID("organization_id")
+def patch_organization():
+    organization_id = request.args.get("organization_id")
+    context = request.get_json()
+
+    name = context.get("name") if context.get("name") else None
+    image = context.get("image") if context.get("image") else None
+    description = context.get("description") if context.get("description") else None
+    owner = context.get("owner") if context.get("owner") else None
+
+    with Session(engine) as session:
+        organizations_repository = OrganizationsRepository(session)
+        try:
+            organization = organizations_repository.patch_organization(
+                organization_id = organization_id,
+                name=name,
+                image=image,
+                description=description,
+                owner=owner
+            )
+            response = jsonify({
+                "status": "success",
+                "organization": organization.get_JSON()
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
