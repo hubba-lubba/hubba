@@ -100,8 +100,12 @@ export const getSidebarEvents = async (user: User): Promise<Event[]> => {
     // but homepage might have current events that are popular (or do this for discover only - homepage is curated only for user)
     // but in the latter case it makes the sidebar obsolete... hmm
     // UI/UX INTERNS ASSEMBLE
+    return getSeveralEvents(user.joined_events);
+};
+
+export const getSeveralEvents = async (ids: string[]): Promise<Event[]> => {
     const data = Promise.all(
-        user.joined_events.map(async (id) => (await getMockEvent(id)).event),
+        ids.map(async (id) => (await getMockEvent(id)).event),
     );
     return data;
 };

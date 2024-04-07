@@ -10,6 +10,10 @@ import { PageLayout } from '@/components/layout';
 import { getMockUser } from '@/features/users/api';
 import { Pfp } from '@/components/elements';
 import { UserContext } from '@/contexts/UserProvider';
+import { Event } from '@/features/events/types';
+import { getSeveralEvents } from '@/features/events/api';
+import { statuses } from '@/lib/constants';
+import { formatTime } from '@/utils/time';
 
 const MemberCard = ({ user_id }: { user_id: string }) => {
     const [user, setUser] = useState<User>();
@@ -38,9 +42,11 @@ const MemberCard = ({ user_id }: { user_id: string }) => {
 
 export const OrgPage = () => {
     const [org, setOrg] = useState<Org>();
+    const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     const { userData, joinOrg, leaveOrg } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const { id } = useParams<{ id: string }>();
 
@@ -55,6 +61,16 @@ export const OrgPage = () => {
         fetchData().catch((err) => setError('Error loading page: ' + err));
     }, [id]);
 
+    useEffect(() => {
+        if (!org) return;
+        const fetchEvents = async () => {
+            const eventsData = await getSeveralEvents(org.events);
+            setEvents(eventsData);
+        };
+
+        fetchEvents();
+    }, [org]);
+
     if (!id) return <div>Org not found</div>;
     if (!org) return <div>Org not found</div>;
     if (loading) return <p>Loading events...</p>;
@@ -62,42 +78,63 @@ export const OrgPage = () => {
 
     return (
         <PageLayout>
-            <div className="flex flex-col lg:flex-row">
-                <div className="flex w-8/12 flex-row items-center">
-                    <div className="min-w-[250px]">
-                        <img
-                            className="rounded"
-                            src={org.image}
-                            alt={org.name}
-                            width={250}
-                        />
+            <div className="flex h-full flex-col lg:flex-row">
+                <div className="flex h-full w-8/12 flex-col">
+                    <div className="flex flex-row items-center">
+                        <div className="min-w-[250px]">
+                            <img
+                                className="rounded"
+                                src={org.image}
+                                alt={org.name}
+                                width={250}
+                            />
+                        </div>
+                        <div className="space-y-6 px-4">
+                            <h1 className="text-4xl font-bold">{org.name}</h1>
+                            <div>{org.users.length} members</div>
+                            <Linkify
+                                as="div"
+                                options={{
+                                    target: '_blank',
+                                    className: 'underline',
+                                }}
+                            >
+                                {org.description}
+                            </Linkify>
+                            <div className="flex w-full items-center justify-center">
+                                <button
+                                    className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                    onClick={() =>
+                                        userData.joined_orgs.includes(
+                                            org.org_id,
+                                        )
+                                            ? leaveOrg(org.org_id)
+                                            : joinOrg(org.org_id)
+                                    }
+                                >
+                                    {userData.joined_orgs.includes(org.org_id)
+                                        ? 'LEAVE'
+                                        : 'JOIN'}
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="space-y-6 px-4">
-                        <h1 className="text-4xl font-bold">{org.name}</h1>
-                        <div>{org.users.length} members</div>
-                        <Linkify
-                            as="div"
-                            options={{
-                                target: '_blank',
-                                className: 'underline',
-                            }}
-                        >
-                            {org.description}
-                        </Linkify>
-                        <div className="flex w-full items-center justify-center">
-                            <button
-                                className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                    <div className="flex flex-col space-y-4 py-4">
+                        <h1 className="text-2xl">Events</h1>
+                        {events.map((event, index) => (
+                            <div
+                                key={`event-${org.org_id}-${index}`}
+                                className="flex w-full cursor-pointer justify-between rounded bg-hubba-800 p-4"
                                 onClick={() =>
-                                    userData.joined_orgs.includes(org.org_id)
-                                        ? leaveOrg(org.org_id)
-                                        : joinOrg(org.org_id)
+                                    navigate(`/events/${event.event_id}`)
                                 }
                             >
-                                {userData.joined_orgs.includes(org.org_id)
-                                    ? 'LEAVE'
-                                    : 'JOIN'}
-                            </button>
-                        </div>
+                                <span>
+                                    [{statuses[event.status]}] {event.name}
+                                </span>
+                                <span>{formatTime(event.time_of)}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className="scroll-gutter mt-6 flex w-full min-w-[300px] flex-col items-center justify-start space-y-4 overflow-y-auto lg:mt-0 lg:w-4/12 lg:px-8">

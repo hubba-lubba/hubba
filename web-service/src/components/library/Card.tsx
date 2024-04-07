@@ -19,7 +19,7 @@ export const Card = ({ url, internal = true, media, footer }: CardProps) => {
     const navigate = useNavigate();
     return (
         <div
-            className="flex h-full w-full cursor-pointer flex-col"
+            className="flex h-full w-full cursor-pointer flex-col rounded"
             onClick={() =>
                 internal ? navigate(url) : window.open(url, '_blank')
             }
