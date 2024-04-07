@@ -107,15 +107,15 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     size={24}
                                     onClick={() => setShowCreateOrgModal(true)}
                                 />
-                                <MdPlaylistAdd
-                                    className="cursor-pointer"
-                                    size={24}
-                                    onClick={() =>
-                                        setShowCreateEventModal(true)
-                                    }
-                                />
-                                {/* {userData.owned_orgs.length > 0 && (
-                                        )} */}
+                                {userData.owned_orgs.length > 0 && (
+                                    <MdPlaylistAdd
+                                        className="cursor-pointer"
+                                        size={24}
+                                        onClick={() =>
+                                            setShowCreateEventModal(true)
+                                        }
+                                    />
+                                )}
                                 <LuPlusSquare
                                     className="cursor-pointer"
                                     size={24}

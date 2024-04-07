@@ -3,7 +3,7 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 
 import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper';
 
-type InputFieldProps = FieldWrapperPassThroughProps & {
+type SelectFieldProps = FieldWrapperPassThroughProps & {
     options: string[];
     label: string;
     style?: string;
@@ -17,7 +17,7 @@ export const SelectField = ({
     style,
     error,
     registration,
-}: InputFieldProps) => {
+}: SelectFieldProps) => {
     // validate depending on type
     return (
         <FieldWrapper label={label} error={error}>

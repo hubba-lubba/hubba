@@ -5,21 +5,23 @@ import { ModalContext } from '@/contexts/ModalProvider';
 import Joi from 'joi';
 import { Layout } from '@/components/layout';
 import { UserContext } from '@/contexts/UserProvider';
-import { channel } from '@/lib/validation';
+import { name, channel, desc } from '@/lib/validation';
 import { createEvent } from '@/features/events/api';
 import { Event } from '@/features/events/types';
-import { SelectField } from '@/components/form/SelectField';
+import { SelectField, DateField } from '@/components/form';
+
+const prize = Joi.string().min(3).max(30).allow('');
 
 const schema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
+    name: name,
     host_org: Joi.required(),
-    description: Joi.string().min(3).max(100),
+    description: desc,
     channel: channel,
-    url: Joi.string().uri(),
+    url: Joi.string().uri().allow(''),
     time_of: Joi.date().required(),
-    prize1: Joi.string().min(3).max(30),
-    prize2: Joi.string().min(3).max(30),
-    prize3: Joi.string().min(3).max(30),
+    prize1: prize,
+    prize2: prize,
+    prize3: prize,
 });
 
 type CreateEventValues = {
@@ -37,11 +39,12 @@ type CreateEventValues = {
 export const CreateEventModal = () => {
     const { showCreateEventModal, setShowCreateEventModal } =
         useContext(ModalContext);
-    const { userData } = useContext(UserContext);
+    const { userData, joinEvent } = useContext(UserContext);
 
-    const handleClick = async (data: CreateEventValues) => {
+    const handleSubmit = async (data: CreateEventValues) => {
         const {
             name,
+            host_org,
             description,
             channel,
             url,
@@ -53,9 +56,9 @@ export const CreateEventModal = () => {
 
         console.log(data);
 
-        const org = new Event(
+        const event = new Event(
             `id ${name}`,
-            userData.user_id,
+            host_org,
             name,
             '',
             description ?? '',
@@ -67,7 +70,8 @@ export const CreateEventModal = () => {
             1,
             [prize1, prize2, prize3],
         );
-        createEvent(org);
+        createEvent(event);
+        joinEvent(event.event_id);
 
         setShowCreateEventModal(false);
     };
@@ -81,14 +85,14 @@ export const CreateEventModal = () => {
                 <Form<CreateEventValues, typeof schema>
                     title="Create an Organization"
                     style="w-full"
-                    onSubmit={() => console.log('submit')}
+                    onSubmit={handleSubmit}
                     schema={schema}
                 >
                     {({ register, formState }) => (
                         <div className="flex w-full flex-row justify-center space-x-4">
                             <div className="flex w-1/4 flex-col">
                                 <SelectField
-                                    options={['hello', 'bello']}
+                                    options={userData.owned_orgs}
                                     label="Organization"
                                     error={formState.errors['host_org']}
                                     registration={register('host_org')}
@@ -119,6 +123,11 @@ export const CreateEventModal = () => {
                                 />
                             </div>
                             <div className="flex w-1/4 flex-col">
+                                <DateField
+                                    label="Time (UTC)"
+                                    error={formState.errors['time_of']}
+                                    registration={register('time_of')}
+                                />
                                 <TextField
                                     type="text"
                                     label="Prize 1"

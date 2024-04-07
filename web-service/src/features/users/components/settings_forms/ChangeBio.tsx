@@ -1,11 +1,11 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
-import { bio } from '@/lib/validation';
+import { desc } from '@/lib/validation';
 import Joi from 'joi';
 import { useContext } from 'react';
 import { UserContext } from '@/contexts/UserProvider';
 
 const schema = Joi.object({
-    bio: bio,
+    bio: desc,
 });
 
 type ChangeBioValues = {

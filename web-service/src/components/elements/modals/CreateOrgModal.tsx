@@ -5,13 +5,13 @@ import { ModalContext } from '@/contexts/ModalProvider';
 import Joi from 'joi';
 import { Layout } from '@/components/layout';
 import { UserContext } from '@/contexts/UserProvider';
-import { channel } from '@/lib/validation';
+import { channel, name, desc } from '@/lib/validation';
 import { createOrg } from '@/features/orgs/api';
 import { Org } from '@/features/orgs/types';
 
 const schema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    description: Joi.string().max(100).allow(''),
+    name: name,
+    description: desc,
     channel: channel,
 });
 
@@ -26,7 +26,7 @@ export const CreateOrgModal = () => {
         useContext(ModalContext);
     const { userData, joinOrg } = useContext(UserContext);
 
-    const handleClick = async (data: CreateOrgValues) => {
+    const handleSubmit = async (data: CreateOrgValues) => {
         const { name, description, channel } = data;
         const org = new Org(
             `id ${name}`,
@@ -55,7 +55,7 @@ export const CreateOrgModal = () => {
             <Layout style="items-center justify-center h-full">
                 <Form<CreateOrgValues, typeof schema>
                     title="Create an Organization"
-                    onSubmit={handleClick}
+                    onSubmit={handleSubmit}
                     schema={schema}
                 >
                     {({ register, formState }) => (

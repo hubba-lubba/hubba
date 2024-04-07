@@ -129,9 +129,10 @@ export const getMockEvent = async (id: string): Promise<{ event: Event }> => {
 };
 
 export const createEvent = async (event: Event): Promise<{ event: Event }> => {
+    // add event to org
     console.log('create event', event);
     const data = {
         event: event,
     };
     return data;
-}
+};
