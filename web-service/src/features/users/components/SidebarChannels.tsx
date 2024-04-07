@@ -1,26 +1,27 @@
 import { Button } from '@/components/elements/buttons';
 import { SidebarSection } from '@/components/layout';
 import { useEffect, useState, useContext } from 'react';
-import { getFollowingChannels } from '../api';
 import { User } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@/contexts/UserProvider';
 import { Pfp } from '@/components/elements';
+import { UsersContext } from '@/contexts/UsersProvider';
 
 export const SidebarChannels = () => {
     const [channels, setChannels] = useState<User[]>([]);
     const [showMore, setShowMore] = useState<boolean>(false);
     const { userData } = useContext(UserContext);
+    const { getMockUsers } = useContext(UsersContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
-            const channels = await getFollowingChannels(userData);
+            const channels = await getMockUsers(userData.following);
             setChannels(channels);
         };
 
         fetchData();
-    }, [userData]);
+    }, [userData, getMockUsers]);
 
     const collapseLength = 5;
 

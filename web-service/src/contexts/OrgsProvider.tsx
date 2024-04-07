@@ -3,18 +3,26 @@
 
 // user information to load onto webpage: username, profile image, followed streams, events, INBOX
 
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Org } from '@/features/orgs/types';
+import { UserContext } from './UserProvider';
 
 interface OrgsContextType {
     orgsData: Org[];
+    addUserToOrg: (org_id: string) => Promise<void>;
+    removeUserFromOrg: (org_id: string) => Promise<void>;
     setOrgsData: (org: Org[]) => void;
+    getMockOrg: (id: string) => Promise<{ org: Org }>;
+    getMockOrgs: (ids: string[]) => Promise<Org[]>;
+    getDiscoverOrgs: () => Promise<{ orgs: Org[] }>;
+    createOrg: (org: Org) => Promise<void>;
 }
 
 export const OrgsContext = createContext<OrgsContextType>(null!);
 
 export const OrgsProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [orgsData, setOrgsData] = useState<Org[]>([]);
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
         const orgs = [
@@ -94,11 +102,77 @@ export const OrgsProvider = ({ children }: React.PropsWithChildren<object>) => {
         setOrgsData(orgs as Org[]);
     }, []);
 
+    useEffect(() => {
+        console.log('orgsData', orgsData);
+    }, [orgsData]);
+
+    const addUserToOrg = async (org_id: string): Promise<void> => {
+        console.log('add user to org', org_id);
+        const org = orgsData.find((org) => org.org_id === org_id);
+        if (org === undefined) throw new Error('Org not found');
+        if (org.users.includes(userData?.user_id)) {
+            throw new Error('Already in org');
+        }
+        org.users.push(userData.user_id);
+        orgsData[orgsData.findIndex((org) => org.org_id === org_id)] = org;
+        setOrgsData([...orgsData]);
+    };
+
+    const removeUserFromOrg = async (org_id: string): Promise<void> => {
+        console.log('remove user from org', org_id);
+        const org = orgsData.find((org) => org.org_id === org_id);
+        if (org === undefined) throw new Error('Org not found');
+        if (!org.users.includes(userData?.user_id)) {
+            throw new Error('Not in org');
+        }
+        org.users = org.users.filter(
+            (user_id) => user_id !== userData?.user_id,
+        );
+        orgsData[orgsData.findIndex((org) => org.org_id === org_id)] = org;
+        setOrgsData([...orgsData]);
+    };
+
+    const getMockOrg = async (id: string): Promise<{ org: Org }> => {
+        const org = orgsData.find((org) => org.org_id === id);
+        if (org === undefined) throw new Error('Org not found');
+        const data = {
+            org: org,
+        };
+        return data;
+    };
+
+    const getMockOrgs = async (ids: string[]): Promise<Org[]> => {
+        const data = Promise.all(
+            ids.map(async (id) => (await getMockOrg(id)).org),
+        );
+        return data;
+    };
+
+    const getDiscoverOrgs = async (): Promise<{ orgs: Org[] }> => {
+        // get orgs that the user isn't in
+        const data = {
+            orgs: orgsData.filter(
+                (org) => !org.users.includes(userData?.user_id),
+            ),
+        };
+        return data;
+    };
+
+    const createOrg = async (org: Org): Promise<void> => {
+        setOrgsData([...orgsData, org]);
+    };
+
     return (
         <OrgsContext.Provider
             value={{
                 orgsData,
+                addUserToOrg,
+                removeUserFromOrg,
                 setOrgsData,
+                getMockOrg,
+                getMockOrgs,
+                getDiscoverOrgs,
+                createOrg,
             }}
         >
             {children}

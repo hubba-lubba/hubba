@@ -121,12 +121,13 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     size={24}
                                     onClick={() => setShowUploadModal(true)}
                                 />
-
-                                <HiMiniSignal
-                                    className="cursor-pointer"
-                                    size={24}
-                                    onClick={() => setShowStreamModal(true)}
-                                />
+                                {userData.channel && (
+                                    <HiMiniSignal
+                                        className="cursor-pointer"
+                                        size={24}
+                                        onClick={() => setShowStreamModal(true)}
+                                    />
+                                )}
                                 {/* <Link to="/inbox">
                                     <BsInbox size={24} />
                                 </Link> */}
