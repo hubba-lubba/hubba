@@ -15,6 +15,7 @@ export class User {
         public joined_events: string[] = [],
         public past_events: string[] = [],
         public joined_orgs: string[] = [],
+        public owned_orgs: string[] = [],
         public platforms: string[] = [],
         // public inbox: Message[] = [],
     ) {
@@ -33,6 +34,7 @@ export class User {
         this.joined_events = joined_events;
         this.past_events = past_events;
         this.joined_orgs = joined_orgs;
+        this.owned_orgs = owned_orgs;
         this.platforms = platforms;
         // this.inbox = inbox;
     }

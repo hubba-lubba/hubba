@@ -22,6 +22,7 @@ export const getMockUser = async (id: string): Promise<{ user: User }> => {
             joined_events: ['event1', 'event2'],
             past_events: ['event3', 'event4'],
             joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+            owned_orgs: [],
             platforms: ['platform1', 'platform2'],
         } as User,
     };
@@ -54,6 +55,7 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
                 joined_events: ['event1', 'event2'],
                 past_events: ['event3', 'event4'],
                 joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                owned_orgs: [],
                 platforms: ['platform1', 'platform2'],
             } as User,
             {
@@ -72,6 +74,7 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
                 joined_events: ['event1', 'event2'],
                 past_events: ['event3', 'event4'],
                 joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                owned_orgs: [],
                 platforms: ['platform1', 'platform2'],
             } as User,
             {
@@ -90,6 +93,7 @@ export const getLiveUsers = async (): Promise<{ users: User[] }> => {
                 joined_events: ['event1', 'event2'],
                 past_events: ['event3', 'event4'],
                 joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                owned_orgs: [],
                 platforms: ['platform1', 'platform2'],
             } as User,
         ],

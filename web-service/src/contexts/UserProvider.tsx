@@ -10,7 +10,7 @@ interface UserContextType {
     setStreamStatus: (status: 0 | 1) => void;
     joinEvent: (event_id: string) => void;
     leaveEvent: (event_id: string) => void;
-    joinOrg: (org_id: string) => void;
+    joinOrg: (org_id: string, owner?: boolean) => void;
     leaveOrg: (org_id: string) => void;
     followUser: (user_id: string) => void;
     unfollowUser: (user_id: string) => void;
@@ -48,10 +48,11 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         });
     };
 
-    const joinOrg = (org_id: string) => {
+    const joinOrg = (org_id: string, owner: boolean = false) => {
         setUserData({
             ...userData,
             joined_orgs: [...userData.joined_orgs, org_id],
+            owned_orgs: owner ? [...userData.owned_orgs, org_id] : userData.owned_orgs,
         });
     };
 

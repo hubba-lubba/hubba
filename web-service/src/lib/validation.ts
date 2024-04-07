@@ -35,10 +35,9 @@ export const confirmPassword = Joi.string()
         'string.empty': 'Please confirm your password',
     });
 
-export const channel = Joi.string().min(3).max(30).required().messages({
+export const channel = Joi.string().min(3).max(30).allow('').messages({
     'string.min': 'Channel name must be at least 3 characters long',
     'string.max': 'Channel name cannot be more than 30 characters long',
-    'string.empty': 'Please enter a channel name',
 });
 
 export const bio = Joi.string().max(200).required().messages({

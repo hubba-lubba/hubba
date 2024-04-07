@@ -7,6 +7,8 @@ import Logo from '../elements/Logo';
 // import NavbarSearchBar from '../elements/NavbarSearchBar';
 import { HiMiniSignal } from 'react-icons/hi2';
 import { LuPlusSquare } from 'react-icons/lu';
+import { AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { MdPlaylistAdd } from 'react-icons/md';
 import { DevTool } from '../dev';
 import { signout } from '@/lib/auth';
 import { Pfp } from '../elements/Pfp';
@@ -63,7 +65,12 @@ type NavbarProps = {
 
 export const Navbar = ({ bare = false }: NavbarProps) => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
-    const { setShowUploadModal, setShowStreamModal } = useContext(ModalContext);
+    const {
+        setShowUploadModal,
+        setShowStreamModal,
+        setShowCreateOrgModal,
+        setShowCreateEventModal,
+    } = useContext(ModalContext);
     const { userData } = useContext(UserContext);
     const user = useContext(AuthContext);
 
@@ -95,11 +102,26 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                         {import.meta.env.DEV && <DevTool />}
                         {userData && (
                             <>
+                                <AiOutlineUsergroupAdd
+                                    className="cursor-pointer"
+                                    size={24}
+                                    onClick={() => setShowCreateOrgModal(true)}
+                                />
+                                <MdPlaylistAdd
+                                    className="cursor-pointer"
+                                    size={24}
+                                    onClick={() =>
+                                        setShowCreateEventModal(true)
+                                    }
+                                />
+                                {/* {userData.owned_orgs.length > 0 && (
+                                        )} */}
                                 <LuPlusSquare
                                     className="cursor-pointer"
                                     size={24}
                                     onClick={() => setShowUploadModal(true)}
                                 />
+
                                 <HiMiniSignal
                                     className="cursor-pointer"
                                     size={24}
