@@ -105,7 +105,9 @@ export const OrgPage = () => {
                         </div>
                         <div className="space-y-6 px-4">
                             <h1 className="text-4xl font-bold">{org.name}</h1>
-                            <div>{org.users.length} members</div>
+                            <div>
+                                {`${org.users.length} ${org.users.length == 1 ? 'Member' : 'Members'}`}
+                            </div>
                             <Linkify
                                 as="div"
                                 options={{

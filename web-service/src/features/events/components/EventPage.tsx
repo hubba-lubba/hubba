@@ -7,9 +7,12 @@ import { formatTime } from '@/utils/time';
 import { UserContext } from '@/contexts/UserProvider';
 import { EventsContext } from '@/contexts/EventsProvider';
 import { statuses } from '@/lib/constants';
+import { OrgsContext } from '@/contexts/OrgsProvider';
+import { Org } from '@/features/orgs/types';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
+    const [org, setOrg] = useState<Org>();
     const [event, setEvent] = useState<Event>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
@@ -21,6 +24,7 @@ export const EventPage = () => {
         removeUserFromEvent,
         setEventStreamingStatus,
     } = useContext(EventsContext);
+    const { getMockOrg } = useContext(OrgsContext);
     // const [tags, setTags] = useState<React.ReactElement[]>([]);
 
     useEffect(() => {
@@ -29,6 +33,9 @@ export const EventPage = () => {
         const fetchEventData = async (id: string) => {
             const eventData = (await getMockEvent(id)).event;
             setEvent(eventData);
+
+            const orgData = await getMockOrg(eventData.host_org);
+            setOrg(orgData.org);
 
             //make Tag feature and component
             // const tags = [];
@@ -50,7 +57,7 @@ export const EventPage = () => {
         fetchEventData(id).catch((err) =>
             setError('Error loading page: ' + err),
         );
-    }, [id, getMockEvent]);
+    }, [id, getMockEvent, getMockOrg]);
 
     const joinEvent = async (event: Event) => {
         await addUserToEvent(event.event_id);
@@ -87,7 +94,7 @@ export const EventPage = () => {
                             {event.name || `Event ${event.event_id}`}
                         </h1>
                         {/* <div className="flex flex-row gap-2">{tags}</div> */}
-                        <p className="">Hosted by {event.host_org}</p>
+                        <p className="">Hosted by {org?.name}</p>
                         <p className="">{formatTime(event.time_of)}</p>
                         {userData && (
                             <div className="flex w-full items-center justify-center space-x-4">

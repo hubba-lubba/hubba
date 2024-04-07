@@ -13,7 +13,7 @@ export const ChannelCard = ({ user }: { user: User }) => {
                 <>
                     <div className="flex w-11/12 flex-row items-center">
                         <Pfp image={user.profile_image} />
-                        <div>{user.username}</div>
+                        <div className='ml-2.5 truncate'>{user.username}</div>
                     </div>
                     <div className="flex w-1/12 flex-col items-end">
                         <div>{statuses[user.streaming_status]}</div>

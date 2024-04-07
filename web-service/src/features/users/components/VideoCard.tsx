@@ -11,9 +11,9 @@ export const VideoCard = ({ user, video }: { user: User; video: Video }) => {
             footer={
                 <>
                     <Pfp image={user.profile_image} />
-                    <div className="flex flex-col">
-                        <div>{video.title}</div>
-                        <div>{user.username}</div>
+                    <div className="ml-2.5 flex flex-col">
+                        {/* <div>{video.title}</div> */}
+                        <div className='truncate'>{user.username}</div>
                     </div>
                 </>
             }

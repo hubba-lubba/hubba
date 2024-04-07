@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 const resizing = {
     large: [400, 400], // [margin (at which there's only 1 card), interval (at which number cards change)]
-    medium: [400, 300],
+    medium: [400, 500],
     small: [300, 500], // not sure why but larger for interval is better here; prevents too many small cards being in row.
 };
 

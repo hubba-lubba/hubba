@@ -2,19 +2,22 @@ import { Layout } from '@/components/layout';
 import { Shelf } from '@/components/library';
 import { EventCard } from '@/features/events/components/EventCard';
 import { ChannelCard } from '@/features/users/components/ChannelCard';
-import { useEffect, useState } from 'react';
-import { getUpcomingEvents } from '@/features/events/api';
+import { useContext, useEffect, useState } from 'react';
 import { Event } from '@/features/events/types';
 import { User } from '@/features/users/types';
 import { Org } from '@/features/orgs/types';
-import { getLiveUsers } from '@/features/users/api';
-import { getDiscoverOrgs } from '@/features/orgs/api';
 import { OrgCard } from '@/features/orgs/components/OrgCard';
+import { UsersContext } from '@/contexts/UsersProvider';
+import { OrgsContext } from '@/contexts/OrgsProvider';
+import { EventsContext } from '@/contexts/EventsProvider';
 
 export const DiscoverFeed = () => {
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
     const [liveUsers, setLiveUsers] = useState<User[]>([]);
     const [discoverOrgs, setDiscoverOrgs] = useState<Org[]>([]);
+    const { getLiveUsers } = useContext(UsersContext);
+    const { getDiscoverOrgs } = useContext(OrgsContext);
+    const { getUpcomingEvents } = useContext(EventsContext);
     // put this into each feature as a component
     useEffect(() => {
         // once this is complete, move into individual features as a component
@@ -30,7 +33,7 @@ export const DiscoverFeed = () => {
         };
 
         fetchData();
-    }, []);
+    }, [getUpcomingEvents, getLiveUsers, getDiscoverOrgs]);
 
     return (
         <Layout style="w-full flex-col">

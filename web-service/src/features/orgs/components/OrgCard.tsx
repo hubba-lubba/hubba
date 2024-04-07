@@ -8,8 +8,8 @@ export const OrgCard = ({ org }: { org: Org }) => {
             media={<Thumbnail src={org.image} />}
             footer={
                 <div className="flex flex-col">
-                    <div className="w-2/12">{org.name}</div>
-                    <div>{org.description}</div>
+                    <div className="truncate">{org.name}</div>
+                    <div className='line-clamp-1'>{org.description}</div>
                     {/* <div>{org.tags}</div> */}
                 </div>
             }

@@ -30,7 +30,7 @@ export function Button({
             className={clsx('transition-all', variants[variant], style)}
         >
             {icon}
-            <div className="truncate">{children}</div>
+            <div className="ml-2.5 truncate">{children}</div>
             {/* {text && (
                 <p className="cursor-pointer border-none bg-none w-full">
                     {text}

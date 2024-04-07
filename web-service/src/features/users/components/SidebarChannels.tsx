@@ -36,7 +36,7 @@ export const SidebarChannels = () => {
                     <Button
                         key={`sidebar-channel-${channel.user_id}-${index}`}
                         variant="image"
-                        icon={<Pfp image={channel?.profile_image} />}
+                        icon={<Pfp image={channel?.profile_image} size={32} />}
                         handleClick={() => navigate(`/user/${channel.user_id}`)}
                     >
                         {channel.username}

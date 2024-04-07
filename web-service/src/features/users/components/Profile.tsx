@@ -55,7 +55,7 @@ export const Profile = () => {
                 <div className="space-y-1">
                     <p className="text-lg font-bold">{user.username}</p>
                     <div className="flex flex-row space-x-2">
-                        <p>{user.followers.length} Followers</p>
+                        <p>{`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}</p>
                         <p>| {statuses[user.streaming_status]}</p>
                     </div>
                     <p>{user.bio}</p>
@@ -78,7 +78,6 @@ export const Profile = () => {
             </div>
             {user.streaming_status === 1 && (
                 <Grid title="live">
-                    {user.profile_image}
                     <ChannelCard user={user} />
                 </Grid>
             )}

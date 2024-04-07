@@ -7,8 +7,8 @@ interface PfpProps {
 
 export const Pfp = ({ image, size = 40 }: PfpProps) => {
     return image ? (
-        <img src={image} alt="image" className="h-6 pr-2.5" />
+        <img src={image} alt="image" width={size} className="rounded-full" />
     ) : (
-        <FaRegUserCircle className="pr-2.5" size={size} />
+        <FaRegUserCircle size={size} />
     );
 };
