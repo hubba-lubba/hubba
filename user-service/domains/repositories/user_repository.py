@@ -96,19 +96,6 @@ class UserRepository:
         self.session.merge(user)
         self.session.commit()
         return user
-    """
-    Helper for updating a User object
-
-    :param username
-    :return: 
-    """
-    @check_id_exists(User, ["user_id", "username"])
-    @check_unique(User, User.username, ["username"])
-    def _update_user(self, user: User, username, streaming_status):
-        user.username = username
-        if streaming_status:
-            user.streaming_status = streaming_status
-        return user
 
     """
     Updates a User object
@@ -121,10 +108,15 @@ class UserRepository:
     @check_id_exists(User, ["user_id"])
     def update_user(self, username=None, user_id=None, streaming_status=None):
         user = self.session.get(User, user_id)
-        if not username:
+        if username == None:
             return user
-        # updated_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
-        user = self._update_user(user, username, streaming_status)
+        users = self.session.get_all_users(User)
+        users = [(u.user_id, u.username) for u in users]
+        if (user_id, username) in users:
+            raise NonUniqueException(User, User.username)
+        
+        user.username = username if username != None else user.username
+        user.streaming_status = streaming_status if streaming_status != None else user.streaming_status
         self.session.patch(user)
         self.session.commit()
         self.publisher.publish(action=True, uuid=str(user.user_id))
