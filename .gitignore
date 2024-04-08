@@ -150,5 +150,7 @@ organizations-service/firebase-sa-cred.json
 file-service/firebase-sa-cred.json
 utils/seeder/firebase-sa-cred.json
 
+utils/seeder/api_key.py
+
 *.code-workspace
 package-lock.json
