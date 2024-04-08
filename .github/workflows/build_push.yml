@@ -297,7 +297,7 @@ jobs:
       - name: Deploy
         run: |-
           kubectl set image deployment/user-service user-service=eddisonso/user-service:${{needs.setup.outputs.TIMESTAMP}}
-          # kubectl set image deployment/web-service web-service=eddisonso/web-service:${{needs.setup.outputs.TIMESTAMP}}
+          kubectl set image deployment/web-service web-service=eddisonso/web-service:${{needs.setup.outputs.TIMESTAMP}}
           kubectl set image deployment/events-service events-service=eddisonso/events-service:${{needs.setup.outputs.TIMESTAMP}}
           kubectl set image deployment/organizations-service organizations-service=eddisonso/organizations-service:${{needs.setup.outputs.TIMESTAMP}}
           kubectl set image deployment/file-service file-service=eddisonso/file-service:${{needs.setup.outputs.TIMESTAMP}}
