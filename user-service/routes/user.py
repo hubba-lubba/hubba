@@ -164,3 +164,29 @@ def get_current_user():
                 })
 
             return result, 400
+
+@user_blueprint.route("/", methods=["PATCH"])
+@ensure_authorized()
+def patch_user():
+    context = request.get_json()
+    username = context.get("username")
+    streaming_status = context.get("streaming_status")
+    id_token = request.headers.get("id_token")
+    user_id = auth.verify_id_token(id_token)["uid"]
+
+    with Session(engine) as session:
+        user_repository = UserRepository(session)
+        try:
+            updated_user = user_repository.update_user(username=username, user_id=user_id, 
+                                                streaming_status=streaming_status)
+            response = jsonify({
+                "status": "success",
+                "user": updated_user.get_JSON(),
+            })
+            return response
+        except (NonUniqueException) as e:
+            result = jsonify({
+                    "status": "failure",
+                    "reason": str(e)
+                })
+            return result, 400
