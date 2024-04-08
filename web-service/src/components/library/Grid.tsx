@@ -5,7 +5,7 @@ interface GridProps {
 
 export function Grid({ children, title }: GridProps) {
     return (
-        <section className="flex h-[400px] w-full flex-col space-y-3">
+        <section className="flex w-full flex-col space-y-3">
             {title && (
                 <div className="bold w-100 relative h-[5%] text-xs uppercase text-hubba-600">
                     <div className="relative z-10 inline-block bg-hubba-900 pr-2">

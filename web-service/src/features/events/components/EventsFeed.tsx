@@ -6,9 +6,9 @@ import { Event } from '../types';
 import { EventsContext } from '@/contexts/EventsProvider';
 
 export const EventsFeed = () => {
-    const [currentEvents, setCurrentEvents] = useState<Event[]>();
-    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>();
-    const [discoverEvents, setDiscoverEvents] = useState<Event[]>();
+    const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
+    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+    const [discoverEvents, setDiscoverEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean | string>(true);
     const { getCurrentEvents, getUpcomingEvents, getDiscoverEvents } =
         useContext(EventsContext);
@@ -58,7 +58,7 @@ export const EventsFeed = () => {
             </Shelf>
             {/* can render shelves by category later. for now just grid */}
             <Grid title="Upcoming Events">
-                {upcomingEvents!.map((event, index) => (
+                {upcomingEvents.map((event, index) => (
                     <EventCard
                         key={`upcoming-${event.event_id}-${index}`}
                         event={event}
@@ -66,7 +66,7 @@ export const EventsFeed = () => {
                 ))}
             </Grid>
             <Grid title="Discover">
-                {discoverEvents!.map((event, index) => (
+                {discoverEvents.map((event, index) => (
                     <EventCard
                         key={`discover-${event.event_id}-${index}`}
                         event={event}
