@@ -10,7 +10,7 @@ export const Layout = ({ style, children }: LayoutProps) => {
     return (
         <div
             className={clsx(
-                'scroll-gutter flex overflow-y-auto border-none bg-none',
+                'flex border-none bg-none',
                 style,
             )}
         >
@@ -21,8 +21,8 @@ export const Layout = ({ style, children }: LayoutProps) => {
 
 export const PageLayout = ({ children }: LayoutProps) => {
     return (
-        <Layout style="w-full justify-center">
-            <div className="w-full max-w-[1200px]">{children}</div>
+        <Layout style="w-full h-full justify-center">
+            <div className="w-full h-full max-w-[1200px]">{children}</div>
         </Layout>
     );
 };

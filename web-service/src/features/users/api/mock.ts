@@ -1,4 +1,4 @@
-import { Message, User, Video } from '../types';
+import { User, Message } from '../types';
 
 // BELOW ARE MOCK FUNCTIONS
 export const getMockUser = async (id: string): Promise<{ user: User }> => {
@@ -8,26 +8,106 @@ export const getMockUser = async (id: string): Promise<{ user: User }> => {
             username: `user with id ${id}`,
             email: 'email1',
             profile_image: undefined,
-            bio: 'bio1',
-            followers: ['follower1', 'follower2'],
-            num_followers: 2,
-            following: ['following1', 'following2'],
-            num_following: 2,
-            streaming_status: 1,
-            channel: 'https://www.google.com',
-            video_urls: [
-                'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            ],
-            joined_events: ['event1', 'event2'],
-            past_events: ['event3', 'event4'],
-            joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
-            platforms: ['platform1', 'platform2'],
-            inbox: (await getMockInbox()).messages,
+            bio: '',
+            followers: [],
+            following: [],
+            streaming_status: 0,
+            channel: '',
+            video_urls: [],
+            joined_events: [],
+            past_events: [],
+            joined_orgs: [],
+            owned_orgs: [],
+            platforms: [],
         } as User,
     };
     return data;
 };
+
+export const getFollowingChannels = async (user: User): Promise<User[]> => {
+    const data = await Promise.all(
+        user.following.map(async (id) => (await getMockUser(id)).user),
+    );
+    return data;
+};
+
+export const getLiveUsers = async (): Promise<{ users: User[] }> => {
+    const data = {
+        users: [
+            {
+                user_id: '1',
+                username: 'user with id 1',
+                email: 'email1',
+                profile_image: undefined,
+                bio: 'bio1',
+                followers: ['follower1', 'follower2'],
+                num_followers: 2,
+                following: ['following1', 'following2'],
+                num_following: 2,
+                streaming_status: 1,
+                channel: 'caseoh_',
+                video_urls: ['video_url1', 'video_url2'],
+                joined_events: ['event1', 'event2'],
+                past_events: ['event3', 'event4'],
+                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                owned_orgs: [],
+                platforms: ['platform1', 'platform2'],
+            } as User,
+            {
+                user_id: '2',
+                username: 'user with id 2',
+                email: 'email1',
+                profile_image: undefined,
+                bio: 'bio1',
+                followers: ['follower1', 'follower2'],
+                num_followers: 2,
+                following: ['following1', 'following2'],
+                num_following: 2,
+                streaming_status: 1,
+                channel: 'faide',
+                video_urls: ['video_url1', 'video_url2'],
+                joined_events: ['event1', 'event2'],
+                past_events: ['event3', 'event4'],
+                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                owned_orgs: [],
+                platforms: ['platform1', 'platform2'],
+            } as User,
+            {
+                user_id: '3',
+                username: 'user with id 3',
+                email: 'email1',
+                profile_image: undefined,
+                bio: 'bio1',
+                followers: ['follower1', 'follower2'],
+                num_followers: 2,
+                following: ['following1', 'following2'],
+                num_following: 2,
+                streaming_status: 1,
+                channel: 'xQc',
+                video_urls: ['video_url1', 'video_url2'],
+                joined_events: ['event1', 'event2'],
+                past_events: ['event3', 'event4'],
+                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
+                owned_orgs: [],
+                platforms: ['platform1', 'platform2'],
+            } as User,
+        ],
+    };
+    return data;
+};
+
+// export const getYoutubeVideoData = async (video_id: string): Promise<any> => {
+//     const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=${import.meta.env.VITE_GOOGLE_KEY}&id=${video_id}`;
+//     try {
+//         const googleData = await fetch(apiUrl);
+//         if (!googleData.ok) throw new Error('failed to fetch video data');
+
+//         console.log(googleData);
+//         return googleData.json();
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 
 // for invitations or requests, create a button componoent that extends button
 // specifically for this: contains link with info and token.
@@ -79,96 +159,5 @@ export const getMockInbox = async (): Promise<{ messages: Message[] }> => {
         ],
     };
 
-    return data;
-};
-
-export const getFollowingChannels = async (user: User): Promise<User[]> => {
-    const data = await Promise.all(
-        user.following.map(async (id) => (await getMockUser(id)).user),
-    );
-    return data;
-};
-
-export const getLiveUsers = async (): Promise<{ users: User[] }> => {
-    const data = {
-        users: [
-            {
-                user_id: '1',
-                username: 'user with id 1',
-                email: 'email1',
-                profile_image: undefined,
-                bio: 'bio1',
-                followers: ['follower1', 'follower2'],
-                num_followers: 2,
-                following: ['following1', 'following2'],
-                num_following: 2,
-                streaming_status: 1,
-                channel: 'caseoh_',
-                video_urls: ['video_url1', 'video_url2'],
-                joined_events: ['event1', 'event2'],
-                past_events: ['event3', 'event4'],
-                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
-                platforms: ['platform1', 'platform2'],
-                inbox: (await getMockInbox()).messages,
-            } as User,
-            {
-                user_id: '2',
-                username: 'user with id 2',
-                email: 'email1',
-                profile_image: undefined,
-                bio: 'bio1',
-                followers: ['follower1', 'follower2'],
-                num_followers: 2,
-                following: ['following1', 'following2'],
-                num_following: 2,
-                streaming_status: 1,
-                channel: 'faide',
-                video_urls: ['video_url1', 'video_url2'],
-                joined_events: ['event1', 'event2'],
-                past_events: ['event3', 'event4'],
-                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
-                platforms: ['platform1', 'platform2'],
-                inbox: (await getMockInbox()).messages,
-            } as User,
-            {
-                user_id: '3',
-                username: 'user with id 3',
-                email: 'email1',
-                profile_image: undefined,
-                bio: 'bio1',
-                followers: ['follower1', 'follower2'],
-                num_followers: 2,
-                following: ['following1', 'following2'],
-                num_following: 2,
-                streaming_status: 1,
-                channel: 'xQc',
-                video_urls: ['video_url1', 'video_url2'],
-                joined_events: ['event1', 'event2'],
-                past_events: ['event3', 'event4'],
-                joined_orgs: ['org1', 'org2', 'org3', 'org4', 'org5', 'org6'],
-                platforms: ['platform1', 'platform2'],
-                inbox: (await getMockInbox()).messages,
-            } as User,
-        ],
-    };
-    return data;
-};
-
-export const getVideo = async (url: string): Promise<{ video: Video }> => {
-    const data = {
-        video: {
-            video_id: 'dQw4w9WgXcQ',
-            url: url,
-            title: 'Click This Video',
-            thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/default.jpg',
-        } as Video,
-    };
-    return data;
-};
-
-export const getVideos = async (user: User): Promise<Video[]> => {
-    const data = await Promise.all(
-        user.video_urls.map(async (url) => (await getVideo(url)).video),
-    );
     return data;
 };

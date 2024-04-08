@@ -1,12 +1,13 @@
 import { Layout } from '@/components/layout';
 import { Grid } from '@/components/library';
-import { useEffect, useState } from 'react';
-import { getDiscoverOrgs } from '../api';
+import { useContext, useEffect, useState } from 'react';
 import { Org } from '../types';
 import { OrgCard } from './OrgCard';
+import { OrgsContext } from '@/contexts/OrgsProvider';
 
 export const OrgsFeed = () => {
     const [discoverOrgs, setDiscoverOrgs] = useState<Org[]>([]);
+    const { getDiscoverOrgs } = useContext(OrgsContext);
 
     // put this into each feature as a component
     useEffect(() => {
@@ -17,7 +18,7 @@ export const OrgsFeed = () => {
         };
 
         fetchData();
-    }, []);
+    }, [getDiscoverOrgs]);
     return (
         <Layout style="w-full flex-col">
             <Grid title="Orgs">

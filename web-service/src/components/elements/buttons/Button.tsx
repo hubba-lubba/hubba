@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { IconType } from 'react-icons';
 
 const variants = {
     base: 'flex flex-center items-center cursor-pointer',
@@ -13,8 +12,7 @@ const variants = {
 interface ButtonProps {
     children: React.ReactNode;
     variant?: 'base' | 'image' | 'text';
-    Icon?: IconType;
-    image?: string;
+    icon?: React.ReactNode;
     handleClick?: () => void;
     style?: string;
 }
@@ -22,8 +20,7 @@ interface ButtonProps {
 export function Button({
     children,
     variant = 'base',
-    Icon,
-    image,
+    icon,
     handleClick,
     style = '',
 }: ButtonProps): React.ReactElement {
@@ -32,11 +29,8 @@ export function Button({
             onClick={handleClick}
             className={clsx('transition-all', variants[variant], style)}
         >
-            {(Icon && <Icon className="h-6 pr-2.5" size={50} />) ||
-                (image && (
-                    <img src={image} alt="image" className="h-6 pr-2.5" />
-                ))}
-            <div className="truncate">{children}</div>
+            {icon}
+            <div className="ml-2.5 truncate">{children}</div>
             {/* {text && (
                 <p className="cursor-pointer border-none bg-none w-full">
                     {text}

@@ -34,3 +34,20 @@ export const confirmPassword = Joi.string()
         'any.only': 'Passwords do not match',
         'string.empty': 'Please confirm your password',
     });
+
+export const name = Joi.string().min(3).max(30).required().messages({
+    'string.min': 'Name must be at least 3 characters long',
+    'string.max': 'Name cannot be more than 30 characters long',
+    'string.empty': 'Please enter a name',
+});
+
+export const channel = Joi.string().min(3).max(30).allow('').messages({
+    'string.min': 'Channel name must be at least 3 characters long',
+    'string.max': 'Channel name cannot be more than 30 characters long',
+});
+
+export const desc = Joi.string().max(200).allow('').messages({
+    'string.max': 'Bio cannot be more than 200 characters long',
+    'string.empty': 'Please enter a bio',
+});
+

@@ -1,26 +1,26 @@
 import { Button } from '@/components/elements/buttons';
 import { SidebarSection } from '@/components/layout';
-import { LuPlusCircle } from 'react-icons/lu';
 import { useEffect, useState, useContext } from 'react';
 import { Org } from '../types';
-import { getSidebarOrgs } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@/contexts/UserProvider';
+import { OrgsContext } from '@/contexts/OrgsProvider';
 
 export const SidebarOrgs = () => {
     const [orgs, setOrgs] = useState<Org[]>([]);
     const [showMore, setShowMore] = useState<boolean>(false);
     const { userData } = useContext(UserContext);
+    const { getMockOrgs } = useContext(OrgsContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
-            const orgsData = await getSidebarOrgs(userData);
+            const orgsData = await getMockOrgs(userData.joined_orgs);
             setOrgs(orgsData);
         };
 
         fetchData();
-    }, [userData]);
+    }, [userData, getMockOrgs]);
 
     const collapseLength = 3;
 
@@ -41,13 +41,13 @@ export const SidebarOrgs = () => {
                     </Button>
                 ))
                 .slice(0, showMore ? orgs.length : collapseLength)}
-            <Button
+            {/* <Button
                 variant="image"
-                Icon={LuPlusCircle}
+                icon={<LuPlusCircle />}
                 handleClick={() => navigate('/orgs')}
             >
                 Join an Org
-            </Button>
+            </Button> */}
             {/* remove this and make it so they gotta click into an org to apply */}
         </SidebarSection>
     );

@@ -1,1 +1,4 @@
+import os 
+
 PORT = 8010
+BUCKET_SERVICE_ACCOUNT = os.environ.get("BUCKET_SERVICE_ACCOUNT", None)

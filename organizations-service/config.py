@@ -11,7 +11,7 @@ DB_NAME = os.environ.get("DB_NAME", "hubba-events")
 VERSION = os.environ.get("VERSION", "NA")
 
 #google pubsub related globals
-PROJECT_ID = os.environ.get("PROJECT_ID", "hubba-412704")
+PROJECT_ID = os.environ.get("PROJECT_ID", "hubba-419505")
 USER_EVENT_SUBSCRIPTION_ID = os.environ.get("USER_EVENT_SUBSCRIPTION_ID", "dev-user-event")
 EVENTS_EVENT_SUBSCRIPTION_ID = os.environ.get("EVENTS_EVENT_SUBSCRIPTION_ID", "dev-events-event")
 ORGANIZATIONS_EVENT_SUBSCRIPTION_ID = os.environ.get("ORGANIZATIONS_EVENT_SUBSCRIPTION_ID", "dev-organizations-event")

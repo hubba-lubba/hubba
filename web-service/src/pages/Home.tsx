@@ -3,22 +3,26 @@ import { Shelf } from '@/components/library';
 import { EventCard } from '@/features/events/components/EventCard';
 import { OrgCard } from '@/features/orgs/components/OrgCard';
 import { ChannelCard } from '@/features/users/components/ChannelCard';
-import { useEffect, useState } from 'react';
-import { getUpcomingEvents, getCurrentEvents } from '@/features/events/api';
+import { useContext, useEffect, useState } from 'react';
 import { Event } from '@/features/events/types';
-import { getLiveUsers } from '@/features/users/api';
-import { getDiscoverOrgs } from '@/features/orgs/api';
 import { User } from '@/features/users/types';
 import { Org } from '@/features/orgs/types';
+import { EventsContext } from '@/contexts/EventsProvider';
+import { OrgsContext } from '@/contexts/OrgsProvider';
+import { UsersContext } from '@/contexts/UsersProvider';
 
 export const Home = () => {
     const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
     const [liveUsers, setLiveUsers] = useState<User[]>([]);
     const [discoverOrgs, setDiscoverOrgs] = useState<Org[]>([]);
+    const { getCurrentEvents, getUpcomingEvents } = useContext(EventsContext);
+    const { getDiscoverOrgs } = useContext(OrgsContext);
+    const { getLiveUsers } = useContext(UsersContext);
+
     // put this into each feature as a component
     useEffect(() => {
-        // once this is complete, move into individual features as a component
+        // TODO: will need get attending events, joined orgs, followed users functions
         const fetchData = async () => {
             const currentEventsData = await getCurrentEvents();
             setCurrentEvents(currentEventsData.events);
@@ -30,11 +34,11 @@ export const Home = () => {
             setLiveUsers(liveUsersData.users);
 
             const discoverOrgsData = await getDiscoverOrgs();
-            setDiscoverOrgs(discoverOrgsData.orgs)
+            setDiscoverOrgs(discoverOrgsData.orgs);
         };
 
         fetchData();
-    }, []);
+    }, [getCurrentEvents, getUpcomingEvents, getLiveUsers, getDiscoverOrgs]);
 
     return (
         <Layout style="w-full flex-col">
@@ -54,6 +58,14 @@ export const Home = () => {
                     ></EventCard>
                 ))}
             </Shelf>
+            <Shelf title="Orgs" variant="small">
+                {discoverOrgs.map((org, index) => (
+                    <OrgCard
+                        key={`org-${org.org_id}-${index}`}
+                        org={org}
+                    ></OrgCard>
+                ))}
+            </Shelf>
             <Shelf title="Live">
                 {liveUsers.map((user, index) => (
                     <ChannelCard
@@ -61,16 +73,6 @@ export const Home = () => {
                         user={user}
                     ></ChannelCard>
                 ))}
-            </Shelf>
-            <Shelf title="Orgs">
-                {discoverOrgs
-                    .map((org, index) => (
-                        <OrgCard
-                            key={`org-${org.org_id}-${index}`}
-                            org={org}
-                        ></OrgCard>
-                    ))
-                    .slice(0, 3)}
             </Shelf>
         </Layout>
     );

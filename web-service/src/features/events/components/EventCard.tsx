@@ -1,37 +1,48 @@
-import { Card } from '@/components/library';
+import { Card, Thumbnail } from '@/components/library';
 import { Event } from '@/features/events/types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { statuses } from '@/lib/constants';
-import { getMockOrg } from '@/features/orgs/api';
+import { OrgsContext } from '@/contexts/OrgsProvider';
 import { Org } from '@/features/orgs/types';
 import { TwitchLiveEmbed } from '@/components/external';
+import { formatTime } from '@/utils/time';
 
 export const EventCard = ({ event }: { event: Event }) => {
     const [org, setOrg] = useState<Org>();
+    const { getMockOrg } = useContext(OrgsContext);
 
     useEffect(() => {
         const fetchData = async () => {
             // get org by event.org_id
-            const orgData = await getMockOrg(event.host_org, 'caseoh_');
+            const orgData = await getMockOrg(event.host_org);
             setOrg(orgData.org);
         };
 
         fetchData();
-    }, [event]);
+    }, [event, getMockOrg]);
 
     return (
-        <Card url={`events/${event.event_id}`}>
-            {event.status === 0 || !org ? (
-                <img src={event.thumbnail} />
-            ) : (
-                <TwitchLiveEmbed channel={org.channel} />
-            )}
-
-            <div>
-                <h2>{org?.name}</h2>
-                <h2>{event.time_of.toISOString()}</h2>
-                <h2>{statuses[event.status]}</h2>
-            </div>
-        </Card>
+        <Card
+            url={`/events/${event.event_id}`}
+            media={
+                event.status === 0 || !org ? (
+                    <Thumbnail src={event.thumbnail} />
+                ) : (
+                    <TwitchLiveEmbed channel={org.channel} />
+                )
+            }
+            footer={
+                <div className="flex w-full flex-row">
+                    <div className="flex w-1/2 flex-col">
+                        <span className='truncate'>{event.name}</span>
+                        <span className='truncate'>{org?.name}</span>
+                    </div>
+                    <div className="flex w-1/2 flex-col items-end">
+                        <span>{statuses[event.status]}</span>
+                        <span>{formatTime(event.time_of)}</span>
+                    </div>
+                </div>
+            }
+        />
     );
 };

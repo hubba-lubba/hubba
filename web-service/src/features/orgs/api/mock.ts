@@ -45,3 +45,11 @@ export const getDiscoverOrgs = async (): Promise<{ orgs: Org[] }> => {
     };
     return data;
 };
+
+export const createOrg = async (org: Org): Promise<{ org: Org }> => {
+    console.log('create org', org);
+    const data = {
+        org: org,
+    };
+    return data;
+};
