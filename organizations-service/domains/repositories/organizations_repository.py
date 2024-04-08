@@ -86,14 +86,12 @@ class OrganizationsRepository:
                          organization_id, 
                          name=None,
                          image=None,
-                         description=None, 
-                         owner=None):
+                         description=None):
         organization = self.get_organization(organization_id)
 
         organization.name = name if name else organization.name
         organization.image = image if image else organization.image
         organization.description = description if description else organization.description
-        organization.owner = owner if owner else organization.owner
 
         self.session.patch(organization)
         self.session.commit()

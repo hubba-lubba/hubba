@@ -121,13 +121,7 @@ def patch_organization():
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
         try:
-            organization = organizations_repository.patch_organization(
-                organization_id = organization_id,
-                name=name,
-                image=image,
-                description=description,
-                owner=owner
-            )
+            organization = organizations_repository.patch_organization(organization_id = organization_id,name=name,image=image,description=description)
             response = jsonify({
                 "status": "success",
                 "organization": organization.get_JSON()

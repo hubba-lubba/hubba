@@ -184,7 +184,7 @@ def patch_user():
                 "user": updated_user.get_JSON(),
             })
             return response
-        except (IdExistsException, NonUniqueException) as e:
+        except (NonUniqueException) as e:
             result = jsonify({
                     "status": "failure",
                     "reason": str(e)

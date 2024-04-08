@@ -106,7 +106,7 @@ class UserRepository:
     @check_unique(User, User.username, ["username"])
     def _update_user(self, user: User, username, streaming_status):
         user.username = username
-        if (streaming_status):
+        if streaming_status:
             user.streaming_status = streaming_status
         return user
 
@@ -121,7 +121,7 @@ class UserRepository:
     @check_id_exists(User, ["user_id"])
     def update_user(self, username=None, user_id=None, streaming_status=None):
         user = self.session.get(User, user_id)
-        if (not username):
+        if not username:
             return user
         # updated_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
         user = self._update_user(user, username, streaming_status)
