@@ -53,7 +53,7 @@ def add_user():
         return result, 400
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
-    streaming_status = context.get("streaming_status")
+    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
 
     with Session(engine) as session:
         user_repository = UserRepository(session)
@@ -119,8 +119,6 @@ def delete_user():
 @user_blueprint.route("/add_following", methods=["POST"])
 @ensure_authorized()
 @require_json_params(["user_id", "following"])
-@ensure_UUID("user_id")
-@ensure_UUID("following")
 def add_following():
     context = request.get_json()
 
@@ -169,8 +167,8 @@ def get_current_user():
 @ensure_authorized()
 def patch_user():
     context = request.get_json()
-    username = context.get("username")
-    streaming_status = context.get("streaming_status")
+    username = context.get("username") if context.get("username") else None
+    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
 
@@ -178,15 +176,15 @@ def patch_user():
         user_repository = UserRepository(session)
         try:
             updated_user = user_repository.update_user(username=username, user_id=user_id, 
-                                                streaming_status=streaming_status)
+                                                       streaming_status=streaming_status)
             response = jsonify({
                 "status": "success",
                 "user": updated_user.get_JSON(),
             })
             return response
-        except (NonUniqueException) as e:
+        except NonUniqueException as e:
             result = jsonify({
                     "status": "failure",
                     "reason": str(e)
-                })
+            })
             return result, 400
