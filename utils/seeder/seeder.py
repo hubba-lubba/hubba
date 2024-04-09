@@ -14,7 +14,6 @@ def init_firebase():
 
 def create_user(user):
     res_body = {
-        "username": user["username"]
     }
     headers = {'content-type': 'application/json',
                'id_token': f'{user["token_id"]}'
