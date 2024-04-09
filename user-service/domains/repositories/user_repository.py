@@ -4,6 +4,7 @@ from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import check_id_exists, check_id_not_exists, check_unique
 from events.publisher_factory import PublisherFactory
 from logger import LoggerFactory
+from firebase_admin import auth
 
 
 class UserRepository:
@@ -97,4 +98,32 @@ class UserRepository:
         self.session.commit()
         return user
 
+    """
+    Updates a User object
 
+    :param user: User object to be updated
+    :return: User of updated user
+    """
+    def _update_user(self, user):
+        self.session.patch(user)
+        self.session.commit()
+        return user
+
+    """
+    Updates a User object in backend and Firebase
+
+    :optional param username: str of username
+    :optional param streaming_status: str of streaming status
+    :return: User of updated user
+    """
+    @check_id_exists(User, ["user_id"])
+    def update_user(self, username=None, user_id=None, streaming_status=None):
+        user = self.session.get(User, user_id)
+        if self.session.query(User).filter(User.username == username).first() is not None:
+            raise NonUniqueException(User, "username")
+
+        auth.update_user(user.user_id, display_name=username)
+        
+        user.username = username if username is not None else user.username
+        user.streaming_status = streaming_status if streaming_status is not None else user.streaming_status
+        return self._update_user(user)
