@@ -116,9 +116,9 @@ def delete_user():
             })
             return result, 400
 
-@user_blueprint.route("/add_following", methods=["POST"])
+@user_blueprint.route("/add_following", methods=["PATCH"])
 @ensure_authorized()
-@require_json_params(["user_id", "following"])
+@require_json_params(["following"])
 def add_following():
     context = request.get_json()
 
