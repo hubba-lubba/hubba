@@ -1,4 +1,4 @@
-from creds.users import users
+from creds.user_creds import users
 
 event_1 = {
     "title": "Test Event 1",

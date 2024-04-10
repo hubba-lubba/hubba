@@ -2,7 +2,7 @@ from requests import post
 from json import loads
 from os import environ
 if not environ.get("api_key"):
-    from api_key import API_KEY
+    from creds.api_key import API_KEY
 else :
     API_KEY = environ.get("api_key")
 
