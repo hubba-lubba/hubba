@@ -28,7 +28,7 @@ def version():
 
 @events_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["title", "description", "owner"])
+@require_json_params(["title"])
 def add_event():
     context = request.get_json()
 
