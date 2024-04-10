@@ -32,6 +32,17 @@ class UserRepository:
         new_user = User(user_id = user_id)
         return self._add_user(new_user)
 
+    """
+    Get User object
+
+    :param user_id: uuid of user_uuid
+    :return: User with user_uuid
+    """
+    @check_id_exists(User, ["user_id"])
+    def get_user(self, *, user_id):
+        user = self.session.get(User, user_id)
+        return user
+
     @check_id_exists(User, ["user_id"])
     def delete_user(self, *, user_id):
         user = self.session.get(User, user_id)
