@@ -1,8 +1,13 @@
 import { getidtoken } from '@/features/auth/api';
+import { getAuth } from "firebase/auth"
 import { EVENTS_API_URL } from '@/config';
 
 export const joinEvent = async ({ eventId }: { eventId: string }): Promise<void> => {
     const idToken = await getidtoken();
+    const auth = getAuth()
+
+    if (!auth.currentUser)
+        throw new Error("@/features/events/api/user.ts joinEvent: user not authenticated")
 
     const headers = {
         'Content-Type': 'application/json',
@@ -11,6 +16,7 @@ export const joinEvent = async ({ eventId }: { eventId: string }): Promise<void>
 
     const body = {
         event_id: eventId,
+        user_id: auth.currentUser.uid
     };
 
     const res = await fetch(`${EVENTS_API_URL}/join_event`, {
