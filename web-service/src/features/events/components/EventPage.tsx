@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { Event } from '../types';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { EventsContext } from '@/contexts/EventsProvider';
 import { statuses } from '@/lib/constants';
 import { OrgsContext } from '@/contexts/OrgsProvider';
 import { Org } from '@/features/orgs/types';
+import { joinEvent as joinEventAPI } from "@/features/events/api"
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -25,6 +26,7 @@ export const EventPage = () => {
         setEventStreamingStatus,
     } = useContext(EventsContext);
     const { getMockOrg } = useContext(OrgsContext);
+    const navigate = useNavigate()
     // const [tags, setTags] = useState<React.ReactElement[]>([]);
 
     useEffect(() => {
@@ -54,15 +56,28 @@ export const EventPage = () => {
             setLoading(false);
         };
 
-        fetchEventData(id).catch((err) =>
+        fetchEventData(id).catch((err) => {
             setError('Error loading page: ' + err),
-        );
-    }, [id, getMockEvent, getMockOrg]);
+            setTimeout(() => navigate("/events"), 3000)
+        });
+    }, [id, getMockEvent, getMockOrg, navigate]);
+
 
     const joinEvent = async (event: Event) => {
+        try {
+            await joinEventAPI({ eventId: event.event_id })
+        } catch(error) {
+            console.log(error)
+            setError(`Error joining event ${event.event_id}: ${error}`)
+            //i guess reload the page here or something after a few seconds
+            setTimeout(() => navigate("/events"), 3000)
+            return
+        }
+
         await addUserToEvent(event.event_id);
         await addEventToUser(event.event_id);
     };
+
 
     const leaveEvent = async (event: Event) => {
         await removeUserFromEvent(event.event_id);
@@ -72,7 +87,13 @@ export const EventPage = () => {
     if (!id) return <div>Event not found</div>; //do smt else abt this i think
     if (!event) return <div>Event not found</div>;
     if (loading) return <p>Loading events...</p>;
-    if (error) return <div>error</div>;
+    if (error)
+        return (
+            <div>
+                {error}
+                <p>Redirecting back to events page...</p>
+            </div>
+        )
 
     return (
         <PageLayout>
