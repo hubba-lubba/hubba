@@ -142,7 +142,7 @@ def join_event():
     if not event_id or not user_id:
         response = jsonify({
             "status": "error",
-            "message": "event_id and user_id is required"
+            "message": "valid event_id and user_id is required"
         })
         response.status_code = 400
         return response
@@ -165,6 +165,53 @@ def join_event():
                 return response
 
             event.users.append(user)
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON(),
+                "users": list(map(lambda elem: elem.user_id, event.users))
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
+@events_blueprint.route("/leave_event", methods=["DELETE"])
+@ensure_authorized()
+@require_json_params(["event_id", "user_id"])
+def leave_event():
+    event_id = request.get_json()["event_id"]
+    user_id = request.get_json()["user_id"]
+
+    if not event_id or not user_id:
+        response = jsonify({
+            "status": "error",
+            "message": "valid event_id and user_id is required"
+        })
+        response.status_code = 400
+        return response
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        user_repository = UserRepository(session)
+
+        try:
+            event = events_repository.get_event(event_id=event_id)
+            user = user_repository.get_user(user_id=user_id)
+
+            if user not in event.users:
+                response = jsonify({
+                    "status": "failure",
+                    "message": "user with user_id {0} doesn't exist in event {1}"
+                                .format(user_id, event_id)
+                    })
+                response.status_code = 400
+                return response
+
+            event.users.remove(user)
             response = jsonify({
                 "status": "success",
                 "event": event.get_JSON(),
