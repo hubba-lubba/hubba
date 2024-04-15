@@ -56,7 +56,7 @@ class EventsRepository:
     :return: Event of event
     """
     @check_id_exists(Events, ["event_id"])
-    def get_event(self, event_id):
+    def get_event(self, event_id=None):
         event = self.session.get(Events, event_id)
         return event
 
@@ -66,7 +66,7 @@ class EventsRepository:
     :return: uuid of deleted event
     """
     @check_id_exists(Events, ["event_id"])
-    def delete_event(self, event_id):
+    def delete_event(self, event_id=None):
         event = self.get_event(event_id)
         self.session.delete(event)
         self.session.commit()
@@ -89,7 +89,7 @@ class EventsRepository:
     :param event_id: uuid of event_uuid
     :return: Event of updated event
     """
-    @check_id_exists(User, ["event_id"])
+    @check_id_exists(Events, ["event_id"])
     def update_event(self, event_id, title=None, thumbnail=None, description=None,
                   url=None, platform=None, tags=None, time_of_event=None,
                   host=None, entry_fee=None):
@@ -109,18 +109,22 @@ class EventsRepository:
 
         return self._update_event(event)
 
-    @check_id_exists(User, ["event_id"])
-    def add_user(self, event_id, user_id):
-        event = self.get_event(event_id)
+    @check_id_exists(Events, ["event_id"])
+    @check_id_exists(User, ["user_id"])
+    def add_user(self, event_id=None, user_id=None):
+        event = self.get_event(event_id=event_id)
+        user = self.session.get(User, user_id)
         if not event: return
 
-        event.users = list(set(event.users + [user_id]))
+        event.users = list(set(event.users + [user]))
         return self._update_event(event)
 
-    @check_id_exists(User, ["event_id"])
-    def delete_user(self, event_id, user_id):
-        event = self.get_event(event_id)
+    @check_id_exists(Events, ["event_id"])
+    @check_id_exists(User, ["user_id"])
+    def delete_user(self, event_id=None, user_id=None):
+        event = self.get_event(event_id=event_id)
+        user = self.session.get(User, user_id)
         if not event: return
 
-        event.users = list(set(event.users) - set([user_id]))
+        event.users = list(set(event.users) - set([user]))
         return self._update_event(event)

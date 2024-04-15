@@ -42,9 +42,9 @@ event_table = Table("event_table",
                            UUID, 
                            ForeignKey("organizations.organization_id"), 
                            primary_key=True),
-                    Column("user", 
-                           String(32), 
-                           ForeignKey("users.user_id"), 
+                    Column("event", 
+                           UUID, 
+                           ForeignKey("events.event_id"), 
                            primary_key=True))
 
 class Organizations(Base):
@@ -72,7 +72,8 @@ class Organizations(Base):
     users: Mapped[list[User]] = relationship(secondary=user_table,
                                              back_populates="in_org")
 
-    events: Mapped[list[Events]] = relationship(secondary=event_table)
+    events: Mapped[list[Events]] = relationship(secondary=event_table,
+                                                back_populates="has_event")
 
     def get_JSON(self):
         return Events.to_JSON(self)
