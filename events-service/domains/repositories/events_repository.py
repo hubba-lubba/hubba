@@ -4,6 +4,7 @@ from domains.models.user import User
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
 from uuid import UUID
+from sqlalchemy.sql import func
 
 class EventsRepository:
     session: Session
@@ -128,3 +129,12 @@ class EventsRepository:
 
         event.users = list(set(event.users) - set([user]))
         return self._update_event(event)
+
+    def get_random_events(self):
+        return self.session.query(Events).order_by(func.random()).limit(5).all()
+
+    def get_upcoming_events(self):
+        return self.session.query(Events).order_by(Events.time_of_event).limit(5).all()
+
+    def get_current_events(self):
+        return self.session.query(Events).filter(Events.time_of_event > func.now()).order_by(Events.time_of_event).limit(5).all()

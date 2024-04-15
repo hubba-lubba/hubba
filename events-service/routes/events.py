@@ -241,3 +241,39 @@ def delete_user():
             })
             response.status_code = 404
             return response
+
+@events_blueprint.route("/get_random_events", methods=["GET"])
+@ensure_authorized()
+def get_random_events():
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_random_events()
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response
+
+@events_blueprint.route("/get_upcoming_events", methods=["GET"])
+@ensure_authorized()
+def get_upcoming_events():
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_upcoming_events()
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response
+
+@events_blueprint.route("/get_current_events", methods=["GET"])
+@ensure_authorized()
+def get_current_events():
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_current_events()
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response
