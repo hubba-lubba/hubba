@@ -185,3 +185,15 @@ def delete_user():
             })
             response.status_code = 404
             return response
+
+@organizations_blueprint.route("/get_random_organizations", methods=["GET"])
+@ensure_authorized()
+def get_random_organizations():
+    with Session(engine) as session:
+        organizations_repository = OrganizationsRepository(session)
+        organizations = organizations_repository.get_random_organizations()
+        response = jsonify({
+            "status": "success",
+            "organizations": [organization.get_JSON() for organization in organizations]
+        })
+        return response

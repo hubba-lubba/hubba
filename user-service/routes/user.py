@@ -86,28 +86,6 @@ def get_user():
             })
             return result, 400
 
-@user_blueprint.route("/", methods=["DELETE"])
-@ensure_authorized()
-@require_query_params(["user_id"])
-@ensure_UUID("user_id")
-def delete_user():
-    user_id = request.args.get("user_id")
-    with Session(engine) as session:
-        try:
-            user_repository = UserRepository(session)
-            user_id = user_repository.delete_user(user_id=user_id)
-            response = jsonify({
-                "status": "success",
-                "user_id": user_id
-            })
-            return response
-        except IdMissingException as e:
-            result = jsonify({
-                "status": "failure",
-                "reason": str(e)
-            })
-            return result, 400
-
 @user_blueprint.route("/add_following", methods=["PATCH"])
 @ensure_authorized()
 @require_json_params(["following"])

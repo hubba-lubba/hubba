@@ -5,6 +5,7 @@ from domains.models.organizations import Organizations
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
 from uuid import UUID
+from sqlalchemy.sql import func
 
 class OrganizationsRepository:
     session: Session
@@ -125,3 +126,6 @@ class OrganizationsRepository:
 
         organization.users = list(set(organization.users) - set([user]))
         return self._update_organization(organization)
+
+    def get_random_organizations(self):
+        return self.session.query(Organizations).order_by(func.random()).limit(5).all()
