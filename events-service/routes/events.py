@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
 from routes.utils import ensure_UUID, require_json_params, require_query_params, ensure_authorized
+from firebase_admin import auth
 
 events_blueprint = Blueprint('events_api', __name__, url_prefix="/")
 CORS(events_blueprint)
@@ -29,20 +30,20 @@ def version():
 
 @events_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["title", "description", "owner"])
+@require_json_params(["title"])
 def add_event():
     context = request.get_json()
 
-    title = str(context.get("title")) if context.get("title") else None
-    thumbnail = str(context.get("thumbnail")) if context.get("thumbnail") else None
-    description = str(context.get("description")) if context.get("description") else None
-    url = str(context.get("url")) if context.get("url") else None
-    platform = str(context.get("platform")) if context.get("platform") else None
+    title = context.get("title") if context.get("title") else None
+    thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
+    description = context.get("description") if context.get("description") else None
+    url = context.get("url") if context.get("url") else None
+    platform = context.get("platform") if context.get("platform") else None
     tags = list(map(str, context.get("tags"))) if context.get("tags") else []
     time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
-    host = str(context.get("host")) if context.get("host") else None
-    entry_fee = str(context.get("entry_fee")) if context.get("entry_fee") else None
-    owner = context.get("owner")
+    host = context.get("host") if context.get("host") else None
+    entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
+    owner = auth.verify_id_token(request.headers.get("id_token"))["uid"]
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
@@ -216,6 +217,51 @@ def leave_event():
                 "status": "success",
                 "event": event.get_JSON(),
                 "users": list(map(lambda elem: elem.user_id, event.users))
+
+@events_blueprint.route("/", methods=["PATCH"])
+@ensure_authorized()
+@require_query_params(["event_id"])
+@ensure_UUID("event_id")
+def patch_event():
+    event_id = request.args.get("event_id")
+    if not event_id:
+        response = jsonify({
+            "status": "error",
+            "message": "event_id is required"
+        })
+        response.status_code = 400
+        return response
+
+    context = request.get_json()
+
+    title = context.get("title") if context.get("title") else None
+    thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
+    description = context.get("description") if context.get("description") else None
+    url = context.get("url") if context.get("url") else None
+    platform = context.get("platform") if context.get("platform") else None
+    tags = list(map(str, context.get("tags"))) if context.get("tags") else []
+    time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
+    host = context.get("host") if context.get("host") else None
+    entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        try:
+            event = events_repository.update_event(
+                event_id = event_id,
+                title=title,
+                thumbnail=thumbnail,
+                description=description,
+                url=url,
+                platform=platform,
+                tags=tags,
+                time_of_event=time_of_event,
+                host=host,
+                entry_fee=entry_fee
+            )
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON()
             })
             return response
         except IdMissingException as e:

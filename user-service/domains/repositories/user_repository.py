@@ -1,9 +1,11 @@
+from functools import reduce
 from sqlalchemy.orm import Session
 from domains.models.user import User
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import check_id_exists, check_id_not_exists, check_unique
 from events.publisher_factory import PublisherFactory
 from logger import LoggerFactory
+from firebase_admin import auth
 
 
 class UserRepository:
@@ -23,10 +25,12 @@ class UserRepository:
     :param new_user: User representing user to be added
     :return: User of added user
     """
-    def _add_user(self, new_user: User):
+    def _add_user(self, 
+                  new_user: User):
         self.session.add(new_user)
         self.session.commit()
-        self.publisher.publish(action=True, uuid=str(new_user.user_id))
+        self.publisher.publish(action=True, 
+                               uuid=str(new_user.user_id))
         return new_user
 
     """
@@ -39,8 +43,16 @@ class UserRepository:
     """
     @check_id_not_exists(User, ["user_id"])
     @check_unique(User, User.username, ["username"])
-    def add_user(self, username, user_id=None, streaming_status=None):
-        new_user = User(username=username, user_id=user_id, streaming_status=streaming_status)
+    def add_user(self, 
+                 username=None, 
+                 user_id=None, 
+                 streaming_status=None,
+                 profile_picture=None):
+
+        new_user = User(username=username, 
+                        user_id=user_id, 
+                        streaming_status=streaming_status,
+                        profile_picture=profile_picture)
         return self._add_user(new_user)
 
     """
@@ -85,16 +97,51 @@ class UserRepository:
     :return: User
     """
     @check_id_exists(User, ["user_id", "following"])
-    def add_following(self, user_id, following=[]):
+    def add_following(self, user_id, following=None):
         user = self.session.get(User, user_id)
-        new_following = list(map(lambda user_id: self.session.get(User, user_id), following))
+        new_following = self.session.get(User, following)
+        if new_following in user.following:
+            raise DuplicateFollowException(user.user_id, new_following.user_id)
 
-        if user is not None and user in new_following:
+        if user == new_following:
             raise SelfReferentialFollowException(user.user_id)
 
-        user.following.extend(new_following)
+        user.following.extend([new_following])
         self.session.merge(user)
         self.session.commit()
         return user
 
+    """
+    Updates a User object
 
+    :param user: User object to be updated
+    :return: User of updated user
+    """
+    def _update_user(self, user):
+        self.session.merge(user)
+        self.session.commit()
+        return user
+
+    """
+    Updates a User object in backend and Firebase
+
+    :optional param username: str of username
+    :optional param streaming_status: str of streaming status
+    :return: User of updated user
+    """
+    @check_id_exists(User, ["user_id"])
+    def update_user(self, 
+                    username=None, 
+                    user_id=None, 
+                    streaming_status=None,
+                    profile_picture=None):
+        user = self.session.get(User, user_id)
+        if self.session.query(User).filter(User.username == username).first() is not None:
+            raise NonUniqueException(User, "username")
+
+        auth.update_user(user.user_id, display_name=username)
+        
+        user.username = username if username is not None else user.username
+        user.streaming_status = streaming_status if streaming_status is not None else user.streaming_status
+        user.profile_picture = profile_picture if profile_picture is not None else user.profile_picture
+        return self._update_user(user)

@@ -74,3 +74,25 @@ class OrganizationsRepository:
         self.session.delete(organization)
         self.session.commit()
         return organization_id
+
+    """
+    Updates Organizations object to be persisted using organization parameters
+
+    :param organization_id: uuid of organization_id
+    :return: Organizations of updated organization
+    """
+    @check_id_exists(Organizations, ["organization_id"])
+    def patch_organization(self,
+                         organization_id, 
+                         name=None,
+                         image=None,
+                         description=None):
+        organization = self.get_organization(organization_id)
+
+        organization.name = name if name else organization.name
+        organization.image = image if image else organization.image
+        organization.description = description if description else organization.description
+
+        self.session.patch(organization)
+        self.session.commit()
+        return organization

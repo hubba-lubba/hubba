@@ -28,3 +28,11 @@ class IdMissingException(Exception):
 
     def __str__(self):
         return f"{self.obj_class.__name__} with id {self.id} does not exist"
+
+class DuplicateFollowException(Exception):
+    def __init__(self, user_id, follows):
+        self.user_id = user_id
+        self.follows = follows
+
+    def __str__(self):
+        return f"{self.user_id} already follows {self.follows}"

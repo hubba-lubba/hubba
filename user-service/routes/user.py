@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
 from routes.utils import *
+from firebase_admin import auth
 
 user_blueprint = Blueprint('user_api', __name__, url_prefix="/")
 CORS(user_blueprint)
@@ -27,7 +28,6 @@ def version():
     return result
 
 @user_blueprint.route("/all", methods=["GET"])
-@ensure_authorized()
 def get_all_users():
     with Session(engine) as session:
         user_repository = UserRepository(session)
@@ -40,20 +40,12 @@ def get_all_users():
 
 @user_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["username"])
 def add_user():
     context = request.get_json()
-
-    username = context.get("username")
-    if not username:
-        result = jsonify({
-            "status": "failure",
-            "reason": "missing username or username is empty"
-        })
-        return result, 400
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
-    streaming_status = context.get("streaming_status")
+    username = auth.get_user(user_id).display_name
+    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
 
     with Session(engine) as session:
         user_repository = UserRepository(session)
@@ -116,11 +108,9 @@ def delete_user():
             })
             return result, 400
 
-@user_blueprint.route("/add_following", methods=["POST"])
+@user_blueprint.route("/add_following", methods=["PATCH"])
 @ensure_authorized()
-@require_json_params(["user_id", "following"])
-@ensure_UUID("user_id")
-@ensure_UUID("following")
+@require_json_params(["following"])
 def add_following():
     context = request.get_json()
 
@@ -136,7 +126,7 @@ def add_following():
                 "user": user.get_JSON(),
             })
             return response
-        except (IdMissingException, SelfReferentialFollowException) as e:
+        except (IdMissingException, SelfReferentialFollowException, DuplicateFollowException) as e:
             result = jsonify({
                 "status": "failure",
                 "reason": str(e)
@@ -163,4 +153,33 @@ def get_current_user():
                 "reason": str(e)
                 })
 
+            return result, 400
+
+@user_blueprint.route("/", methods=["PATCH"])
+@ensure_authorized()
+def patch_user():
+    context = request.get_json()
+    username = context.get("username") if context.get("username") else None
+    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
+    profile_picture = context.get("profile_picture") if context.get("profile_picture") else None
+    id_token = request.headers.get("id_token")
+    user_id = auth.verify_id_token(id_token)["uid"]
+
+    with Session(engine) as session:
+        user_repository = UserRepository(session)
+        try:
+            updated_user = user_repository.update_user(username=username, 
+                                                       user_id=user_id, 
+                                                       streaming_status=streaming_status,
+                                                       profile_picture=profile_picture)
+            response = jsonify({
+                "status": "success",
+                "user": updated_user.get_JSON(),
+            })
+            return response
+        except NonUniqueException as e:
+            result = jsonify({
+                    "status": "failure",
+                    "reason": str(e)
+            })
             return result, 400

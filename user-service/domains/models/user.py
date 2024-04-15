@@ -36,6 +36,9 @@ class User(Base):
     streaming_status: Mapped[str] = mapped_column(String(12),
                                                   nullable=True)
 
+    profile_picture: Mapped[str] = mapped_column(String(256),
+                                                 nullable=True)
+
     def get_JSON(self):
         return User.to_JSON(self)
 
@@ -57,4 +60,5 @@ class User(Base):
             "followers": User.get_followers(user),
             "num_following": len(user.following),
             "num_followers": len(user.followers),
+            "profile_picture": user.profile_picture
         }
