@@ -73,6 +73,17 @@ class EventsRepository:
         return event_id
 
     """
+    Updates Event object using Event object
+
+    :param event: Event of updated event
+    :return: Event of updated event
+    """
+    def _update_event(self, event: Events):
+        self.session.merge(event)
+        self.session.commit()
+        return event
+
+    """
     Updates Event object to be persisted using event field parameters
 
     :param event_id: uuid of event_uuid
@@ -83,6 +94,8 @@ class EventsRepository:
                   url=None, platform=None, tags=None, time_of_event=None,
                   host=None, entry_fee=None):
         event = self.get_event(event_id)
+        if not event:
+            return
 
         event.title = title if title else event.title
         event.thumbnail = thumbnail if thumbnail else event.thumbnail
@@ -94,6 +107,20 @@ class EventsRepository:
         event.host = host if host else event.host
         event.entry_fee = entry_fee if entry_fee else event.entry_fee
 
-        self.session.patch(event)
-        self.session.commit()
-        return event
+        return self._update_event(event)
+
+    @check_id_exists(User, ["event_id"])
+    def add_user(self, event_id, user_id):
+        event = self.get_event(event_id)
+        if not event: return
+
+        event.users = list(set(event.users + [user_id]))
+        return self._update_event(event)
+
+    @check_id_exists(User, ["event_id"])
+    def delete_user(self, event_id, user_id):
+        event = self.get_event(event_id)
+        if not event: return
+
+        event.users = list(set(event.users) - set([user_id]))
+        return self._update_event(event)

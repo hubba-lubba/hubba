@@ -100,6 +100,7 @@ def get_event():
             })
             response.status_code = 404
             return response
+
 @events_blueprint.route("/", methods=["DELETE"])
 @ensure_authorized()
 @require_query_params(["event_id"])
@@ -171,6 +172,62 @@ def patch_event():
                 time_of_event=time_of_event,
                 host=host,
                 entry_fee=entry_fee
+            )
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON()
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
+@events_blueprint.route("/add_user", methods=["PATCH"])
+@ensure_authorized()
+@require_query_params(["event_id"])
+@ensure_UUID("event_id")
+def add_user():
+    event_id = request.args.get("event_id")
+    user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        try:
+            event = events_repository.add_user(
+                event_id=event_id,
+                user_id=user_id
+            )
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON()
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
+@events_blueprint.route("/delete_user", methods=["PATCH"])
+@ensure_authorized()
+@require_query_params(["event_id"])
+@ensure_UUID("event_id")
+def delete_user():
+    event_id = request.args.get("event_id")
+    user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        try:
+            event = events_repository.delete_user(
+                event_id=event_id,
+                user_id=user_id
             )
             response = jsonify({
                 "status": "success",
