@@ -133,7 +133,7 @@ def delete_event():
             response.status_code = 404
             return response
 
-@events_blueprint.route("/join_event", methods=["PUT"])
+@events_blueprint.route("/join_event", methods=["POST"])
 @ensure_authorized()
 @require_json_params(["event_id", "user_id"])
 def join_event():
@@ -217,6 +217,18 @@ def leave_event():
                 "status": "success",
                 "event": event.get_JSON(),
                 "users": list(map(lambda elem: elem.user_id, event.users))
+                )}
+            response.status_code = 200
+            return response
+
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
 
 @events_blueprint.route("/", methods=["PATCH"])
 @ensure_authorized()

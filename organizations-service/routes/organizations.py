@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from domains.repositories.user_repository import UserRepository
 from domains.repositories.organizations_repository import OrganizationsRepository
 from domains.repositories.repo_exceptions import IdMissingException
 from config import VERSION
@@ -87,16 +88,113 @@ def get_organization():
 @ensure_UUID("organization_id")
 def delete_event():
     organization_id = request.args.get("organization_id")
-    
+
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
         try:
             organization_id = organizations_repository.delete_organization(organization_id=organization_id)
             response = jsonify({
                 "status": "success",
-                "organization_id": organization_id 
+                "organization_id": organization_id
             })
             return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
+
+@orgs_blueprint.route("/join_org", methods=["POST"])
+@ensure_authorized()
+@require_json_params(["org_id", "user_id"])
+def join_org():
+    org_id = request.get_json()["org_id"]
+    user_id = request.get_json()["user_id"]
+
+    if not org_id or not user_id:
+        response = jsonify({
+            "status": "error",
+            "message": "valid org_id and user_id is required"
+        })
+        response.status_code = 400
+        return response
+
+    with Session(engine) as session:
+        orgs_repository = OrganizationsRepository(session)
+        user_repository = UserRepository(session)
+
+        try:
+            org = orgs_repository.get_organization(org_id=org_id)
+            user = user_repository.get_user(user_id=user_id)
+
+            if user in org.users:
+                response = jsonify({
+                    "status": "failure",
+                    "message": "user with user_id {0} already exists in org {1}"
+                                .format(user_id, org_id)
+                    })
+                response.status_code = 400
+                return response
+
+            org.users.append(user)
+            response = jsonify({
+                "status": "success",
+                "org": org.get_JSON(),
+                "users": list(map(lambda elem: elem.user_id, org.users))
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
+@orgs_blueprint.route("/leave_org", methods=["DELETE"])
+@ensure_authorized()
+@require_json_params(["org_id", "user_id"])
+def leave_org():
+    org_id = request.get_json()["org_id"]
+    user_id = request.get_json()["user_id"]
+
+    if not org_id or not user_id:
+        response = jsonify({
+            "status": "error",
+            "message": "valid org_id and user_id is required"
+        })
+        response.status_code = 400
+        return response
+
+    with Session(engine) as session:
+        orgs_repository = OrganizationsRepository(session)
+        user_repository = UserRepository(session)
+
+        try:
+            org = orgs_repository.get_organization(org_id=org_id)
+            user = user_repository.get_user(user_id=user_id)
+
+            if user not in org.users:
+                response = jsonify({
+                    "status": "failure",
+                    "message": "user with user_id {0} doesn't exist in org {1}"
+                                .format(user_id, org_id)
+                    })
+                response.status_code = 400
+                return response
+
+            org.users.remove(user)
+            response = jsonify({
+                "status": "success",
+                "org": org.get_JSON(),
+                "users": list(map(lambda elem: elem.user_id, org.users))
+                )}
+            response.status_code = 200
+            return response
+
         except IdMissingException as e:
             response = jsonify({
                 "status": "error",
