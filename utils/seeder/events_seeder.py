@@ -33,7 +33,8 @@ def synchronize_events_api_version():
             curr_version = loads(get("http://events-api.eddisonso.com/version").content).get("version")
             if curr_version == VERSION:
                 ready = True
-                print("Got correct version for events-api", flush=True)
+                print("Got correct version for events-api allowing 30 seconds to stabilize", flush=True)
+                sleep(30)
                 break
         except:
             pass
