@@ -20,7 +20,7 @@ export const joinEvent = async ({ eventId }: { eventId: string }): Promise<void>
     };
 
     const res = await fetch(`${EVENTS_API_URL}/join_event`, {
-        method: 'PUT',
+        method: 'POST',
         headers: headers,
         body: JSON.stringify(body),
     });
@@ -45,7 +45,7 @@ export const leaveEvent = async ({ eventId }: { eventId: string }): Promise<void
     };
 
     const res = await fetch(`${EVENTS_API_URL}/leave_event`, {
-        method: 'PUT',
+        method: 'DELETE',
         headers: headers,
         body: JSON.stringify(body),
     });

@@ -14,7 +14,7 @@ export const joinOrg = async ({ orgId }: { orgId: string }): Promise<void> => {
     };
 
     const res = await fetch(`${ORGS_API_URL}/join_org`, {
-        method: 'PUT',
+        method: 'POST',
         headers: headers,
         body: JSON.stringify(body),
     });
@@ -39,7 +39,7 @@ export const leaveOrg = async ({ orgId }: { orgId: string }): Promise<void> => {
     };
 
     const res = await fetch(`${ORGS_API_URL}/leave_org`, {
-        method: 'PUT',
+        method: 'DELETE',
         headers: headers,
         body: JSON.stringify(body),
     });
