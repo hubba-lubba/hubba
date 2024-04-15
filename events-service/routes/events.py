@@ -100,6 +100,7 @@ def get_event():
             })
             response.status_code = 404
             return response
+
 @events_blueprint.route("/", methods=["DELETE"])
 @ensure_authorized()
 @require_query_params(["event_id"])
@@ -184,3 +185,95 @@ def patch_event():
             })
             response.status_code = 404
             return response
+
+@events_blueprint.route("/add_user", methods=["PATCH"])
+@ensure_authorized()
+@require_json_params(["event_id"])
+@ensure_UUID("event_id")
+def add_user():
+    event_id = request.get_json().get("event_id")
+    user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        try:
+            event = events_repository.add_user(
+                event_id=event_id,
+                user_id=user_id
+            )
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON()
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
+@events_blueprint.route("/delete_user", methods=["PATCH"])
+@ensure_authorized()
+@require_json_params(["event_id"])
+@ensure_UUID("event_id")
+def delete_user():
+    event_id = request.get_json().get("event_id")
+    user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        try:
+            event = events_repository.delete_user(
+                event_id=event_id,
+                user_id=user_id
+            )
+            response = jsonify({
+                "status": "success",
+                "event": event.get_JSON()
+            })
+            return response
+        except IdMissingException as e:
+            response = jsonify({
+                "status": "error",
+                "message": str(e)
+            })
+            response.status_code = 404
+            return response
+
+@events_blueprint.route("/get_random_events", methods=["GET"])
+@ensure_authorized()
+def get_random_events():
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_random_events()
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response
+
+@events_blueprint.route("/get_upcoming_events", methods=["GET"])
+@ensure_authorized()
+def get_upcoming_events():
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_upcoming_events()
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response
+
+@events_blueprint.route("/get_current_events", methods=["GET"])
+@ensure_authorized()
+def get_current_events():
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_current_events()
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response

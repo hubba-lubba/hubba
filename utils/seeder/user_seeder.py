@@ -32,7 +32,8 @@ def synchronize_user_api_version():
             curr_version = loads(get("http://user-api.eddisonso.com/version").content).get("version")
             if curr_version == VERSION:
                 ready = True
-                print("Got correct version for user-api", flush=True)
+                print("Got correct version for user-api allowing 30 seconds to stabilize", flush=True)
+                sleep(30)
                 break
         except:
             pass

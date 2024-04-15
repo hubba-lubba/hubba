@@ -4,6 +4,7 @@ from domains.models.user import User
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
 from uuid import UUID
+from sqlalchemy.sql import func
 
 class EventsRepository:
     session: Session
@@ -56,7 +57,7 @@ class EventsRepository:
     :return: Event of event
     """
     @check_id_exists(Events, ["event_id"])
-    def get_event(self, event_id):
+    def get_event(self, event_id=None):
         event = self.session.get(Events, event_id)
         return event
 
@@ -66,11 +67,22 @@ class EventsRepository:
     :return: uuid of deleted event
     """
     @check_id_exists(Events, ["event_id"])
-    def delete_event(self, event_id):
+    def delete_event(self, event_id=None):
         event = self.get_event(event_id)
         self.session.delete(event)
         self.session.commit()
         return event_id
+
+    """
+    Updates Event object using Event object
+
+    :param event: Event of updated event
+    :return: Event of updated event
+    """
+    def _update_event(self, event: Events):
+        self.session.merge(event)
+        self.session.commit()
+        return event
 
     """
     Updates Event object to be persisted using event field parameters
@@ -78,11 +90,13 @@ class EventsRepository:
     :param event_id: uuid of event_uuid
     :return: Event of updated event
     """
-    @check_id_exists(User, ["event_id"])
+    @check_id_exists(Events, ["event_id"])
     def update_event(self, event_id, title=None, thumbnail=None, description=None,
                   url=None, platform=None, tags=None, time_of_event=None,
                   host=None, entry_fee=None):
         event = self.get_event(event_id)
+        if not event:
+            return
 
         event.title = title if title else event.title
         event.thumbnail = thumbnail if thumbnail else event.thumbnail
@@ -94,6 +108,33 @@ class EventsRepository:
         event.host = host if host else event.host
         event.entry_fee = entry_fee if entry_fee else event.entry_fee
 
-        self.session.patch(event)
-        self.session.commit()
-        return event
+        return self._update_event(event)
+
+    @check_id_exists(Events, ["event_id"])
+    @check_id_exists(User, ["user_id"])
+    def add_user(self, event_id=None, user_id=None):
+        event = self.get_event(event_id=event_id)
+        user = self.session.get(User, user_id)
+        if not event: return
+
+        event.users = list(set(event.users + [user]))
+        return self._update_event(event)
+
+    @check_id_exists(Events, ["event_id"])
+    @check_id_exists(User, ["user_id"])
+    def delete_user(self, event_id=None, user_id=None):
+        event = self.get_event(event_id=event_id)
+        user = self.session.get(User, user_id)
+        if not event: return
+
+        event.users = list(set(event.users) - set([user]))
+        return self._update_event(event)
+
+    def get_random_events(self):
+        return self.session.query(Events).order_by(func.random()).limit(5).all()
+
+    def get_upcoming_events(self):
+        return self.session.query(Events).order_by(Events.time_of_event).limit(5).all()
+
+    def get_current_events(self):
+        return self.session.query(Events).filter(Events.time_of_event > func.now()).order_by(Events.time_of_event).limit(5).all()

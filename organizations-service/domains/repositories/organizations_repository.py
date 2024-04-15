@@ -5,6 +5,7 @@ from domains.models.organizations import Organizations
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
 from uuid import UUID
+from sqlalchemy.sql import func
 
 class OrganizationsRepository:
     session: Session
@@ -76,6 +77,17 @@ class OrganizationsRepository:
         return organization_id
 
     """
+    Updates organization object to be persisted using organization object
+
+    :param organization: Organization object to be updated
+    :return: Organizations of updated organization
+    """
+    def _update_organization(self, organization):
+        self.session.patch(organization)
+        self.session.commit()
+        return organization
+
+    """
     Updates Organizations object to be persisted using organization parameters
 
     :param organization_id: uuid of organization_id
@@ -93,6 +105,27 @@ class OrganizationsRepository:
         organization.image = image if image else organization.image
         organization.description = description if description else organization.description
 
-        self.session.patch(organization)
-        self.session.commit()
-        return organization
+        return self._update_organization(organization)
+
+    @check_id_exists(Organizations, ["organization_id"])
+    @check_id_exists(User, ["user_id"])
+    def add_user(self, organization_id=None, user_id=None):
+        organization = self.get_organization(organization_id)
+        user = self.session.get(User, user_id)
+        if not organization: return
+
+        organization.users = list(set(organization.users + [user]))
+        return self._update_organization(organization)
+
+    @check_id_exists(Organizations, ["organization_id"])
+    @check_id_exists(User, ["user_id"])
+    def delete_user(self, organization_id=None, user_id=None):
+        organization = self.get_organization(organization_id=organization_id)
+        user = self.session.get(User, user_id)
+        if not organization: return
+
+        organization.users = list(set(organization.users) - set([user]))
+        return self._update_organization(organization)
+
+    def get_random_organizations(self):
+        return self.session.query(Organizations).order_by(func.random()).limit(5).all()

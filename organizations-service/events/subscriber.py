@@ -18,7 +18,7 @@ class EventSubscriber():
         self.engine = engine
 
         project_id = PROJECT_ID
-        subscription_id = EVENTS_EVENT_SUBSCRIPTION_ID
+        subscription_id = ORGANIZATIONS_EVENT_SUBSCRIPTION_ID
 
         self.logger.info(f"Using project_id: {project_id}")
         self.logger.info(f"Using subscription_id: {subscription_id}")

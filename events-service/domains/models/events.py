@@ -32,9 +32,9 @@ class Events(Base):
     __tablename__ = "events"
 
     event_id: Mapped[UUID] = mapped_column(UUID(as_uuid=True),
-                                         primary_key=True,
-                                         default=uuid.uuid4)
-                            
+                                           primary_key=True,
+                                           default=uuid.uuid4)
+
     title: Mapped[str] = mapped_column(String(32))
 
     thumbnail: Mapped[str] = mapped_column(String(128), nullable=True)
@@ -56,14 +56,14 @@ class Events(Base):
     #others
 
     date_posted: Mapped[DateTime] = mapped_column(DateTime(timezone=True),
-                                                    server_default=func.now())
+                                                  server_default=func.now())
 
     owner_id: Mapped[str] = mapped_column(ForeignKey("users.user_id"))
 
     owner: Mapped[User] = relationship(back_populates="owns")
 
     moderators: Mapped[list[User]] = relationship(secondary=event_moderator_table,
-                                                    back_populates="moderates")
+                                                  back_populates="moderates")
 
     users: Mapped[list[User]] = relationship(secondary=user_table)
 
@@ -71,18 +71,19 @@ class Events(Base):
         return Events.to_JSON(self)
 
     @staticmethod
-    def to_JSON(user):
+    def to_JSON(event):
         return {
-            "event_id": user.event_id,
-            "owner_id": user.owner_id,
-            "title": user.title,
-            "thumbnail": user.thumbnail,
-            "description": user.description,
-            "url": user.url,
-            "platform": user.platform,
-            "tags": user.tags,
-            "time_of_event": user.time_of_event.utcnow() if user.time_of_event else None,
-            "host": user.host,
-            "entry_fee": user.entry_fee,
-            "date_posted": user.date_posted.utcnow() if user.date_posted else None,
-        }
+                "event_id": event.event_id,
+                "owner_id": event.owner_id,
+                "title": event.title,
+                "thumbnail": event.thumbnail,
+                "description": event.description,
+                "url": event.url,
+                "platform": event.platform,
+                "tags": event.tags,
+                "time_of_event": event.time_of_event.utcnow() if event.time_of_event else None,
+                "host": event.host,
+                "entry_fee": event.entry_fee,
+                "date_posted": event.date_posted.utcnow() if event.date_posted else None,
+                "users": [u.user_id for u in event.users],
+                }
