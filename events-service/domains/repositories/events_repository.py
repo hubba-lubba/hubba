@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from domains.models.events import Events
+from domains.models.organizations import Organizations
 from domains.models.user import User
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
@@ -29,11 +30,10 @@ class EventsRepository:
     :param event_id: uuid of event_uuid
     :return: Event of added event
     """
-    @check_id_exists(User, ["owner"])
+    @check_id_exists(Organizations, ["host_id"])
     def add_event(self, title=None, thumbnail=None, description=None,
                   url=None, platform=None, tags=None, time_of_event=None,
-                  host=None, entry_fee=None, owner=None):
-        owner = self.session.get(User, owner)
+                  host=None, entry_fee=None, host_id=None):
 
         new_event = Events(title=title,
                            thumbnail=thumbnail,
@@ -44,9 +44,9 @@ class EventsRepository:
                            time_of_event=time_of_event,
                            host=host,
                            entry_fee=entry_fee,
-                           owner=owner,
-                           moderators=[owner],
-                           users=[owner])
+                           host_id=host_id,
+                           moderators=[],
+                           users=[])
 
         return self._add_event(new_event)
 

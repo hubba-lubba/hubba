@@ -2,8 +2,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from domains.models.user import User
+    from domains.models.organizations import Organizations
 else:
     User = "User"
+    Organizations = "Organizations"
 from domains.models.base import Base
 from sqlalchemy import ForeignKey, Table, Column, String, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -58,9 +60,9 @@ class Events(Base):
     date_posted: Mapped[DateTime] = mapped_column(DateTime(timezone=True),
                                                   server_default=func.now())
 
-    owner_id: Mapped[str] = mapped_column(ForeignKey("users.user_id"))
+    host_id: Mapped[UUID] = mapped_column(ForeignKey("organizations.organization_id"))
 
-    owner: Mapped[User] = relationship(back_populates="owns")
+    host_org: Mapped[Organizations] = relationship(back_populates="hosts")
 
     moderators: Mapped[list[User]] = relationship(secondary=event_moderator_table,
                                                   back_populates="moderates")
@@ -74,7 +76,7 @@ class Events(Base):
     def to_JSON(event):
         return {
                 "event_id": event.event_id,
-                "owner_id": event.owner_id,
+                "host_id": event.host_id,
                 "title": event.title,
                 "thumbnail": event.thumbnail,
                 "description": event.description,
@@ -82,7 +84,7 @@ class Events(Base):
                 "platform": event.platform,
                 "tags": event.tags,
                 "time_of_event": event.time_of_event.utcnow() if event.time_of_event else None,
-                "host": event.host,
+                "host_org": event.host,
                 "entry_fee": event.entry_fee,
                 "date_posted": event.date_posted.utcnow() if event.date_posted else None,
                 "users": [u.user_id for u in event.users],

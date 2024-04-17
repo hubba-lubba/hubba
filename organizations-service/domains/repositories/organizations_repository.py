@@ -6,12 +6,15 @@ from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
 from uuid import UUID
 from sqlalchemy.sql import func
+from events.publisher_factory import PublisherFactory
 
 class OrganizationsRepository:
     session: Session
 
     def __init__(self, db_session: Session):
         self.session = db_session
+        publisher_factory = PublisherFactory()
+        self.publisher = publisher_factory.get_publisher()
 
     """
     Adds new Organizations object to be persisted using Organizations object
@@ -20,9 +23,11 @@ class OrganizationsRepository:
     :return: Organizations of added organization
     """
     def _add_organization(self, 
-                   new_organization: Organizations):
+                          new_organization: Organizations):
         self.session.add(new_organization)
         self.session.commit()
+        self.publisher.publish(action=True, 
+                               uuid=str(new_organization.organization_id))
         return new_organization
 
     """
@@ -74,6 +79,8 @@ class OrganizationsRepository:
         organization = self.get_organization(organization_id)
         self.session.delete(organization)
         self.session.commit()
+        self.publisher.publish(action=False,
+                               uuid=str(organization.uuid))
         return organization_id
 
     """

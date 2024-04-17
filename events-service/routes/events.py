@@ -28,7 +28,7 @@ def version():
 
 @events_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["title"])
+@require_json_params(["title", "host_id"])
 def add_event():
     context = request.get_json()
 
@@ -41,7 +41,7 @@ def add_event():
     time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
-    owner = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+    host_id = context.get("host_id") if context.get("host_id") else None
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
@@ -56,7 +56,7 @@ def add_event():
                 time_of_event=time_of_event,
                 host=host,
                 entry_fee=entry_fee,
-                owner=owner
+                host_id=host_id
             )
             response = jsonify({
                 "status": "success",
