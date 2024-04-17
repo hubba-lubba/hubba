@@ -8,6 +8,7 @@ from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
 from routes.utils import ensure_UUID, require_json_params, require_query_params, ensure_authorized
 from firebase_admin import auth
+from uuid import UUID
 
 organizations_blueprint = Blueprint('organizations_api', __name__, url_prefix="/")
 CORS(organizations_blueprint)
@@ -28,7 +29,7 @@ def version():
 
 @organizations_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["title", "thumbnail", "description"])
+@require_json_params(["name", "description"])
 def add_organization():
     context = request.get_json()
 
@@ -68,7 +69,7 @@ def get_organization():
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
         try:
-            organization = organizations_repository.get_organization(organization_id=organization_id)
+            organization = organizations_repository.get_organization(organization_id=UUID(organization_id))
             response = jsonify({
                 "status": "success",
                 "organization": organization.get_JSON()
@@ -92,7 +93,7 @@ def delete_organization():
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
         try:
-            organization_id = organizations_repository.delete_organization(organization_id=organization_id)
+            organization_id = organizations_repository.delete_organization(organization_id=UUID(organization_id))
             response = jsonify({
                 "status": "success",
                 "organization_id": organization_id 
@@ -121,7 +122,10 @@ def patch_organization():
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
         try:
-            organization = organizations_repository.patch_organization(organization_id = organization_id,name=name,image=image,description=description)
+            organization = organizations_repository.patch_organization(organization_id=UUID(organization_id),
+                                                                       name=name,
+                                                                       image=image,
+                                                                       description=description)
             response = jsonify({
                 "status": "success",
                 "organization": organization.get_JSON()
@@ -171,7 +175,7 @@ def delete_user():
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
         try:
-            organization = organizations_repository.delete_user(organization_id=organization_id,
+            organization = organizations_repository.delete_user(organization_id=UUID(organization_id),
                                                                 user_id=user_id)
             response = jsonify({
                 "status": "success",
@@ -197,3 +201,17 @@ def get_random_organizations():
             "organizations": [organization.get_JSON() for organization in organizations]
         })
         return response
+
+@organizations_blueprint.route("/get_user_organizations", methods=["GET"])
+def get_user_organizations():
+    user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+
+    with Session(engine) as session:
+        organizations_repository = OrganizationsRepository(session)
+        organizations = organizations_repository.get_user_organizations(user_id=user_id)
+        response = jsonify({
+            "status": "success",
+            "organizations": [organization.get_JSON() for organization in organizations]
+        })
+        return response
+
