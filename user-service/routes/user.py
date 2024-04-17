@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 from domains.repositories.user_repository import UserRepository
 from config import VERSION
 from engine import engine
-from events.publisher import EventPublisher
 from sqlalchemy.orm import Session
 from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
@@ -11,7 +10,6 @@ from firebase_admin import auth
 
 user_blueprint = Blueprint('user_api', __name__, url_prefix="/")
 CORS(user_blueprint)
-publisher = EventPublisher("user")
 
 @user_blueprint.route("/healthcheck")
 def healthcheck():

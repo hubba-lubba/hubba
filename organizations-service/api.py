@@ -1,5 +1,5 @@
 from flask import Flask
-from routes.events import events_blueprint
+from routes.organizations import organizations_blueprint
 from flask_cors import CORS
 import os
 from events.subscriber import EventSubscriber
@@ -20,7 +20,7 @@ def init_firebase():
 def init_app():
     init_firebase()
     app = Flask(__name__)
-    app.register_blueprint(events_blueprint)
+    app.register_blueprint(organizations_blueprint)
     cors = CORS(app)
 
     with app.app_context():

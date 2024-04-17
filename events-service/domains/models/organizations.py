@@ -11,11 +11,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import String
 import uuid
 
-class User(Base):
-    __tablename__ = "users"
+class Organizations(Base):
+    __tablename__ = "organizations"
 
-    user_id: Mapped[str] = mapped_column(String(32),
-                                         primary_key=True)
+    organization_id: Mapped[UUID] = mapped_column(UUID,
+                                                  primary_key=True)
  
-    moderates: Mapped[list[Events]] = relationship(secondary=events.event_moderator_table,
-                                                   back_populates="moderators")
+    hosts: Mapped[list[Events]] = relationship(back_populates="host_org")

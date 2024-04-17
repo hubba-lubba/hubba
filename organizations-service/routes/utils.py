@@ -12,7 +12,7 @@ def require_json_params(params):
             for i in params:
                 if context.get(i) is None:
                     return jsonify({
-                        "status": "failure", "reason": f"missing {i}"
+                        "status": "failure", "reason": f"missing {i} "
                     })
             return func(*args, **kwargs)
         return returned_func
@@ -26,7 +26,7 @@ def require_query_params(query_args):
             for i in query_args:
                 if request.args.get(i) is None:
                     return jsonify({
-                        "status": "failure", "reason": f"missing argument {i}"
+                        "status": "failure", "reason": f"missing query argument {i}"
                     })
             return func(*args, **kwargs)
         return returned_func

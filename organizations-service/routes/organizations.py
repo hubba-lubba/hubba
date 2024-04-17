@@ -28,7 +28,7 @@ def version():
 
 @organizations_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["title", "thumbnail", "description", "owner"])
+@require_json_params(["title", "thumbnail", "description"])
 def add_organization():
     context = request.get_json()
 

@@ -54,7 +54,8 @@ class Organizations(Base):
                                                   primary_key=True,
                                                   default=uuid.uuid4)
                             
-    name: Mapped[str] = mapped_column(String(32))
+    name: Mapped[str] = mapped_column(String(32),
+                                      nullable=True)
 
     image: Mapped[str] = mapped_column(String(128), 
                                        nullable=True)
@@ -76,7 +77,7 @@ class Organizations(Base):
                                                 back_populates="has_event")
 
     def get_JSON(self):
-        return Events.to_JSON(self)
+        return Organizations.to_JSON(self)
 
     @staticmethod
     def to_JSON(organization):
@@ -85,8 +86,8 @@ class Organizations(Base):
             "name": organization.name,
             "image": organization.image,
             "description": organization.description,
-            "owner": organization.owner.get_JSON(),
-            "moderators": [moderator.get_JSON() for moderator in organization.moderators],
-            "users": [user.get_JSON() for user in organization.users],
+            "owner": organization.owner.user_id,
+            "moderators": [moderator.user_id for moderator in organization.moderators],
+            "users": [user.user_id for user in organization.users],
             "events": [event.get_JSON() for event in organization.events]
         }
