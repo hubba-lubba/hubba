@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from domains.models.events import Events
 from domains.models.user import User
-from domains.models.organizations import Organizations
+from domains.models.organizations import Organizations, user_table
 from domains.repositories.repo_exceptions import *
 from domains.repositories.utils import * 
 from uuid import UUID
@@ -76,7 +76,7 @@ class OrganizationsRepository:
     """
     @check_id_exists(Organizations, ["organization_id"])
     def delete_organization(self, organization_id):
-        organization = self.get_organization(organization_id)
+        organization = self.get_organization(organization_id=organization_id)
         self.session.delete(organization)
         self.session.commit()
         self.publisher.publish(action=False,
@@ -90,7 +90,7 @@ class OrganizationsRepository:
     :return: Organizations of updated organization
     """
     def _update_organization(self, organization):
-        self.session.patch(organization)
+        self.session.merge(organization)
         self.session.commit()
         return organization
 
@@ -106,7 +106,7 @@ class OrganizationsRepository:
                          name=None,
                          image=None,
                          description=None):
-        organization = self.get_organization(organization_id)
+        organization = self.get_organization(organization_id=organization_id)
 
         organization.name = name if name else organization.name
         organization.image = image if image else organization.image
@@ -117,7 +117,7 @@ class OrganizationsRepository:
     @check_id_exists(Organizations, ["organization_id"])
     @check_id_exists(User, ["user_id"])
     def add_user(self, organization_id=None, user_id=None):
-        organization = self.get_organization(organization_id)
+        organization = self.get_organization(organization_id=organization_id)
         user = self.session.get(User, user_id)
         if not organization: return
 
@@ -136,3 +136,12 @@ class OrganizationsRepository:
 
     def get_random_organizations(self):
         return self.session.query(Organizations).order_by(func.random()).limit(5).all()
+
+    @check_id_exists(User, ["user_id"])
+    def get_user_organizations(self, user_id=None):
+        user = self.session.get(User, user_id)
+        if not user: return
+
+        orgs = self.session.query(Organizations, user_table).filter(user_table.c.organization == Organizations.organization_id).filter(user_table.c.user == user_id).all()
+
+        return [org.Organizations for org in orgs]
