@@ -116,7 +116,7 @@ jobs:
           build-args: |
             DB_USER=${{ secrets.DB_USER }}
             DB_PORT=${{ secrets.DB_PORT }}
-            DB_NAME="user-db"
+            DB_NAME=user-db
             DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             PROJECT_ID=${{ secrets.PROJECT_ID }}
@@ -166,7 +166,7 @@ jobs:
           build-args: |
             DB_USER=${{ secrets.DB_USER }}
             DB_PORT=${{ secrets.DB_PORT }}
-            DB_NAME="events-db"
+            DB_NAME=events-db
             DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             PROJECT_ID=${{ secrets.PROJECT_ID }}
@@ -217,7 +217,7 @@ jobs:
           build-args: |
             DB_USER=${{ secrets.DB_USER }}
             DB_PORT=${{ secrets.DB_PORT }}
-            DB_NAME="organizations-db"
+            DB_NAME=organizations-db
             DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             PROJECT_ID=${{ secrets.PROJECT_ID }}
