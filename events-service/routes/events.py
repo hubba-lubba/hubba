@@ -8,6 +8,7 @@ from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
 from routes.utils import ensure_UUID, require_json_params, require_query_params, ensure_authorized
 from firebase_admin import auth
+from uuid import UUID
 
 events_blueprint = Blueprint('events_api', __name__, url_prefix="/")
 CORS(events_blueprint)
@@ -28,17 +29,17 @@ def version():
 
 @events_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["title", "host_id"])
+@require_json_params(["name", "host_id"])
 def add_event():
     context = request.get_json()
 
-    title = context.get("title") if context.get("title") else None
+    name = context.get("name") if context.get("name") else None
     thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
     description = context.get("description") if context.get("description") else None
     url = context.get("url") if context.get("url") else None
     platform = context.get("platform") if context.get("platform") else None
     tags = list(map(str, context.get("tags"))) if context.get("tags") else []
-    time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
+    time_of = context.get("time_of") if context.get("time_of") else None
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
     host_id = context.get("host_id") if context.get("host_id") else None
@@ -47,13 +48,13 @@ def add_event():
         events_repository = EventsRepository(session)
         try:
             event = events_repository.add_event(
-                title=title,
+                name=name,
                 thumbnail=thumbnail,
                 description=description,
                 url=url,
                 platform=platform,
                 tags=tags,
-                time_of_event=time_of_event,
+                time_of=time_of,
                 host=host,
                 entry_fee=entry_fee,
                 host_id=host_id
@@ -87,7 +88,7 @@ def get_event():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
         try:
-            event = events_repository.get_event(event_id=event_id)
+            event = events_repository.get_event(event_id=UUID(event_id))
             response = jsonify({
                 "status": "success",
                 "event": event.get_JSON()
@@ -118,7 +119,7 @@ def delete_event():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
         try:
-            event_id = events_repository.delete_event(event_id=event_id)
+            event_id = events_repository.delete_event(event_id=UUID(event_id))
             response = jsonify({
                 "status": "success",
                 "event_id": event_id
@@ -148,13 +149,13 @@ def patch_event():
     
     context = request.get_json()
 
-    title = context.get("title") if context.get("title") else None
+    name= context.get("name") if context.get("name") else None
     thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
     description = context.get("description") if context.get("description") else None
     url = context.get("url") if context.get("url") else None
     platform = context.get("platform") if context.get("platform") else None
     tags = list(map(str, context.get("tags"))) if context.get("tags") else []
-    time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
+    time_of = context.get("time_of") if context.get("time_of") else None
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
 
@@ -162,14 +163,14 @@ def patch_event():
         events_repository = EventsRepository(session)
         try:
             event = events_repository.update_event(
-                event_id = event_id,
-                title=title,
+                event_id=UUID(event_id),
+                name=name,
                 thumbnail=thumbnail,
                 description=description,
                 url=url,
                 platform=platform,
                 tags=tags,
-                time_of_event=time_of_event,
+                time_of=time_of,
                 host=host,
                 entry_fee=entry_fee
             )
@@ -255,7 +256,6 @@ def get_random_events():
         return response
 
 @events_blueprint.route("/get_upcoming_events", methods=["GET"])
-@ensure_authorized()
 def get_upcoming_events():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
@@ -267,11 +267,32 @@ def get_upcoming_events():
         return response
 
 @events_blueprint.route("/get_current_events", methods=["GET"])
-@ensure_authorized()
 def get_current_events():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
         events = events_repository.get_current_events()
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response
+
+@events_blueprint.route("/get_user_events", methods=["GET"])
+@ensure_authorized()
+@require_query_params(["user_id"])
+def get_user_events():
+    user_id = request.args.get("user_id")
+    if not user_id:
+        response = jsonify({
+            "status": "error",
+            "message": "user_id is required"
+        })
+        response.status_code = 400
+        return response
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_user_events(user_id=user_id)
         response = jsonify({
             "status": "success",
             "events": [event.get_JSON() for event in events]

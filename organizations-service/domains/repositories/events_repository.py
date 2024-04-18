@@ -29,12 +29,12 @@ class EventsRepository:
     :return: Event of added event
     """
     @check_id_exists(User, ["owner"])
-    def add_event(self, title=None, thumbnail=None, description=None,
+    def add_event(self, name=None, thumbnail=None, description=None,
                   url=None, platform=None, tags=None, time_of_event=None,
                   host=None, entry_fee=None, owner=None):
         owner = self.session.get(User, owner)
 
-        new_event = Events(title=title,
+        new_event = Events(name=name,
                            thumbnail=thumbnail,
                            description=description,
                            url=url,

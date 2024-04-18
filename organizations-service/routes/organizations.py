@@ -191,7 +191,6 @@ def delete_user():
             return response
 
 @organizations_blueprint.route("/get_random_organizations", methods=["GET"])
-@ensure_authorized()
 def get_random_organizations():
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
@@ -203,6 +202,7 @@ def get_random_organizations():
         return response
 
 @organizations_blueprint.route("/get_user_organizations", methods=["GET"])
+@ensure_authorized()
 def get_user_organizations():
     user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
 

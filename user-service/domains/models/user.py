@@ -1,7 +1,7 @@
 from domains.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, Table, Column
-from sqlalchemy import String
+from sqlalchemy import ForeignKey, Table, Column, String
+from sqlalchemy.dialects.postgresql import ARRAY
 import uuid
 
 following_table = Table(
@@ -39,6 +39,12 @@ class User(Base):
     profile_picture: Mapped[str] = mapped_column(String(256),
                                                  nullable=True)
 
+    channel: Mapped[str] = mapped_column(String(128),
+                                         nullable=True)
+
+    video_urls: Mapped[ARRAY] = mapped_column(ARRAY(String(128)),
+                                              nullable=True)
+
     def get_JSON(self):
         return User.to_JSON(self)
 
@@ -60,5 +66,7 @@ class User(Base):
             "followers": User.get_followers(user),
             "num_following": len(user.following),
             "num_followers": len(user.followers),
-            "profile_picture": user.profile_picture
+            "profile_picture": user.profile_picture,
+            "channel": user.channel,
+            "video_urls": user.video_urls
         }
