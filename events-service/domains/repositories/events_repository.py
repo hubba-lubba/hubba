@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from domains.models.events import Events
+from domains.models.events import Events, attendees_table
 from domains.models.organizations import Organizations
 from domains.models.user import User
 from domains.repositories.repo_exceptions import *
@@ -150,3 +150,12 @@ class EventsRepository:
 
     def get_current_events(self):
         return self.session.query(Events).filter(Events.time_of> func.now()).order_by(Events.time_of).limit(5).all()
+
+    @check_id_exists(User, ["user_id"])
+    def get_user_events(self, user_id=None):
+        user = self.session.get(User, user_id)
+        if not user: return
+
+        events = self.session.query(Events, attendees_table).filter(attendees_table.c.event == Events.event_id).filter(attendees_table.c.attendee == user_id).all()
+
+        return [events.Events for event in events]
