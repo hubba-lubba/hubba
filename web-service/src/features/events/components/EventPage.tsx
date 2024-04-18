@@ -114,6 +114,7 @@ export const EventPage = () => {
                                         ? 'LEAVE'
                                         : 'ENTER'}
                                 </button>
+                                {/* TODO: API INTEGRATION - add this as a route */}
                                 {userData.owned_orgs.includes(
                                     event.host_org,
                                 ) && (

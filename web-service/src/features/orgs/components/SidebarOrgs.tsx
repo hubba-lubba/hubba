@@ -15,6 +15,7 @@ export const SidebarOrgs = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            // TODO: API INTEGRATION replace - query org service for orgs the user is in
             const orgsData = await getMockOrgs(userData.joined_orgs);
             setOrgs(orgsData);
         };
