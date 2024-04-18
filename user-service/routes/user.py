@@ -44,12 +44,17 @@ def add_user():
     user_id = auth.verify_id_token(id_token)["uid"]
     username = auth.get_user(user_id).display_name
     streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
+    channel = context.get("channel") if context.get("channel") else None
+    video_urls = context.get("video_urls") if context.get("video_urls") else None
 
     with Session(engine) as session:
         user_repository = UserRepository(session)
         try:
-            new_user = user_repository.add_user(username=username, user_id=user_id, 
-                                                streaming_status=streaming_status)
+            new_user = user_repository.add_user(username=username, 
+                                                user_id=user_id, 
+                                                streaming_status=streaming_status,
+                                                channel=channel,
+                                                video_urls=video_urls)
             response = jsonify({
                 "status": "success",
                 "user": new_user.get_JSON(),
@@ -138,6 +143,8 @@ def patch_user():
     username = context.get("username") if context.get("username") else None
     streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
     profile_picture = context.get("profile_picture") if context.get("profile_picture") else None
+    channel = context.get("channel") if context.get("channel") else None
+    video_urls = context.get("video_urls") if context.get("video_urls") else None
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
 
@@ -147,7 +154,9 @@ def patch_user():
             updated_user = user_repository.update_user(username=username, 
                                                        user_id=user_id, 
                                                        streaming_status=streaming_status,
-                                                       profile_picture=profile_picture)
+                                                       profile_picture=profile_picture,
+                                                       channel=channel,
+                                                       video_urls=video_urls)
             response = jsonify({
                 "status": "success",
                 "user": updated_user.get_JSON(),
