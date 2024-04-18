@@ -8,6 +8,7 @@ from domains.repositories.repo_exceptions import *
 from flask_cors import CORS
 from routes.utils import ensure_UUID, require_json_params, require_query_params, ensure_authorized
 from firebase_admin import auth
+from uuid import UUID
 
 events_blueprint = Blueprint('events_api', __name__, url_prefix="/")
 CORS(events_blueprint)
@@ -87,7 +88,7 @@ def get_event():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
         try:
-            event = events_repository.get_event(event_id=event_id)
+            event = events_repository.get_event(event_id=UUID(event_id))
             response = jsonify({
                 "status": "success",
                 "event": event.get_JSON()
@@ -118,7 +119,7 @@ def delete_event():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
         try:
-            event_id = events_repository.delete_event(event_id=event_id)
+            event_id = events_repository.delete_event(event_id=UUID(event_id))
             response = jsonify({
                 "status": "success",
                 "event_id": event_id
@@ -162,7 +163,7 @@ def patch_event():
         events_repository = EventsRepository(session)
         try:
             event = events_repository.update_event(
-                event_id = event_id,
+                event_id=UUID(event_id),
                 name=name,
                 thumbnail=thumbnail,
                 description=description,

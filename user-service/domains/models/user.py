@@ -42,7 +42,8 @@ class User(Base):
     channel: Mapped[str] = mapped_column(String(128),
                                          nullable=True)
 
-    tags: Mapped[ARRAY] = mapped_column(ARRAY(String(128)))
+    video_urls: Mapped[ARRAY] = mapped_column(ARRAY(String(128)),
+                                              nullable=True)
 
     def get_JSON(self):
         return User.to_JSON(self)
@@ -67,5 +68,5 @@ class User(Base):
             "num_followers": len(user.followers),
             "profile_picture": user.profile_picture,
             "channel": user.channel,
-            "tags": user.tags
+            "video_urls": user.video_urls
         }

@@ -69,7 +69,7 @@ class EventsRepository:
     """
     @check_id_exists(Events, ["event_id"])
     def delete_event(self, event_id=None):
-        event = self.get_event(event_id)
+        event = self.get_event(event_id=event_id)
         self.session.delete(event)
         self.session.commit()
         return event_id
@@ -104,7 +104,7 @@ class EventsRepository:
                      entry_fee=None,
                      attendees=None,
                      status=None):
-        event = self.get_event(event_id)
+        event = self.get_event(event_id=event_id)
         if not event:
             return
 

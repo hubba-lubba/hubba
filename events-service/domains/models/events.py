@@ -20,12 +20,6 @@ attendees_table = Table("attendees_table",
                    Column("event", UUID, ForeignKey("events.event_id"), primary_key=True),
                    Column("attendee", String(32), ForeignKey("users.user_id"), primary_key=True))
 
-tag_table = Table("tag_table",
-                  Base.metadata,
-                  Column("event", UUID, ForeignKey("events.event_id"), primary_key=True),
-                  Column("tag", String(32), primary_key=True))
-
-
 class Events(Base):
     __tablename__ = "events"
 
@@ -62,8 +56,7 @@ class Events(Base):
 
     attendees: Mapped[list[User]] = relationship(secondary=attendees_table)
 
-    status: Mapped[int] = mapped_column(int, 
-                                        nullable=True)
+    status: Mapped[int] = mapped_column(nullable=True)
 
     def get_JSON(self):
         return Events.to_JSON(self)
@@ -73,16 +66,15 @@ class Events(Base):
         return {
                 "event_id": event.event_id,
                 "host_id": event.host_id,
-                "name": event.title,
+                "name": event.name,
                 "thumbnail": event.thumbnail,
                 "description": event.description,
                 "url": event.url,
                 "platform": event.platform,
                 "tags": event.tags,
-                "time_of": event.time_of.utcnow() if event.time_of else None,
-                "host_org": event.host,
+                "time_of": event.time_of if event.time_of else None,
                 "entry_fee": event.entry_fee,
-                "date_posted": event.date_posted.utcnow() if event.date_posted else None,
+                "date_posted": event.date_posted if event.date_posted else None,
                 "attendees": [u.user_id for u in event.attendees],
                 "status": event.status
                 }
