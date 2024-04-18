@@ -17,5 +17,3 @@ class User(Base):
     user_id: Mapped[str] = mapped_column(String(32),
                                          primary_key=True)
  
-    moderates: Mapped[list[Events]] = relationship(secondary=events.event_moderator_table,
-                                                   back_populates="moderators")

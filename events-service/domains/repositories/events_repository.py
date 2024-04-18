@@ -31,11 +31,11 @@ class EventsRepository:
     :return: Event of added event
     """
     @check_id_exists(Organizations, ["host_id"])
-    def add_event(self, title=None, thumbnail=None, description=None,
+    def add_event(self, name=None, thumbnail=None, description=None,
                   url=None, platform=None, tags=None, time_of_event=None,
                   host=None, entry_fee=None, host_id=None):
 
-        new_event = Events(title=title,
+        new_event = Events(name=name,
                            thumbnail=thumbnail,
                            description=description,
                            url=url,
@@ -45,8 +45,7 @@ class EventsRepository:
                            host=host,
                            entry_fee=entry_fee,
                            host_id=host_id,
-                           moderators=[],
-                           users=[])
+                           attendees=[])
 
         return self._add_event(new_event)
 
@@ -91,14 +90,14 @@ class EventsRepository:
     :return: Event of updated event
     """
     @check_id_exists(Events, ["event_id"])
-    def update_event(self, event_id, title=None, thumbnail=None, description=None,
-                  url=None, platform=None, tags=None, time_of_event=None,
-                  host=None, entry_fee=None):
+    def update_event(self, event_id, name=None, thumbnail=None, description=None,
+                     url=None, platform=None, tags=None, time_of_event=None,
+                     host=None, entry_fee=None):
         event = self.get_event(event_id)
         if not event:
             return
 
-        event.title = title if title else event.title
+        event.name = name if name else event.name
         event.thumbnail = thumbnail if thumbnail else event.thumbnail
         event.description = description if description else event.description
         event.url = url if url else event.url
@@ -117,7 +116,7 @@ class EventsRepository:
         user = self.session.get(User, user_id)
         if not event: return
 
-        event.users = list(set(event.users + [user]))
+        event.attendees= list(set(event.attendees + [user]))
         return self._update_event(event)
 
     @check_id_exists(Events, ["event_id"])
@@ -127,7 +126,7 @@ class EventsRepository:
         user = self.session.get(User, user_id)
         if not event: return
 
-        event.users = list(set(event.users) - set([user]))
+        event.attendees = list(set(event.attendees) - set([user]))
         return self._update_event(event)
 
     def get_random_events(self):

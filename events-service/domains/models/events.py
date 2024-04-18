@@ -14,15 +14,11 @@ from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import ARRAY
 import uuid
 
-event_moderator_table = Table("event_moderator_table",
-                              Base.metadata,
-                              Column("event", UUID, ForeignKey("events.event_id"), primary_key=True),
-                              Column("moderator", String(32), ForeignKey("users.user_id"), primary_key=True))
 
-user_table = Table("user_table",
+attendees_table = Table("attendees_table",
                    Base.metadata,
                    Column("event", UUID, ForeignKey("events.event_id"), primary_key=True),
-                   Column("user", String(32), ForeignKey("users.user_id"), primary_key=True))
+                   Column("attendee", String(32), ForeignKey("users.user_id"), primary_key=True))
 
 tag_table = Table("tag_table",
                   Base.metadata,
@@ -49,7 +45,7 @@ class Events(Base):
 
     tags: Mapped[ARRAY] = mapped_column(ARRAY(String(32)))
 
-    time_of_event: Mapped[DateTime] = mapped_column(DateTime(timezone=True), nullable=True)
+    time_of: Mapped[DateTime] = mapped_column(DateTime(timezone=True), nullable=True)
 
     host: Mapped[str] = mapped_column(String(32), nullable=True)
 
@@ -64,10 +60,7 @@ class Events(Base):
 
     host_org: Mapped[Organizations] = relationship(back_populates="hosts")
 
-    moderators: Mapped[list[User]] = relationship(secondary=event_moderator_table,
-                                                  back_populates="moderates")
-
-    users: Mapped[list[User]] = relationship(secondary=user_table)
+    attendees: Mapped[list[User]] = relationship(secondary=attendees_table)
 
     def get_JSON(self):
         return Events.to_JSON(self)
@@ -83,9 +76,9 @@ class Events(Base):
                 "url": event.url,
                 "platform": event.platform,
                 "tags": event.tags,
-                "time_of_event": event.time_of_event.utcnow() if event.time_of_event else None,
+                "time_of": event.time_of.utcnow() if event.time_of else None,
                 "host_org": event.host,
                 "entry_fee": event.entry_fee,
                 "date_posted": event.date_posted.utcnow() if event.date_posted else None,
-                "users": [u.user_id for u in event.users],
+                "attendees": [u.user_id for u in event.attendees],
                 }
