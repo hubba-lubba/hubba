@@ -2,7 +2,8 @@ import { User } from '../types';
 import { getidtoken } from '@/features/auth/api';
 import { USER_API_URL } from '@/config';
 
-export const createUser = async (): Promise<void> => {
+// TODO: remove username as a field
+export const createUser = async (): Promise<User> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
@@ -17,6 +18,7 @@ export const createUser = async (): Promise<void> => {
     const data = await res.json();
     // verify res
     console.log(`create ${JSON.stringify(data)}`);
+    return data as User;
 };
 
 export const getCurrentUser = async (): Promise<User> => {

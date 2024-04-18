@@ -2,12 +2,23 @@
 
 import React, { createContext, useEffect, useState } from 'react';
 import { User } from '@/features/users/types';
+import { Event } from '@/features/events/types';
+import { Org } from '@/features/orgs/types';
 import { changepassword } from '@/features/auth/api';
+import { createUser } from '@/features/users/api';
 
 interface UserContextType {
     userData: User;
-    createUser: (id: string, username: string, email: string) => Promise<User>;
     setUserData: (user: User) => void;
+    userEvents: Event[];
+    setUserEvents: (events: Event[]) => void;
+    userOrgs: Org[];
+    setUserOrgs: (orgs: Org[]) => void;
+    
+    createUserData: () => Promise<User>;
+    
+    
+    
     setStreamStatus: (status: 0 | 1) => Promise<void>;
     addEventToUser: (event_id: string) => Promise<void>;
     removeEventFromUser: (event_id: string) => Promise<void>;
@@ -29,64 +40,20 @@ export const UserContext = createContext<UserContextType>(null!);
 export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [userData, setUserData] = useState<User>(null!);
 
-    const createUser = async (id: string, username: string, email: string) => {
-        const user = new User(
-            id,
-            username,
-            email,
-            undefined,
-            '',
-            [],
-            [],
-            0,
-            '',
-        );
-        return user;
-    };
-
     useEffect(() => {
         console.log('user data', userData);
     }, [userData]);
 
+    const createUserData = async () => {
+        const userData = await createUser();
+        setUserData(userData);
+        return userData;
+    };
+
+    // call api function, then update user context
+
     const setStreamStatus = async (status: 0 | 1) => {
         setUserData({ ...userData, streaming_status: status });
-    };
-
-    const addEventToUser = async (event_id: string) => {
-        console.log('adding event to user', event_id);
-        setUserData({
-            ...userData,
-            joined_events: [...userData.joined_events, event_id],
-        });
-    };
-
-    const removeEventFromUser = async (event_id: string) => {
-        console.log('removing event from user', event_id);
-        setUserData({
-            ...userData,
-            joined_events: userData.joined_events.filter(
-                (id) => id !== event_id,
-            ),
-        });
-    };
-
-    const addOrgToUser = async (org_id: string, owner: boolean = false) => {
-        console.log('adding org to user', org_id);
-        setUserData({
-            ...userData,
-            joined_orgs: [...userData.joined_orgs, org_id],
-            owned_orgs: owner
-                ? [...userData.owned_orgs, org_id]
-                : userData.owned_orgs,
-        });
-    };
-
-    const removeOrgFromUser = async (org_id: string) => {
-        console.log('removing org from user', org_id);
-        setUserData({
-            ...userData,
-            joined_orgs: userData.joined_orgs.filter((id) => id !== org_id),
-        });
     };
 
     const followUser = async (user_id: string) => {
@@ -141,8 +108,8 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         <UserContext.Provider
             value={{
                 userData,
-                createUser,
                 setUserData,
+                createUserData,
                 setStreamStatus,
                 addEventToUser,
                 removeEventFromUser,

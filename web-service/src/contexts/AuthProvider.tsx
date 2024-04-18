@@ -2,15 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from './UserProvider';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
-import { UsersContext } from './UsersProvider';
+import { createUser, getCurrentUser } from '@/features/users/api';
 
 export const AuthContext = React.createContext<firebase.User>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [user, setUser] = useState<firebase.User>(null!);
     const [loadingUser, setLoadingUser] = useState<boolean>(true);
-    const { setUserData, createUser } = useContext(UserContext);
-    const { usersData, setUsersData } = useContext(UsersContext);
+    const { setUserData } = useContext(UserContext);
 
     const auth = getAuth();
     useEffect(() => {
@@ -28,14 +27,8 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         const loadUserData = async () => {
             if (user) {
                 try {
-                    // TODO: replace with getUser
-                    const userData = await createUser(
-                        user.uid,
-                        user.displayName ?? 'User',
-                        user.email ?? '',
-                    );
+                    const userData = await getCurrentUser();
                     setUserData(userData);
-                    setUsersData([...usersData, userData]);
                 } catch (error) {
                     console.log(error);
                     throw error;
@@ -54,11 +47,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
                     error.status === 400
                 ) {
                     try {
-                        await createUser(
-                            user.uid,
-                            user.displayName ?? 'User',
-                            user.email ?? '',
-                        );
+                        await createUser();
                         await loadUserData();
                         return;
                     } catch (error) {
