@@ -14,6 +14,7 @@ export const SidebarEvents = () => {
     const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async () => {
+            // TODO: API INTEGRATION - query event service for events the user is in
             const events = await getMockEvents(userData.joined_events);
             setEvents(events);
         };
