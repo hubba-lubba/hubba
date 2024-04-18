@@ -32,8 +32,9 @@ class EventsRepository:
     """
     @check_id_exists(Organizations, ["host_id"])
     def add_event(self, name=None, thumbnail=None, description=None,
-                  url=None, platform=None, tags=None, time_of_event=None,
-                  host=None, entry_fee=None, host_id=None):
+                  url=None, platform=None, tags=None, time_of=None,
+                  host=None, entry_fee=None, host_id=None, attendees=[],
+                  status=0):
 
         new_event = Events(name=name,
                            thumbnail=thumbnail,
@@ -41,11 +42,12 @@ class EventsRepository:
                            url=url,
                            platform=platform,
                            tags=tags,
-                           time_of_event=time_of_event,
+                           time_of=time_of,
                            host=host,
                            entry_fee=entry_fee,
                            host_id=host_id,
-                           attendees=[])
+                           attendees=attendees,
+                           status=status)
 
         return self._add_event(new_event)
 
@@ -90,9 +92,18 @@ class EventsRepository:
     :return: Event of updated event
     """
     @check_id_exists(Events, ["event_id"])
-    def update_event(self, event_id, name=None, thumbnail=None, description=None,
-                     url=None, platform=None, tags=None, time_of_event=None,
-                     host=None, entry_fee=None):
+    def update_event(self, event_id, 
+                     name=None, 
+                     thumbnail=None, 
+                     description=None,
+                     url=None, 
+                     platform=None, 
+                     tags=None, 
+                     time_of=None,
+                     host=None, 
+                     entry_fee=None,
+                     attendees=None,
+                     status=None):
         event = self.get_event(event_id)
         if not event:
             return
@@ -103,9 +114,11 @@ class EventsRepository:
         event.url = url if url else event.url
         event.platform = platform if platform else event.platform
         event.tags = tags if tags else event.tags
-        event.time_of_event = time_of_event if time_of_event else event.time_of_event
+        event.time_of = time_of if time_of else event.time_of
         event.host = host if host else event.host
         event.entry_fee = entry_fee if entry_fee else event.entry_fee
+        event.attendees = attendees if attendees else event.attendees
+        event.status = status if status else event.status
 
         return self._update_event(event)
 
@@ -133,7 +146,7 @@ class EventsRepository:
         return self.session.query(Events).order_by(func.random()).limit(5).all()
 
     def get_upcoming_events(self):
-        return self.session.query(Events).order_by(Events.time_of_event).limit(5).all()
+        return self.session.query(Events).order_by(Events.time_of).limit(5).all()
 
     def get_current_events(self):
-        return self.session.query(Events).filter(Events.time_of_event > func.now()).order_by(Events.time_of_event).limit(5).all()
+        return self.session.query(Events).filter(Events.time_of> func.now()).order_by(Events.time_of).limit(5).all()

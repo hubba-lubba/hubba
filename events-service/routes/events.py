@@ -28,17 +28,17 @@ def version():
 
 @events_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["title", "host_id"])
+@require_json_params(["name", "host_id"])
 def add_event():
     context = request.get_json()
 
-    title = context.get("title") if context.get("title") else None
+    name = context.get("name") if context.get("name") else None
     thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
     description = context.get("description") if context.get("description") else None
     url = context.get("url") if context.get("url") else None
     platform = context.get("platform") if context.get("platform") else None
     tags = list(map(str, context.get("tags"))) if context.get("tags") else []
-    time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
+    time_of = context.get("time_of") if context.get("time_of") else None
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
     host_id = context.get("host_id") if context.get("host_id") else None
@@ -47,13 +47,13 @@ def add_event():
         events_repository = EventsRepository(session)
         try:
             event = events_repository.add_event(
-                title=title,
+                name=name,
                 thumbnail=thumbnail,
                 description=description,
                 url=url,
                 platform=platform,
                 tags=tags,
-                time_of_event=time_of_event,
+                time_of=time_of,
                 host=host,
                 entry_fee=entry_fee,
                 host_id=host_id
@@ -148,13 +148,13 @@ def patch_event():
     
     context = request.get_json()
 
-    title = context.get("title") if context.get("title") else None
+    name= context.get("name") if context.get("name") else None
     thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
     description = context.get("description") if context.get("description") else None
     url = context.get("url") if context.get("url") else None
     platform = context.get("platform") if context.get("platform") else None
     tags = list(map(str, context.get("tags"))) if context.get("tags") else []
-    time_of_event = context.get("time_of_event") if context.get("time_of_event") else None
+    time_of = context.get("time_of") if context.get("time_of") else None
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
 
@@ -163,13 +163,13 @@ def patch_event():
         try:
             event = events_repository.update_event(
                 event_id = event_id,
-                title=title,
+                name=name,
                 thumbnail=thumbnail,
                 description=description,
                 url=url,
                 platform=platform,
                 tags=tags,
-                time_of_event=time_of_event,
+                time_of=time_of,
                 host=host,
                 entry_fee=entry_fee
             )

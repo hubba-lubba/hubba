@@ -33,7 +33,7 @@ class Events(Base):
                                            primary_key=True,
                                            default=uuid.uuid4)
 
-    title: Mapped[str] = mapped_column(String(32))
+    name: Mapped[str] = mapped_column(String(32))
 
     thumbnail: Mapped[str] = mapped_column(String(128), nullable=True)
 
@@ -62,6 +62,9 @@ class Events(Base):
 
     attendees: Mapped[list[User]] = relationship(secondary=attendees_table)
 
+    status: Mapped[int] = mapped_column(int, 
+                                        nullable=True)
+
     def get_JSON(self):
         return Events.to_JSON(self)
 
@@ -70,7 +73,7 @@ class Events(Base):
         return {
                 "event_id": event.event_id,
                 "host_id": event.host_id,
-                "title": event.title,
+                "name": event.title,
                 "thumbnail": event.thumbnail,
                 "description": event.description,
                 "url": event.url,
@@ -81,4 +84,5 @@ class Events(Base):
                 "entry_fee": event.entry_fee,
                 "date_posted": event.date_posted.utcnow() if event.date_posted else None,
                 "attendees": [u.user_id for u in event.attendees],
+                "status": event.status
                 }
