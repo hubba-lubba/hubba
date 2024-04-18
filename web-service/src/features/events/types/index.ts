@@ -5,7 +5,7 @@ export class Event {
         public name: string,
         public thumbnail: string,
         public description: string,
-        public channel: string,
+        // public channel: string,
         public url: string,
         public platform: string,
         public tags: string[],
@@ -19,7 +19,7 @@ export class Event {
         this.name = name;
         this.thumbnail = thumbnail;
         this.description = description;
-        this.channel = channel;
+        // this.channel = channel;
         this.url = url;
         this.platform = platform;
         this.tags = tags;

@@ -40,11 +40,6 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
             [],
             0,
             '',
-            [],
-            [],
-            [],
-            [],
-            [],
         );
         return user;
     };
