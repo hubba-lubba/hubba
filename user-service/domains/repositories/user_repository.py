@@ -115,6 +115,16 @@ class UserRepository:
         self.session.commit()
         return user
 
+    @check_id_exists(User, ["user_id", "following"])
+    def remove_following(self, user_id, following=None):
+        user = self.session.get(User, user_id)
+        following = self.session.get(User, following)
+
+        user.following.remove(following)
+        self.session.merge(user)
+        self.session.commit()
+        return user
+
     """
     Updates a User object
 

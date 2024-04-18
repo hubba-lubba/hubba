@@ -115,6 +115,32 @@ def add_following():
             
             return result, 400
 
+@user_blueprint.route("/remove_following", methods=["PATCH"])
+@ensure_authorized()
+@require_json_params(["following"])
+def remove_following():
+    context = request.get_json()
+
+    curr_user_id = auth.verify_id_token(request.headers.get("id_token")).get("uid")
+    following = context.get("following")
+    with Session(engine) as session:
+        try:
+            user_repository = UserRepository(session)
+            user = user_repository.remove_following(user_id=curr_user_id,
+                                                    following=following)
+            response = jsonify({
+                "status": "success",
+                "user": user.get_JSON(),
+            })
+            return response
+        except IdMissingException as e:
+            result = jsonify({
+                "status": "failure",
+                "reason": str(e)
+            })
+            
+            return result, 400
+
 @user_blueprint.route("/get_current_user", methods=["GET"])
 @ensure_authorized()
 def get_current_user():
