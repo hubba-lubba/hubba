@@ -5,11 +5,13 @@ import { User } from '@/features/users/types';
 import { Event } from '@/features/events/types';
 import { Org } from '@/features/orgs/types';
 import { changepassword } from '@/features/auth/api';
-import { createUser } from '@/features/users/api';
+import { createUser, followUser } from '@/features/users/api';
 
 interface UserContextType {
     userData: User;
     setUserData: (user: User) => void;
+    usersData: User[];
+    setUsersData: (user: User[]) => void;
     userEvents: Event[];
     setUserEvents: (events: Event[]) => void;
     userOrgs: Org[];
@@ -17,6 +19,7 @@ interface UserContextType {
     
     createUserData: () => Promise<User>;
     
+    followUserData: (user_id: string) => Promise<void>;
     
     
     setStreamStatus: (status: 0 | 1) => Promise<void>;
@@ -24,7 +27,6 @@ interface UserContextType {
     removeEventFromUser: (event_id: string) => Promise<void>;
     addOrgToUser: (org_id: string, owner?: boolean) => Promise<void>;
     removeOrgFromUser: (org_id: string) => Promise<void>;
-    followUser: (user_id: string) => Promise<void>;
     unfollowUser: (user_id: string) => Promise<void>;
     uploadVideo: (video_url: string) => Promise<void>;
     editUsername: (username: string) => Promise<void>;
@@ -39,6 +41,9 @@ export const UserContext = createContext<UserContextType>(null!);
 
 export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [userData, setUserData] = useState<User>(null!);
+    const [usersData, setUsersData] = useState<User[]>([]);
+    const [userEvents, setUserEvents] = useState<Event[]>([]);
+    const [userOrgs, setUserOrgs] = useState<Org[]>([]);
 
     useEffect(() => {
         console.log('user data', userData);
@@ -51,25 +56,45 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     };
 
     // call api function, then update user context
+    const followUserData = async (user_id: string) => {
+        await followUser(user_id);
 
-    const setStreamStatus = async (status: 0 | 1) => {
-        setUserData({ ...userData, streaming_status: status });
-    };
-
-    const followUser = async (user_id: string) => {
         setUserData({
             ...userData,
             following: [...userData.following, user_id],
         });
     };
-
+    
     const unfollowUser = async (user_id: string) => {
         setUserData({
             ...userData,
             following: userData.following.filter((id) => id !== user_id),
         });
     };
+    
+    const setStreamStatus = async (status: 0 | 1) => {
+        setUserData({ ...userData, streaming_status: status });
+    };
+    
+    const editBio = async (bio: string) => {
+        setUserData({ ...userData, bio: bio });
+    };
+    
+    const editProfileImage = async (profile_image: string) => {
+        setUserData({ ...userData, profile_image: profile_image });
+    };
+    
+    const editChannel = async (channel: string) => {
+        setUserData({ ...userData, channel: channel });
+    };
+    
+    const editUsername = async (username: string) => {
+        setUserData({ ...userData, username: username });
+    };
 
+    const editEmail = async (email: string) => {
+        // firebase
+    };
     // TODO: implement thunmbnails, title
     const uploadVideo = async (video_url: string) => {
         setUserData({
@@ -78,25 +103,6 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         });
     };
 
-    const editUsername = async (username: string) => {
-        setUserData({ ...userData, username: username });
-    };
-
-    const editBio = async (bio: string) => {
-        setUserData({ ...userData, bio: bio });
-    };
-
-    const editProfileImage = async (profile_image: string) => {
-        setUserData({ ...userData, profile_image: profile_image });
-    };
-
-    const editEmail = async (email: string) => {
-        setUserData({ ...userData, email: email });
-    };
-
-    const editChannel = async (channel: string) => {
-        setUserData({ ...userData, channel: channel });
-    };
 
     const changePassword = async (password: string, newPassword: string) => {
         await changepassword(userData.email, password, newPassword);
