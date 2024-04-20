@@ -19,7 +19,7 @@ export const UploadModal = () => {
     const { uploadVideo } = useContext(UserContext);
     
     const addVideo = async (data: UploadFormValues) => {
-        uploadVideo(data.url);
+        await uploadVideo(data.url);
         setShowUploadModal(false);
     };
 

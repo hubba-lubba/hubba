@@ -71,7 +71,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
         setShowCreateOrgModal,
         setShowCreateEventModal,
     } = useContext(ModalContext);
-    const { userData } = useContext(UserContext);
+    const { userData, userEvents } = useContext(UserContext);
     const user = useContext(AuthContext);
 
     useEffect(() => {
@@ -107,7 +107,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     size={24}
                                     onClick={() => setShowCreateOrgModal(true)}
                                 />
-                                {userData.owned_orgs.length > 0 && (
+                                {userEvents.length > 0 && (
                                     <MdPlaylistAdd
                                         className="cursor-pointer"
                                         size={24}

@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from './UserProvider';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
-import { createUser, getCurrentUser } from '@/features/users/api';
+import { get_current_user } from '@/features/users/api';
 
 export const AuthContext = React.createContext<firebase.User>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [user, setUser] = useState<firebase.User>(null!);
     const [loadingUser, setLoadingUser] = useState<boolean>(true);
-    const { setUserData } = useContext(UserContext);
+    const { setUserData, createUser } = useContext(UserContext);
 
     const auth = getAuth();
     useEffect(() => {
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         const loadUserData = async () => {
             if (user) {
                 try {
-                    const userData = await getCurrentUser();
+                    const userData = await get_current_user();
                     setUserData(userData);
                 } catch (error) {
                     console.log(error);
@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
                 ) {
                     try {
                         await createUser();
-                        await loadUserData();
                         return;
                     } catch (error) {
                         console.log('Error creating first user data');

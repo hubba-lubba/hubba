@@ -5,12 +5,12 @@ import { ModalContext } from '@/contexts/ModalProvider';
 import Joi from 'joi';
 import { Layout } from '@/components/layout';
 import { UserContext } from '@/contexts/UserProvider';
-import { name, channel, desc } from '@/lib/validation';
+import { name, desc } from '@/lib/validation';
 import { Event } from '@/features/events/types';
 import { SelectField, DateField } from '@/components/form';
-import { EventsContext } from '@/contexts/EventsProvider';
-import { OrgsContext } from '@/contexts/OrgsProvider';
 import { Org } from '@/features/orgs/types';
+import { get_user_orgs } from '@/features/orgs/api';
+import { create_event } from '@/features/events/api';
 
 const prize = Joi.string().min(3).max(30).allow('');
 
@@ -18,7 +18,6 @@ const schema = Joi.object({
     name: name,
     host_org: Joi.required(),
     description: desc,
-    channel: channel,
     url: Joi.string().uri().allow(''),
     time_of: Joi.date().required(),
     prize1: prize,
@@ -30,7 +29,6 @@ type CreateEventValues = {
     name: string;
     host_org: string;
     description?: string;
-    channel?: string;
     url?: string;
     time_of: Date;
     prize1: string;
@@ -42,24 +40,21 @@ export const CreateEventModal = () => {
     const [orgs, setOrgs] = useState<Org[]>([]);
     const { showCreateEventModal, setShowCreateEventModal } =
         useContext(ModalContext);
-    const { userData, addEventToUser } = useContext(UserContext);
-    const { getMockOrgs } = useContext(OrgsContext);
-    const { createEvent } = useContext(EventsContext);
+    const { userData, userEvents, setUserEvents } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
-            const userOrgs = await getMockOrgs(userData.owned_orgs);
+            const userOrgs = await get_user_orgs();
             setOrgs(userOrgs);
         };
         fetchData();
-    }, [getMockOrgs, userData]);
+    }, [userData]);
 
     const handleSubmit = async (data: CreateEventValues) => {
         const {
             name,
             host_org,
             description,
-            channel,
             url,
             time_of,
             prize1,
@@ -67,15 +62,13 @@ export const CreateEventModal = () => {
             prize3,
         } = data;
 
-        console.log(data);
-
+        // TODO: what to pass in for create_org?
         const event = new Event(
             `id ${name}`,
             host_org.split(' - ')[1],
             name,
             'https://placehold.co/600x400',
             description ?? '',
-            channel ?? '',
             url ?? '',
             'Twitch',
             [],
@@ -84,9 +77,8 @@ export const CreateEventModal = () => {
             [prize1, prize2, prize3],
             [userData.user_id],
         );
-        await createEvent(event);
-        await addEventToUser(event.event_id);
-
+        const eventData = await create_event(event);
+        setUserEvents([...userEvents, eventData]);
         setShowCreateEventModal(false);
     };
 
@@ -124,12 +116,6 @@ export const CreateEventModal = () => {
                                     label="Description"
                                     error={formState.errors['description']}
                                     registration={register('description')}
-                                />
-                                <TextField
-                                    type="text"
-                                    label="Channel"
-                                    error={formState.errors['channel']}
-                                    registration={register('channel')}
                                 />
                                 <TextField
                                     type="url"

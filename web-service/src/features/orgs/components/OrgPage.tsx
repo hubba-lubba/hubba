@@ -8,26 +8,25 @@ import Linkify from 'linkify-react';
 import { PageLayout } from '@/components/layout';
 import { Pfp } from '@/components/elements';
 import { UserContext } from '@/contexts/UserProvider';
-import { UsersContext } from '@/contexts/UsersProvider';
 import { Event } from '@/features/events/types';
 import { statuses } from '@/lib/constants';
 import { formatTime } from '@/utils/time';
-import { OrgsContext } from '@/contexts/OrgsProvider';
-import { EventsContext } from '@/contexts/EventsProvider';
+import { get_user } from '@/features/users/api';
+import { add_user_to_org, get_org, remove_user_from_org } from '../api';
+import { get_event } from '@/features/events/api';
 
 const MemberCard = ({ user_id }: { user_id: string }) => {
     const [user, setUser] = useState<User>();
-    const { getMockUser } = useContext(UsersContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
-            const userData = (await getMockUser(user_id)).user;
+            const userData = await get_user(user_id);
             setUser(userData);
         };
 
         fetchData();
-    }, [user_id, getMockUser]);
+    }, [user_id]);
 
     return (
         <Button
@@ -46,11 +45,8 @@ export const OrgPage = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { userData, addOrgToUser, removeOrgFromUser } =
+    const { userData, userOrgs, setUserOrgs, userHasOrg } =
         useContext(UserContext);
-    const { addUserToOrg, removeUserFromOrg } = useContext(OrgsContext);
-    const { getMockOrg } = useContext(OrgsContext);
-    const { getMockEvents } = useContext(EventsContext);
     const navigate = useNavigate();
 
     const { id } = useParams<{ id: string }>();
@@ -58,31 +54,33 @@ export const OrgPage = () => {
     useEffect(() => {
         if (!id) return;
         const fetchData = async () => {
-            const orgData = (await getMockOrg(id)).org;
+            const orgData = await get_org(id);
             setOrg(orgData);
             setLoading(false);
         };
 
         fetchData().catch((err) => setError('Error loading page: ' + err));
-    }, [id, getMockOrg]);
+    }, [id]);
 
     useEffect(() => {
         if (!org) return;
         const fetchEvents = async () => {
-            const eventsData = await getMockEvents(org.events);
+            const eventsData = await Promise.all(
+                org.events.map(async (event_id) => await get_event(event_id)),
+            );
             setEvents(eventsData);
         };
 
         fetchEvents();
-    }, [org, getMockEvents]);
+    }, [org]);
 
-    const joinOrg = async (org_id: string) => {
-        await addUserToOrg(org_id);
-        await addOrgToUser(org_id);
+    const joinOrg = async (org: Org) => {
+        const orgData = await add_user_to_org(org.org_id);
+        setUserOrgs([...userOrgs, orgData]);
     };
-    const leaveOrg = async (org_id: string) => {
-        await removeUserFromOrg(org_id);
-        await removeOrgFromUser(org_id);
+    const leaveOrg = async (org: Org) => {
+        const org_id = await remove_user_from_org(org.org_id);
+        setUserOrgs(userOrgs.filter((org) => org.org_id !== org_id));
     };
 
     if (!id) return <div>Org not found</div>;
@@ -122,16 +120,12 @@ export const OrgPage = () => {
                                     <button
                                         className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
                                         onClick={() =>
-                                            userData.joined_orgs.includes(
-                                                org.org_id,
-                                            )
-                                                ? leaveOrg(org.org_id)
-                                                : joinOrg(org.org_id)
+                                            userHasOrg(org.org_id)
+                                                ? leaveOrg(org)
+                                                : joinOrg(org)
                                         }
                                     >
-                                        {userData.joined_orgs.includes(
-                                            org.org_id,
-                                        )
+                                        {userHasOrg(org.org_id)
                                             ? 'LEAVE'
                                             : 'JOIN'}
                                     </button>

@@ -9,8 +9,8 @@ export const StreamModal = () => {
     const { userData, setStreamStatus } = useContext(UserContext);
     const actions = ['Start', 'Stop'];
 
-    const handleClick = (status: 0 | 1) => {
-        setStreamStatus(status);
+    const handleClick = async (status: 0 | 1) => {
+        await setStreamStatus(status);
         setShowStreamModal(false);
     };
 

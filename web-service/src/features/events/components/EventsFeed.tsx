@@ -1,17 +1,15 @@
 import { Layout } from '@/components/layout';
 import { Shelf, Grid } from '@/components/library';
 import { EventCard } from './EventCard';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Event } from '../types';
-import { EventsContext } from '@/contexts/EventsProvider';
+import { get_current_events, get_random_events, get_upcoming_events } from '../api';
 
 export const EventsFeed = () => {
     const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
     const [discoverEvents, setDiscoverEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean | string>(true);
-    const { getCurrentEvents, getUpcomingEvents, getDiscoverEvents } =
-        useContext(EventsContext);
 
     useEffect(() => {
         async function fetchData() {
@@ -20,23 +18,23 @@ export const EventsFeed = () => {
             let discoverEventsData;
 
             try {
-                currentEventsData = await getCurrentEvents();
-                upcomingEventsData = await getUpcomingEvents();
-                discoverEventsData = await getDiscoverEvents();
+                currentEventsData = await get_current_events();
+                upcomingEventsData = await get_upcoming_events();
+                discoverEventsData = await get_random_events();
             } catch (err) {
                 console.log(err);
                 setLoading('Error loading page: ' + err);
                 return;
             }
 
-            setCurrentEvents(currentEventsData.events);
-            setUpcomingEvents(upcomingEventsData.events);
-            setDiscoverEvents(discoverEventsData.events);
+            setCurrentEvents(currentEventsData);
+            setUpcomingEvents(upcomingEventsData);
+            setDiscoverEvents(discoverEventsData);
         }
 
         fetchData();
         setLoading(false);
-    }, [getCurrentEvents, getUpcomingEvents, getDiscoverEvents]);
+    }, []);
 
     if (typeof loading === 'string')
         //error

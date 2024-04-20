@@ -2,16 +2,10 @@ import React from 'react';
 import { AuthProvider } from './AuthProvider';
 import { UserProvider } from './UserProvider';
 import { ModalProvider } from './ModalProvider';
-import { EventsProvider } from './EventsProvider';
-import { OrgsProvider } from './OrgsProvider';
-import { UsersProvider } from './UsersProvider';
 
 const providers = [
     AuthProvider,
     ModalProvider,
-    EventsProvider,
-    OrgsProvider,
-    UsersProvider,
 ];
 
 /**
