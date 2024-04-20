@@ -6,6 +6,7 @@ from domains.repositories.utils import check_id_exists, check_id_not_exists, che
 from events.publisher_factory import PublisherFactory
 from logger import LoggerFactory
 from firebase_admin import auth
+from sqlalchemy.sql import func
 
 
 class UserRepository:
@@ -163,3 +164,7 @@ class UserRepository:
         user.channel = channel if channel is not None else user.channel
         user.video_urls = video_urls if video_urls is not None else user.video_urls
         return self._update_user(user)
+
+    def get_live_users(self):
+        users = self.session.query(User).filter(User.streaming_status == "live").order_by(func.random()).limit(5).all()
+        return users
