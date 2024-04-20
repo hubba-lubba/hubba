@@ -2,7 +2,6 @@ import { User, Video } from '../types';
 import { getidtoken } from '@/features/auth/api';
 import { USER_API_URL } from '@/config';
 
-// TODO: remove username as a field
 export const create_user = async (): Promise<User> => {
     const headers = {
         'Content-Type': 'application/json',
@@ -33,12 +32,12 @@ export const get_current_user = async (): Promise<User> => {
     if (res.status !== 200) throw res;
 
     const data = await res.json();
-    const userData = data.user as User;
-    // TODO: revise?
-    const user = new User(userData.user_id, userData.username);
+    const user = data.user as User;
     return user;
 };
 
+// TODO: remove username as a field
+// TODO: set specific fields for create and update
 export const get_user = async (user_id: string): Promise<User> => {
     const headers = {
         'Content-Type': 'application/json',
