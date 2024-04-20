@@ -23,7 +23,6 @@ export const create_event = async (event: Event): Promise<Event> => {
 export const get_event = async (event_id: string): Promise<Event> => {
     const headers = {
         'Content-Type': 'application/json',
-        'id_token': await getidtoken(),
     };
     const res = await fetch(`${EVENTS_API_URL}/?event_id=${event_id}`, {
         method: 'GET',
@@ -129,7 +128,6 @@ export const remove_user_from_event = async (event_id: string): Promise<string> 
 export const get_random_events = async (): Promise<Event[]> => {
     const headers = {
         'Content-Type': 'application/json',
-        'id_token': await getidtoken(),
     };
     const res = await fetch(`${EVENTS_API_URL}/get_random_events`, {
         method: 'GET',
@@ -139,6 +137,7 @@ export const get_random_events = async (): Promise<Event[]> => {
     if (res.status !== 200) throw res;
 
     const data = await res.json();
+    console.log(data)
     const events = data.events as Event[];
     return events;
 }
@@ -146,7 +145,6 @@ export const get_random_events = async (): Promise<Event[]> => {
 export const get_upcoming_events = async (): Promise<Event[]> => {
     const headers = {
         'Content-Type': 'application/json',
-        'id_token': await getidtoken(),
     };
     const res = await fetch(`${EVENTS_API_URL}/get_upcoming_events`, {
         method: 'GET',
@@ -163,7 +161,6 @@ export const get_upcoming_events = async (): Promise<Event[]> => {
 export const get_current_events = async (): Promise<Event[]> => {
     const headers = {
         'Content-Type': 'application/json',
-        'id_token': await getidtoken(),
     };
     const res = await fetch(`${EVENTS_API_URL}/get_current_events`, {
         method: 'GET',

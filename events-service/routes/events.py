@@ -243,7 +243,6 @@ def delete_user():
             return response
 
 @events_blueprint.route("/get_random_events", methods=["GET"])
-@ensure_authorized()
 def get_random_events():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
@@ -255,7 +254,6 @@ def get_random_events():
         return response
 
 @events_blueprint.route("/get_upcoming_events", methods=["GET"])
-@ensure_authorized()
 def get_upcoming_events():
     with Session(engine) as session:
         events_repository = EventsRepository(session)
@@ -267,7 +265,6 @@ def get_upcoming_events():
         return response
 
 @events_blueprint.route("/get_current_events", methods=["GET"])
-@ensure_authorized()
 def get_current_events():
     with Session(engine) as session:
         events_repository = EventsRepository(session)

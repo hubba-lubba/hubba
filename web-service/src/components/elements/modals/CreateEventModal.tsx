@@ -47,7 +47,7 @@ export const CreateEventModal = () => {
             const userOrgs = await get_user_orgs();
             setOrgs(userOrgs);
         };
-        fetchData();
+        if(userData) fetchData();
     }, [userData]);
 
     const handleSubmit = async (data: CreateEventValues) => {

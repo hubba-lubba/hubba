@@ -3,7 +3,11 @@ import { Shelf, Grid } from '@/components/library';
 import { EventCard } from './EventCard';
 import { useEffect, useState } from 'react';
 import { Event } from '../types';
-import { get_current_events, get_random_events, get_upcoming_events } from '../api';
+import {
+    get_current_events,
+    // get_random_events,
+    get_upcoming_events,
+} from '../api';
 
 export const EventsFeed = () => {
     const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
@@ -13,19 +17,11 @@ export const EventsFeed = () => {
 
     useEffect(() => {
         async function fetchData() {
-            let currentEventsData;
-            let upcomingEventsData;
-            let discoverEventsData;
-
-            try {
-                currentEventsData = await get_current_events();
-                upcomingEventsData = await get_upcoming_events();
-                discoverEventsData = await get_random_events();
-            } catch (err) {
-                console.log(err);
-                setLoading('Error loading page: ' + err);
-                return;
-            }
+            const currentEventsData = await get_current_events();
+            const upcomingEventsData = await get_upcoming_events();
+            // TODO: fix this after deploying server changes (remove ensure authorized from get_random_events)
+            const discoverEventsData = await get_upcoming_events();
+            // const discoverEventsData = await get_random_events();
 
             setCurrentEvents(currentEventsData);
             setUpcomingEvents(upcomingEventsData);

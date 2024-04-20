@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '@/contexts/UserProvider';
 import { logUserDevInfo } from '@/lib/auth';
-import { createUser, getCurrentUser, getUser } from '@/features/users/api';
+import { create_user, get_current_user, get_user } from '@/features/users/api';
 import { TbBrandAmongUs } from 'react-icons/tb';
 
 const DropdownOption = ({
@@ -33,13 +33,13 @@ export const DevDropdown = () => {
             <DropdownOption onClick={() => console.log(userData)}>
                 userContextData
             </DropdownOption>
-            <DropdownOption onClick={() => createUser({ username: text })}>
+            <DropdownOption onClick={() => create_user()}>
                 createUser
             </DropdownOption>
-            <DropdownOption onClick={() => getCurrentUser()}>
+            <DropdownOption onClick={() => get_current_user()}>
                 getCurrentUser
             </DropdownOption>
-            <DropdownOption onClick={() => getUser({ id: text })}>
+            <DropdownOption onClick={() => get_user(text)}>
                 getUser
             </DropdownOption>
             <DropdownOption onClick={() => console.log(text)}>

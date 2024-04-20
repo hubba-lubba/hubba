@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     }, [auth]);
 
     useEffect(() => {
-        console.log('load user data');
         const loadUserData = async () => {
             if (user) {
                 try {
