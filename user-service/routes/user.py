@@ -194,3 +194,14 @@ def patch_user():
                     "reason": str(e)
             })
             return result, 400
+
+@user_blueprint.route("/get_live_users", methods=["get"])
+def get_live_users():
+    with Session(engine) as session:
+        user_repository = UserRepository(session)
+        live_users = user_repository.get_live_users()
+        response = jsonify({
+            "status": "success",
+            "users": [user.get_JSON() for user in live_users]
+        })
+        return response
