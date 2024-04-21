@@ -72,7 +72,7 @@ def get_organizations_upload_url():
 
 @blob_url_generator.route("/get_events_upload_url", methods=["GET"])
 @ensure_authorized()
-def get_organizations_upload_url():
+def get_events_upload_url():
     bucket_name = "hubba-events-pictures"
 
     bucket = storage_client.bucket(bucket_name)
