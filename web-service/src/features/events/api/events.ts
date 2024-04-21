@@ -2,6 +2,38 @@ import { Event } from '@/features/events/types';
 import { getidtoken } from '@/features/auth/api';
 import { EVENTS_API_URL } from '@/config';
 
+type EventServiceType = {
+    event_id: string;
+    name: string;
+    thumbnail: string;  
+    description: string;
+    time_of: Date;
+    host_id: string;
+    attendees: string[];
+    status: 0 | 1;
+    prizes: string[]; //does not yet have
+};
+
+const extort = (eventData: EventServiceType): Event => {
+    return new Event(
+        eventData.event_id,
+        eventData.host_id,
+        eventData.name,
+        eventData.thumbnail,
+        eventData.description,
+        eventData.time_of,
+        eventData.status,
+        eventData.prizes,
+        eventData.attendees,
+    );
+};
+
+const extort_many = (eventsData: EventServiceType[]): Event[] => {
+    return eventsData.map((eventData) => {
+        return extort(eventData);
+    });
+};
+
 export const get_event = async (event_id: string): Promise<Event> => {
     const headers = {
         'Content-Type': 'application/json',
@@ -16,7 +48,8 @@ export const get_event = async (event_id: string): Promise<Event> => {
 
     if (res.status !== 200) throw res;
 
-    const event = data.event as Event;
+    const eventData = data.event as EventServiceType;
+    const event = extort(eventData);
     return event;
 };
 
@@ -51,24 +84,47 @@ export const create_event = async (
 
     if (res.status !== 200) throw res;
 
-    const new_event = data.event as Event;
-    return new_event;
+    const eventData = data.event as EventServiceType;
+    const event = extort(eventData);
+    return event;
 };
 
-// TODO: figure out which fields are needed in PATCH for update.
-
-export const update_event = async (
-    event_id: string,
-    event: Event,
-): Promise<Event> => {
+export const update_event = async ({
+    event_id,
+    name,
+    thumbnail,
+    description,
+    url,
+    time_of,
+    status,
+    prizes,
+}: {
+    event_id: string;
+    name?: string;
+    thumbnail?: string;
+    description?: string;
+    url?: string;
+    time_of?: Date;
+    status?: 0 | 1;
+    prizes?: string[];
+}): Promise<Event> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
+    const body = {
+        name: name,
+        thumbnail: thumbnail,
+        description: description,
+        url: url,
+        time_of: time_of,
+        status: status,
+        prizes: prizes,
+    };
     const res = await fetch(`${EVENTS_API_URL}/?event_id=${event_id}`, {
         method: 'PATCH',
         headers: headers,
-        body: JSON.stringify({ ...event }),
+        body: JSON.stringify(body),
     });
 
     const data = await res.json();
@@ -76,8 +132,9 @@ export const update_event = async (
 
     if (res.status !== 200) throw res;
 
-    const updated_event = data.event as Event;
-    return updated_event;
+    const eventData = data.event as EventServiceType;
+    const event = extort(eventData);
+    return event;
 };
 
 export const delete_event = async (event_id: string): Promise<string> => {
@@ -114,7 +171,8 @@ export const get_user_events = async (): Promise<Event[]> => {
 
     if (res.status !== 200) throw res;
 
-    const events = data.events as Event[];
+    const eventsData = data.events as EventServiceType[];
+    const events = extort_many(eventsData);
     return events;
 };
 
@@ -133,7 +191,8 @@ export const add_user_to_event = async (event_id: string): Promise<Event> => {
 
     if (res.status !== 200) throw res;
 
-    const event = data.event as Event;
+    const eventData = data.event as EventServiceType;
+    const event = extort(eventData);
     return event;
 };
 
@@ -175,8 +234,8 @@ export const get_random_events = async (): Promise<Event[]> => {
 
     if (res.status !== 200) throw res;
 
-    console.log(data);
-    const events = data.events as Event[];
+    const eventsData = data.events as EventServiceType[];
+    const events = extort_many(eventsData);
     return events;
 };
 
@@ -194,7 +253,8 @@ export const get_upcoming_events = async (): Promise<Event[]> => {
 
     if (res.status !== 200) throw res;
 
-    const events = data.events as Event[];
+    const eventsData = data.events as EventServiceType[];
+    const events = extort_many(eventsData);
     return events;
 };
 
@@ -212,6 +272,7 @@ export const get_current_events = async (): Promise<Event[]> => {
 
     if (res.status !== 200) throw res;
 
-    const events = data.events as Event[];
+    const eventsData = data.events as EventServiceType[];
+    const events = extort_many(eventsData);
     return events;
 };

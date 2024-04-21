@@ -29,14 +29,14 @@ interface UserContextType {
     createUser: () => Promise<void>;
     followUser: (user_id: string) => Promise<void>;
     unfollowUser: (user_id: string) => Promise<void>;
-    setStreamStatus: (status: 0 | 1) => Promise<void>;
     userHasEvent: (event_id: string) => boolean;
     userHasOrg: (org_id: string) => boolean;
     userHasChannel: (user_id: string) => boolean;
-    uploadVideo: (video_url: string) => Promise<void>;
+    setStreamStatus: (status: 0 | 1) => Promise<void>;
     editBio: (bio: string) => Promise<void>;
     editProfileImage: (profile_image: string) => Promise<void>;
     editChannel: (channel: string) => Promise<void>;
+    uploadVideo: (video_url: string) => Promise<void>;
 
     editUsername: (username: string) => Promise<void>;
     editEmail: (email: string) => Promise<void>;
@@ -84,13 +84,6 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
         const user = await unfollow_user(user_id);
         setUserData(user);
     };
-    const setStreamStatus = async (status: 0 | 1) => {
-        const user = await update_user({
-            ...userData,
-            streaming_status: status,
-        });
-        setUserData(user);
-    };
     const userHasEvent = (event_id: string) => {
         return userEvents.some((event) => event.event_id === event_id);
     };
@@ -100,19 +93,20 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     const userHasChannel = (user_id: string) => {
         return userChannels.some((channel) => channel.user_id === user_id);
     };
+    const setStreamStatus = async (status: 0 | 1) => {
+        const user = await update_user({ streaming_status: status });
+        setUserData(user);
+    };
     const editBio = async (bio: string) => {
-        const user = await update_user({ ...userData, bio: bio });
+        const user = await update_user({ bio: bio });
         setUserData(user);
     };
     const editProfileImage = async (profile_image: string) => {
-        const user = await update_user({
-            ...userData,
-            profile_image: profile_image,
-        });
+        const user = await update_user({ profile_image: profile_image });
         setUserData(user);
     };
     const editChannel = async (channel: string) => {
-        const user = await update_user({ ...userData, channel: channel });
+        const user = await update_user({ channel: channel });
         setUserData(user);
     };
     // TODO: implement thunmbnails, title
@@ -136,11 +130,8 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
 
     // event methods
     const setEventStreamingStatus = async (event_id: string, status: 0 | 1) => {
-        const event = userEvents.find(
-            (event) => event.event_id === event_id,
-        ) as Event;
-        const eventData = await update_event(event_id, {
-            ...event,
+        const eventData = await update_event({
+            event_id: event_id,
             status: status,
         });
         setUserEvents(
@@ -149,6 +140,9 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
             ),
         );
     };
+
+    // org methods
+    // update org
 
     return (
         <UserContext.Provider
@@ -165,10 +159,10 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
                 createUser,
                 followUser,
                 unfollowUser,
-                setStreamStatus,
                 userHasEvent,
                 userHasOrg,
                 userHasChannel,
+                setStreamStatus,
                 editBio,
                 editProfileImage,
                 editChannel,

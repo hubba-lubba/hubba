@@ -2,6 +2,37 @@ import { User, Video } from '../types';
 import { getidtoken } from '@/features/auth/api';
 import { USER_API_URL } from '@/config';
 
+type UserServiceType = {
+    user_id: string;
+    followers: string[];
+    following: string[];
+    streaming_status: 0 | 1; //currently string
+    bio: string; //does not yet have
+    profile_picture: string;
+    channel: string;
+    video_urls: string[];
+};
+
+// yuh we extortin
+const extort = (userData: UserServiceType): User => {
+    return new User(
+        userData.user_id,
+        userData.profile_picture,
+        userData.bio,
+        userData.followers,
+        userData.following,
+        userData.streaming_status,
+        userData.channel,
+        userData.video_urls,
+    );
+};
+
+const extort_many = (usersData: UserServiceType[]): User[] => {
+    return usersData.map((orgData) => {
+        return extort(orgData);
+    });
+};
+
 export const create_user = async (): Promise<User> => {
     const headers = {
         'Content-Type': 'application/json',
@@ -10,7 +41,7 @@ export const create_user = async (): Promise<User> => {
     const res = await fetch(`${USER_API_URL}/`, {
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify({})
+        body: JSON.stringify({}),
     });
 
     const data = await res.json();
@@ -18,7 +49,8 @@ export const create_user = async (): Promise<User> => {
 
     if (res.status !== 200) throw res;
 
-    const user = data.user as User;
+    const userData = data.user as UserServiceType;
+    const user = extort(userData);
     return user as User;
 };
 
@@ -37,7 +69,8 @@ export const get_current_user = async (): Promise<User> => {
 
     if (res.status !== 200) throw res;
 
-    const user = data.user as User;
+    const userData = data.user as UserServiceType;
+    const user = extort(userData);
     return user;
 };
 
@@ -55,7 +88,8 @@ export const get_user = async (user_id: string): Promise<User> => {
 
     if (res.status !== 200) throw res;
 
-    const user = data.user as User;
+    const userData = data.user as UserServiceType;
+    const user = extort(userData);
     return user;
 };
 
@@ -73,7 +107,9 @@ export const get_live_users = async (): Promise<User[]> => {
 
     if (res.status !== 200) throw res;
 
-    return data.users as User[];
+    const usersData = data.users as UserServiceType[];
+    const users = extort_many(usersData);
+    return users;
 };
 
 export const follow_user = async (user_id: string): Promise<User> => {
@@ -97,7 +133,9 @@ export const follow_user = async (user_id: string): Promise<User> => {
 
     if (res.status !== 200) throw res;
 
-    return data.user as User;
+    const userData = data.user as UserServiceType;
+    const user = extort(userData);
+    return user;
 };
 
 export const unfollow_user = async (user_id: string): Promise<User> => {
@@ -121,12 +159,22 @@ export const unfollow_user = async (user_id: string): Promise<User> => {
 
     if (res.status !== 200) throw res;
 
-    return data.user as User;
+    const userData = data.user as UserServiceType;
+    const user = extort(userData);
+    return user;
 };
 
-export const update_user = async (user: User): Promise<User> => {
-    const { channel, bio, profile_image, streaming_status } = user;
-
+export const update_user = async ({
+    channel,
+    bio,
+    profile_image,
+    streaming_status,
+}: {
+    channel?: string;
+    bio?: string;
+    profile_image?: string;
+    streaming_status?: 0 | 1;
+}): Promise<User> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
@@ -152,7 +200,9 @@ export const update_user = async (user: User): Promise<User> => {
 
     if (res.status !== 200) throw res;
 
-    return data.user as User;
+    const userData = data.user as UserServiceType;
+    const user = extort(userData);
+    return user;
 };
 
 export const add_video = async (video_url: string): Promise<User> => {
@@ -172,7 +222,9 @@ export const add_video = async (video_url: string): Promise<User> => {
 
     if (res.status !== 200) throw res;
 
-    return data.user as User;
+    const userData = data.user as UserServiceType;
+    const user = extort(userData);
+    return user;
 };
 
 export const get_videos = async (user: User): Promise<Video[]> => {

@@ -7,7 +7,7 @@ export class Org {
         public channel: string,
         // public tags: string[],
         public owner: string,
-        public moderators: string[],
+        // public moderators: string[],
         public users: string[],
         public events: string[],
         // public created: Date,
@@ -19,7 +19,7 @@ export class Org {
         this.channel = channel;
         // this.tags = tags;
         this.owner = owner;
-        this.moderators = moderators;
+        // this.moderators = moderators;
         this.users = users;
         this.events = events;
         // this.created = created;

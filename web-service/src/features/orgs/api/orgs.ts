@@ -2,6 +2,36 @@ import { getidtoken } from '@/features/auth/api';
 import { Org } from '@/features/orgs/types';
 import { ORGS_API_URL } from '@/config';
 
+type OrgServiceType = {
+    organization_id: string;
+    name: string;
+    image: string;
+    description: string;
+    owner_id: string;
+    users: string[];
+    events: string[];
+    channel: string;
+};
+
+const extort = (orgData: OrgServiceType): Org => {
+    return new Org(
+        orgData.organization_id,
+        orgData.name,
+        orgData.image,
+        orgData.description,
+        orgData.channel,
+        orgData.owner_id,
+        orgData.users,
+        orgData.events,
+    );
+};
+
+const extort_many = (orgsData: OrgServiceType[]): Org[] => {
+    return orgsData.map((orgData) => {
+        return extort(orgData);
+    });
+};
+
 export const get_org = async (org_id: string): Promise<Org> => {
     const headers = {
         'Content-Type': 'application/json',
@@ -16,11 +46,16 @@ export const get_org = async (org_id: string): Promise<Org> => {
 
     if (res.status !== 200) throw res;
 
-    const org = data.org as Org;
+    const orgData = data.organization as OrgServiceType;
+    const org = extort(orgData);
     return org;
 };
 
-export const create_org = async (name: string, description?: string, channel?: string): Promise<Org> => {
+export const create_org = async (
+    name: string,
+    description?: string,
+    channel?: string,
+): Promise<Org> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
@@ -41,22 +76,33 @@ export const create_org = async (name: string, description?: string, channel?: s
 
     if (res.status !== 200) throw res;
 
-    const new_org = data.org as Org;
-    return new_org;
+    const orgData = data.organization as OrgServiceType;
+    const org = extort(orgData);
+    return org;
 };
 
-// TODO: set specific fields for update
-export const update_org = async (org_id: string, org: Org): Promise<Org> => {
-    const { name, description, channel, image } = org;
+export const update_org = async ({
+    org_id,
+    name,
+    image,
+    description,
+    channel,
+}: {
+    org_id: string;
+    name?: string;
+    image?: string;
+    description?: string;
+    channel?: string;
+}): Promise<Org> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
     const body = {
         name: name,
+        image: image,
         description: description,
         channel: channel,
-        image: image,
     };
     const res = await fetch(`${ORGS_API_URL}/?org_id=${org_id}`, {
         method: 'PATCH',
@@ -69,8 +115,9 @@ export const update_org = async (org_id: string, org: Org): Promise<Org> => {
 
     if (res.status !== 200) throw res;
 
-    const updated_org = data.org as Org;
-    return updated_org;
+    const orgData = data.organization as OrgServiceType;
+    const org = extort(orgData);
+    return org;
 };
 
 export const delete_org = async (org_id: string): Promise<string> => {
@@ -88,7 +135,7 @@ export const delete_org = async (org_id: string): Promise<string> => {
 
     if (res.status !== 200) throw res;
 
-    const deleted_org_id = data.org_id as string;
+    const deleted_org_id = data.organization_id as string;
     return deleted_org_id;
 };
 
@@ -107,7 +154,8 @@ export const get_user_orgs = async (): Promise<Org[]> => {
 
     if (res.status !== 200) throw res;
 
-    const orgs = data.orgs as Org[];
+    const orgsData = data.organizations as OrgServiceType[];
+    const orgs = extort_many(orgsData);
     return orgs;
 };
 
@@ -126,7 +174,8 @@ export const add_user_to_org = async (org_id: string): Promise<Org> => {
 
     if (res.status !== 200) throw res;
 
-    const org = data.org as Org;
+    const orgData = data.organization as OrgServiceType;
+    const org = extort(orgData);
     return org;
 };
 
@@ -145,7 +194,7 @@ export const remove_user_from_org = async (org_id: string): Promise<string> => {
 
     if (res.status !== 200) throw res;
 
-    const deleted_org_id = data.org_id as string;
+    const deleted_org_id = data.organization_id as string;
     return deleted_org_id;
 };
 
@@ -163,6 +212,7 @@ export const get_random_orgs = async (): Promise<Org[]> => {
 
     if (res.status !== 200) throw res;
 
-    const orgs = data.orgs as Org[];
+    const orgsData = data.organizations as OrgServiceType[];
+    const orgs = extort_many(orgsData);
     return orgs;
 };
