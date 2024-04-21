@@ -18,7 +18,7 @@ export function ChangeBio() {
     async function handleSubmit(data: ChangeBioValues) {
         const { bio } = data;
         try {
-            editBio(bio);
+            await editBio(bio);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }

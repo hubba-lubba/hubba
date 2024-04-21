@@ -21,9 +21,8 @@ export function ChangePassword() {
     async function handleSubmit(data: ChangePasswordValues) {
         const { password, newPassword } = data;
 
-        // TODO: implement (w/ async)
         try {
-            changePassword(password, newPassword);
+            await changePassword(password, newPassword);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }

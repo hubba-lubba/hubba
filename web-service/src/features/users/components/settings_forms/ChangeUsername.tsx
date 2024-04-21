@@ -18,7 +18,7 @@ export function ChangeUsername() {
     async function handleSubmit(data: ChangeUsernameFields) {
         const { newUsername } = data;
         try {
-            editUsername(newUsername);
+            await editUsername(newUsername);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }

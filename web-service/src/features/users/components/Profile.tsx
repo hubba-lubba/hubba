@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { VideoCard } from './VideoCard';
 import { UserContext } from '@/contexts/UserProvider';
+import { AuthContext } from '@/contexts/AuthProvider';
 import { useParams } from 'react-router-dom';
 import { User, Video } from '../types';
 import { Pfp } from '@/components/elements';
@@ -15,6 +16,7 @@ export const Profile = () => {
     const { id } = useParams<{ id: string }>();
     const [videos, setVideos] = useState<Video[]>([]);
     const [user, setUser] = useState<User>();
+    const currentUser = useContext(AuthContext);
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const { userData, followUser, unfollowUser } = useContext(UserContext);
@@ -52,10 +54,15 @@ export const Profile = () => {
             <div className="flex flex-row items-center space-x-8 pb-8">
                 <Pfp image={user.profile_image} size={100} />
                 <div className="space-y-1">
-                    <p className="text-lg font-bold">{user.username}</p>
+                    <p className="text-lg font-bold">
+                        {currentUser.displayName}
+                    </p>
                     <div className="flex flex-row space-x-2">
                         <p>{`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}</p>
-                        <p>| {statuses[user.streaming_status]}</p>
+                        <p>
+                            {' | '}
+                            {statuses[user.streaming_status]}
+                        </p>
                     </div>
                     <p>{user.bio}</p>
                     {userData && user.user_id != userData.user_id && (

@@ -18,7 +18,7 @@ export function ChangeChannel() {
     async function handleSubmit(data: ChangeChannelValues) {
         const { channel } = data;
         try {
-            editChannel(channel);
+            await editChannel(channel);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
