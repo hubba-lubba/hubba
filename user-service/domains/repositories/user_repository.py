@@ -170,5 +170,5 @@ class UserRepository:
         return self._update_user(user)
 
     def get_live_users(self):
-        users = self.session.query(User).filter(User.streaming_status == "live").order_by(func.random()).limit(5).all()
+        users = self.session.query(User).filter(User.streaming_status == 1).order_by(func.random()).limit(5).all()
         return users
