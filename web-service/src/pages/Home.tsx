@@ -22,16 +22,16 @@ export const Home = () => {
         // TODO: will need get attending events, joined orgs, followed users functions
         const fetchData = async () => {
             const currentEventsData = await get_current_events();
-            setCurrentEvents(currentEventsData);
+            setCurrentEvents(currentEventsData ?? currentEvents);
 
             const upcomingEventsData = await get_upcoming_events();
-            setUpcomingEvents(upcomingEventsData);
+            setUpcomingEvents(upcomingEventsData ?? upcomingEvents);
 
             const liveUsersData = await get_live_users();
-            setLiveUsers(liveUsersData);
+            setLiveUsers(liveUsersData ?? liveUsers);
 
             const discoverOrgsData = await get_random_orgs();
-            setDiscoverOrgs(discoverOrgsData);
+            setDiscoverOrgs(discoverOrgsData ?? discoverOrgs);
         };
 
         fetchData();

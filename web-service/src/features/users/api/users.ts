@@ -12,11 +12,13 @@ export const create_user = async (): Promise<User> => {
         headers: headers,
     });
 
-    if (res.status !== 200) throw res;
-
     const data = await res.json();
     console.log(`create ${JSON.stringify(data)}`);
-    return data as User;
+
+    if (res.status !== 200) throw res;
+
+    const user = data.user as User;
+    return user as User;
 };
 
 export const get_current_user = async (): Promise<User> => {
@@ -29,15 +31,15 @@ export const get_current_user = async (): Promise<User> => {
         headers: headers,
     });
 
+    const data = await res.json();
+    console.log(`get_current_user ${JSON.stringify(data)}`);
+
     if (res.status !== 200) throw res;
 
-    const data = await res.json();
     const user = data.user as User;
     return user;
 };
 
-// TODO: remove username as a field
-// TODO: set specific fields for create and update
 export const get_user = async (user_id: string): Promise<User> => {
     const headers = {
         'Content-Type': 'application/json',
@@ -47,12 +49,12 @@ export const get_user = async (user_id: string): Promise<User> => {
         headers: headers,
     });
 
-    if (res.status !== 200) throw res;
-
     const data = await res.json();
     console.log(`get ${JSON.stringify(data)}`);
-    const userData = data.user;
-    const user = new User(userData.user_id, userData.username, userData.email);
+
+    if (res.status !== 200) throw res;
+
+    const user = data.user as User;
     return user;
 };
 
@@ -65,12 +67,13 @@ export const get_live_users = async (): Promise<User[]> => {
         headers: headers,
     });
 
-    if (res.status !== 200) throw res;
-
     const data = await res.json();
     console.log(`get live ${JSON.stringify(data)}`);
+
+    if (res.status !== 200) throw res;
+
     return data.users as User[];
-}
+};
 
 export const follow_user = async (user_id: string): Promise<User> => {
     const headers = {
@@ -88,10 +91,11 @@ export const follow_user = async (user_id: string): Promise<User> => {
         body: JSON.stringify(body),
     });
 
-    if (res.status !== 200) throw res;
-
     const data = await res.json();
     console.log(`follow ${JSON.stringify(data)}`);
+
+    if (res.status !== 200) throw res;
+
     return data.user as User;
 };
 
@@ -111,22 +115,30 @@ export const unfollow_user = async (user_id: string): Promise<User> => {
         body: JSON.stringify(body),
     });
 
-    if (res.status !== 200) throw res;
-
     const data = await res.json();
     console.log(`unfollow ${JSON.stringify(data)}`);
-    return data.user as User
+
+    if (res.status !== 200) throw res;
+
+    return data.user as User;
 };
 
 export const update_user = async (user: User): Promise<User> => {
+    const { channel, bio, profile_image, streaming_status } = user;
+
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
 
     const body = {
-        ...user,
+        channel: channel,
+        bio: bio,
+        profile_image: profile_image,
+        streaming_status: streaming_status,
     };
+
+    console.log(body);
 
     const res = await fetch(`${USER_API_URL}/`, {
         method: 'PATCH',
@@ -134,10 +146,11 @@ export const update_user = async (user: User): Promise<User> => {
         body: JSON.stringify(body),
     });
 
-    if (res.status !== 200) throw res;
-
     const data = await res.json();
     console.log(`update ${JSON.stringify(data)}`);
+
+    if (res.status !== 200) throw res;
+
     return data.user as User;
 };
 
@@ -153,10 +166,11 @@ export const add_video = async (video_url: string): Promise<User> => {
         body: JSON.stringify({ video_url }),
     });
 
-    if (res.status !== 200) throw res;
-
     const data = await res.json();
     console.log(`add video ${JSON.stringify(data)}`);
+
+    if (res.status !== 200) throw res;
+
     return data.user as User;
 };
 

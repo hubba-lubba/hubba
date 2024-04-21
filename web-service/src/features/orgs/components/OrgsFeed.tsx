@@ -13,7 +13,7 @@ export const OrgsFeed = () => {
         // once this is complete, move into individual features as a component
         const fetchData = async () => {
             const discoverOrgsData = await get_random_orgs();
-            setDiscoverOrgs(discoverOrgsData);
+            setDiscoverOrgs(discoverOrgsData ?? discoverOrgs);
         };
 
         fetchData();

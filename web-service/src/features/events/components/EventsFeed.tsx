@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Event } from '../types';
 import {
     get_current_events,
-    // get_random_events,
+    get_random_events,
     get_upcoming_events,
 } from '../api';
 
@@ -18,14 +18,13 @@ export const EventsFeed = () => {
     useEffect(() => {
         async function fetchData() {
             const currentEventsData = await get_current_events();
-            const upcomingEventsData = await get_upcoming_events();
-            // TODO: fix this after deploying server changes (remove ensure authorized from get_random_events)
-            const discoverEventsData = await get_upcoming_events();
-            // const discoverEventsData = await get_random_events();
+            setCurrentEvents(currentEventsData ?? currentEvents);
 
-            setCurrentEvents(currentEventsData);
-            setUpcomingEvents(upcomingEventsData);
-            setDiscoverEvents(discoverEventsData);
+            const upcomingEventsData = await get_upcoming_events();
+            setUpcomingEvents(upcomingEventsData ?? upcomingEvents);
+
+            const discoverEventsData = await get_random_events();
+            setDiscoverEvents(discoverEventsData ?? discoverEvents);
         }
 
         fetchData();

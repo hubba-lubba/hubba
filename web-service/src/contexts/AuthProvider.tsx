@@ -7,14 +7,14 @@ import { get_current_user } from '@/features/users/api';
 export const AuthContext = React.createContext<firebase.User>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
-    const [user, setUser] = useState<firebase.User>(null!);
+    const [currentUser, setCurrentUser] = useState<firebase.User>(null!);
     const [loadingUser, setLoadingUser] = useState<boolean>(true);
     const { setUserData, createUser } = useContext(UserContext);
 
     const auth = getAuth();
     useEffect(() => {
         const myListener = onAuthStateChanged(auth, (user) => {
-            setUser(user as firebase.User);
+            setCurrentUser(user as firebase.User);
             setLoadingUser(false);
         });
         return () => {
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
 
     useEffect(() => {
         const loadUserData = async () => {
-            if (user) {
+            if (currentUser) {
                 try {
                     const userData = await get_current_user();
                     setUserData(userData);
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         };
         load();
         // NOTE: adding createUser and setUserData to dependencies causes infinite loop. ts throws a warning for it tho; ignore it.
-    }, [user]);
+    }, [currentUser]);
 
     if (loadingUser) {
         return (
@@ -70,5 +70,5 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         );
     }
 
-    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>;
 };

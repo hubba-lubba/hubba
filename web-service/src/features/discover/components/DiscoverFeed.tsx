@@ -21,13 +21,13 @@ export const DiscoverFeed = () => {
         // once this is complete, move into individual features as a component
         const fetchData = async () => {
             const upcomingEventsData = await get_upcoming_events();
-            setUpcomingEvents(upcomingEventsData);
+            setUpcomingEvents(upcomingEventsData ?? upcomingEvents);
 
             const liveUsersData = await get_live_users();
-            setLiveUsers(liveUsersData);
+            setLiveUsers(liveUsersData ?? liveUsers);
 
             const discoverOrgsData = await get_random_orgs();
-            setDiscoverOrgs(discoverOrgsData);
+            setDiscoverOrgs(discoverOrgsData ?? discoverOrgs);
         };
 
         fetchData();
