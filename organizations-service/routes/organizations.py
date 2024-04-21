@@ -29,13 +29,14 @@ def version():
 
 @organizations_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["name", "description"])
+@require_json_params(["name"])
 def add_organization():
     context = request.get_json()
 
     name = context.get("name") if context.get("name") else None
     image = context.get("image") if context.get("image") else None
     description = context.get("description") if context.get("description") else None
+    channel = context.get("channel") if context.get("channel") else None
     owner = auth.verify_id_token(request.headers.get("id_token"))["uid"]
 
     with Session(engine) as session:
@@ -45,7 +46,8 @@ def add_organization():
                 name=name,
                 image=image,
                 description=description,
-                owner=owner
+                owner=owner,
+                channel=channel
             )
             response = jsonify({
                 "status": "success",
@@ -109,15 +111,16 @@ def delete_organization():
 
 @organizations_blueprint.route("/", methods=["PATCH"])
 @ensure_authorized()
-@require_query_params(["organization_id"])
+@require_json_params(["organization_id"])
 @ensure_UUID("organization_id")
 def patch_organization():
-    organization_id = request.args.get("organization_id")
     context = request.get_json()
+    organization_id = context.get("organization_id")
 
     name = context.get("name") if context.get("name") else None
     image = context.get("image") if context.get("image") else None
     description = context.get("description") if context.get("description") else None
+    channel = context.get("channel") if context.get("channel") else None
 
     with Session(engine) as session:
         organizations_repository = OrganizationsRepository(session)
@@ -125,7 +128,8 @@ def patch_organization():
             organization = organizations_repository.patch_organization(organization_id=UUID(organization_id),
                                                                        name=name,
                                                                        image=image,
-                                                                       description=description)
+                                                                       description=description,
+                                                                       channel=channel)
             response = jsonify({
                 "status": "success",
                 "organization": organization.get_JSON()

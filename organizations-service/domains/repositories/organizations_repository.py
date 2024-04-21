@@ -44,7 +44,8 @@ class OrganizationsRepository:
                          name=None,
                          image=None,
                          description=None, 
-                         owner=None):
+                         owner=None,
+                         channel=None):
         owner = self.session.get(User, owner)
 
         new_organization = Organizations(name=name, 
@@ -52,7 +53,8 @@ class OrganizationsRepository:
                                          description=description, 
                                          owner=owner,
                                          users=[owner],
-                                         events=[])
+                                         events=[],
+                                         channel=channel)
 
 
         return self._add_organization(new_organization)

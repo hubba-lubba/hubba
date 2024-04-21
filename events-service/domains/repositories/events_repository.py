@@ -31,9 +31,19 @@ class EventsRepository:
     :return: Event of added event
     """
     @check_id_exists(Organizations, ["host_id"])
-    def add_event(self, name=None, thumbnail=None, description=None,
-                  url=None, platform=None, tags=None, time_of=None,
-                  host=None, entry_fee=None, host_id=None, attendees=[],
+    def add_event(self, 
+                  name=None, 
+                  thumbnail=None, 
+                  description=None,
+                  url=None, 
+                  platform=None, 
+                  tags=None, 
+                  time_of=None,
+                  host=None, 
+                  entry_fee=None, 
+                  host_id=None, 
+                  attendees=[],
+                  prizes=[],
                   status=0):
 
         new_event = Events(name=name,
@@ -47,7 +57,8 @@ class EventsRepository:
                            entry_fee=entry_fee,
                            host_id=host_id,
                            attendees=attendees,
-                           status=status)
+                           status=status,
+                           prizes=prizes)
 
         return self._add_event(new_event)
 
@@ -103,7 +114,8 @@ class EventsRepository:
                      host=None, 
                      entry_fee=None,
                      attendees=None,
-                     status=None):
+                     status=None,
+                     prizes=None):
         event = self.get_event(event_id=event_id)
         if not event:
             return
@@ -119,6 +131,7 @@ class EventsRepository:
         event.entry_fee = entry_fee if entry_fee else event.entry_fee
         event.attendees = attendees if attendees else event.attendees
         event.status = status if status else event.status
+        event.prizes = prizes if prizes else event.prizes
 
         return self._update_event(event)
 
