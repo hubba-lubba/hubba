@@ -15,6 +15,7 @@ import {
 import { get_user_orgs } from '@/features/orgs/api';
 import { get_user_events, update_event } from '@/features/events/api';
 import { editemail, editpassword, editusername } from '@/lib/auth';
+import { logger } from '@/utils/logger';
 
 interface UserContextType {
     userData: User;
@@ -54,7 +55,7 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     const [userOrgs, setUserOrgs] = useState<Org[]>([]);
 
     useEffect(() => {
-        console.log('user data', userData);
+        logger(`user data ${JSON.stringify(userData)}`);
         const fetchData = async () => {
             const channels = await Promise.all(
                 userData.following.map((user_id) => get_user(user_id)),

@@ -1,6 +1,7 @@
 import { getidtoken } from '@/features/auth/api';
 import { Org } from '@/features/orgs/types';
 import { ORGS_API_URL } from '@/config';
+import { logger } from '@/utils/logger';
 
 type OrgServiceType = {
     organization_id: string;
@@ -42,7 +43,7 @@ export const get_org = async (org_id: string): Promise<Org> => {
     });
 
     const data = await res.json();
-    console.log(`get_org ${JSON.stringify(data)}`);
+    logger(`get_org ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -72,7 +73,7 @@ export const create_org = async (
     });
 
     const data = await res.json();
-    console.log(`create_org ${JSON.stringify(data)}`);
+    logger(`create_org ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -111,7 +112,7 @@ export const update_org = async ({
     });
 
     const data = await res.json();
-    console.log(`update_org ${JSON.stringify(data)}`);
+    logger(`update_org ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -131,7 +132,7 @@ export const delete_org = async (org_id: string): Promise<string> => {
     });
 
     const data = await res.json();
-    console.log(`delete_org ${JSON.stringify(data)}`);
+    logger(`delete_org ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -150,7 +151,7 @@ export const get_user_orgs = async (): Promise<Org[]> => {
     });
 
     const data = await res.json();
-    console.log(`get_user_orgs ${JSON.stringify(data)}`);
+    logger(`get_user_orgs ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -170,7 +171,7 @@ export const add_user_to_org = async (org_id: string): Promise<Org> => {
     });
 
     const data = await res.json();
-    console.log(`add_user_to_org ${JSON.stringify(data)}`);
+    logger(`add_user_to_org ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -190,7 +191,7 @@ export const remove_user_from_org = async (org_id: string): Promise<string> => {
     });
 
     const data = await res.json();
-    console.log(`remove_user_from_org ${JSON.stringify(data)}`);
+    logger(`remove_user_from_org ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -208,7 +209,7 @@ export const get_random_orgs = async (): Promise<Org[]> => {
     });
 
     const data = await res.json();
-    console.log(`get_random_orgs ${JSON.stringify(data)}`);
+    logger(`get_random_orgs ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 

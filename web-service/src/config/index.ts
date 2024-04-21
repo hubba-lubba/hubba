@@ -14,6 +14,7 @@ export const ORGS_API_URL = dev
     ? 'http://localhost:8002'
     : 'https://organizations-api.eddisonso.com';
 
-export const DOMAIN = dev
-    ? 'localhost'
-    : 'hubba.eddisonso.com';
+export const DOMAIN = dev ? 'localhost' : 'hubba.eddisonso.com';
+
+// export const LOG_LEVEL = dev ? 'debug' : 'info';
+export const LOG_LEVEL = dev ? 'info' : 'debug';

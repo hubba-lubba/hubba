@@ -1,6 +1,7 @@
 import { User, Video } from '../types';
 import { getidtoken } from '@/features/auth/api';
 import { USER_API_URL } from '@/config';
+import { logger } from '@/utils/logger';
 
 type UserServiceType = {
     user_id: string;
@@ -45,7 +46,7 @@ export const create_user = async (): Promise<User> => {
     });
 
     const data = await res.json();
-    console.log(`create ${JSON.stringify(data)}`);
+    logger(`create ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -65,7 +66,7 @@ export const get_current_user = async (): Promise<User> => {
     });
 
     const data = await res.json();
-    console.log(`get_current_user ${JSON.stringify(data)}`);
+    logger(`get_current_user ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -84,7 +85,7 @@ export const get_user = async (user_id: string): Promise<User> => {
     });
 
     const data = await res.json();
-    console.log(`get ${JSON.stringify(data)}`);
+    logger(`get ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -103,7 +104,7 @@ export const get_live_users = async (): Promise<User[]> => {
     });
 
     const data = await res.json();
-    console.log(`get live ${JSON.stringify(data)}`);
+    logger(`get live ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -129,7 +130,7 @@ export const follow_user = async (user_id: string): Promise<User> => {
     });
 
     const data = await res.json();
-    console.log(`follow ${JSON.stringify(data)}`);
+    logger(`follow ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -155,7 +156,7 @@ export const unfollow_user = async (user_id: string): Promise<User> => {
     });
 
     const data = await res.json();
-    console.log(`unfollow ${JSON.stringify(data)}`);
+    logger(`unfollow ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -187,8 +188,6 @@ export const update_user = async ({
         streaming_status: streaming_status,
     };
 
-    console.log(body);
-
     const res = await fetch(`${USER_API_URL}/`, {
         method: 'PATCH',
         headers: headers,
@@ -196,7 +195,7 @@ export const update_user = async ({
     });
 
     const data = await res.json();
-    console.log(`update ${JSON.stringify(data)}`);
+    logger(`update ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -218,7 +217,7 @@ export const add_video = async (video_url: string): Promise<User> => {
     });
 
     const data = await res.json();
-    console.log(`add video ${JSON.stringify(data)}`);
+    logger(`add video ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 

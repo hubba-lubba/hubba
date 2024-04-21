@@ -1,6 +1,7 @@
 import { Event } from '@/features/events/types';
 import { getidtoken } from '@/features/auth/api';
 import { EVENTS_API_URL } from '@/config';
+import { logger } from '@/utils/logger';
 
 type EventServiceType = {
     event_id: string;
@@ -44,7 +45,7 @@ export const get_event = async (event_id: string): Promise<Event> => {
     });
 
     const data = await res.json();
-    console.log(`get_event ${JSON.stringify(data)}`);
+    logger(`get_event ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -80,7 +81,7 @@ export const create_event = async (
     });
 
     const data = await res.json();
-    console.log(`create_event ${JSON.stringify(data)}`);
+    logger(`create_event ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -128,7 +129,7 @@ export const update_event = async ({
     });
 
     const data = await res.json();
-    console.log(`update_event ${JSON.stringify(data)}`);
+    logger(`update_event ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -148,7 +149,7 @@ export const delete_event = async (event_id: string): Promise<string> => {
     });
 
     const data = await res.json();
-    console.log(`delete_event ${JSON.stringify(data)}`);
+    logger(`delete_event ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -167,7 +168,7 @@ export const get_user_events = async (): Promise<Event[]> => {
     });
 
     const data = await res.json();
-    console.log(`get_user_events ${JSON.stringify(data)}`);
+    logger(`get_user_events ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -187,7 +188,7 @@ export const add_user_to_event = async (event_id: string): Promise<Event> => {
     });
 
     const data = await res.json();
-    console.log(`add_user_to_event ${JSON.stringify(data)}`);
+    logger(`add_user_to_event ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -212,7 +213,7 @@ export const remove_user_from_event = async (
     );
 
     const data = await res.json();
-    console.log(`remove_user_from_event ${JSON.stringify(data)}`);
+    logger(`remove_user_from_event ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -230,7 +231,7 @@ export const get_random_events = async (): Promise<Event[]> => {
     });
 
     const data = await res.json();
-    console.log(`get_random_events ${JSON.stringify(data)}`);
+    logger(`get_random_events ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -249,7 +250,7 @@ export const get_upcoming_events = async (): Promise<Event[]> => {
     });
 
     const data = await res.json();
-    console.log(`get_upcoming_events ${JSON.stringify(data)}`);
+    logger(`get_upcoming_events ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
@@ -268,7 +269,7 @@ export const get_current_events = async (): Promise<Event[]> => {
     });
 
     const data = await res.json();
-    console.log(`get_current_events ${JSON.stringify(data)}`);
+    logger(`get_current_events ${JSON.stringify(data)}`);
 
     if (res.status !== 200) throw res;
 
