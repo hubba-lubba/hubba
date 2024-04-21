@@ -45,7 +45,7 @@ def add_user():
     username = auth.get_user(user_id).display_name
     streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
     channel = context.get("channel") if context.get("channel") else None
-    video_urls = context.get("video_urls") if context.get("video_urls") else None
+    video_urls = context.get("video_urls") if context.get("video_urls") else []
 
     with Session(engine) as session:
         user_repository = UserRepository(session)

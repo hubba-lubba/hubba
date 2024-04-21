@@ -29,7 +29,7 @@ def version():
 
 @events_blueprint.route("/", methods=["PUT"])
 @ensure_authorized()
-@require_json_params(["name", "host_id"])
+@require_json_params(["name", "host_org", "time_of"])
 def add_event():
     context = request.get_json()
 
@@ -42,7 +42,8 @@ def add_event():
     time_of = context.get("time_of") if context.get("time_of") else None
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
-    host_id = context.get("host_id") if context.get("host_id") else None
+    host_id = context.get("host_org") if context.get("host_org") else None
+    prizes = context.get("prizes") if context.get("prizes") else []
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
@@ -57,7 +58,8 @@ def add_event():
                 time_of=time_of,
                 host=host,
                 entry_fee=entry_fee,
-                host_id=host_id
+                host_id=UUID(host_id),
+                prizes=prizes
             )
             response = jsonify({
                 "status": "success",
@@ -135,29 +137,24 @@ def delete_event():
 
 @events_blueprint.route("/", methods=["PATCH"])
 @ensure_authorized()
-@require_query_params(["event_id"])
+@require_json_params(["event_id"])
 @ensure_UUID("event_id")
 def patch_event():
-    event_id = request.args.get("event_id")
-    if not event_id:
-        response = jsonify({
-            "status": "error",
-            "message": "event_id is required"
-        })
-        response.status_code = 400
-        return response
-    
     context = request.get_json()
+    event_id = context.get("event_id")
 
     name= context.get("name") if context.get("name") else None
     thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
     description = context.get("description") if context.get("description") else None
     url = context.get("url") if context.get("url") else None
+    time_of = context.get("time_of") if context.get("time_of") else None
     platform = context.get("platform") if context.get("platform") else None
     tags = list(map(str, context.get("tags"))) if context.get("tags") else []
     time_of = context.get("time_of") if context.get("time_of") else None
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
+    prizes = context.get("prizes") if context.get("prizes") else []
+    status = context.get("status") if context.get("status") else None
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
@@ -172,7 +169,9 @@ def patch_event():
                 tags=tags,
                 time_of=time_of,
                 host=host,
-                entry_fee=entry_fee
+                entry_fee=entry_fee,
+                prizes=prizes,
+                status=status
             )
             response = jsonify({
                 "status": "success",

@@ -58,6 +58,8 @@ class Events(Base):
 
     status: Mapped[int] = mapped_column(nullable=True)
 
+    prizes: Mapped[ARRAY] = mapped_column(ARRAY(String(64)))
+
     def get_JSON(self):
         return Events.to_JSON(self)
 
@@ -76,5 +78,6 @@ class Events(Base):
                 "entry_fee": event.entry_fee,
                 "date_posted": event.date_posted if event.date_posted else None,
                 "attendees": [u.user_id for u in event.attendees],
-                "status": event.status
+                "status": event.status,
+                "prizes": event.prizes
                 }
