@@ -6,6 +6,7 @@ from domains.repositories.utils import check_id_exists, check_id_not_exists, che
 from events.publisher_factory import PublisherFactory
 from logger import LoggerFactory
 from firebase_admin import auth
+from sqlalchemy.sql import func
 
 
 class UserRepository:
@@ -47,12 +48,16 @@ class UserRepository:
                  username=None, 
                  user_id=None, 
                  streaming_status=None,
-                 profile_picture=None):
+                 profile_picture=None,
+                 channel=None,
+                 video_urls=None):
 
         new_user = User(username=username, 
                         user_id=user_id, 
                         streaming_status=streaming_status,
-                        profile_picture=profile_picture)
+                        profile_picture=profile_picture,
+                        channel=channel,
+                        video_urls=video_urls)
         return self._add_user(new_user)
 
     """
@@ -111,6 +116,16 @@ class UserRepository:
         self.session.commit()
         return user
 
+    @check_id_exists(User, ["user_id", "following"])
+    def remove_following(self, user_id, following=None):
+        user = self.session.get(User, user_id)
+        following = self.session.get(User, following)
+
+        user.following.remove(following)
+        self.session.merge(user)
+        self.session.commit()
+        return user
+
     """
     Updates a User object
 
@@ -134,7 +149,9 @@ class UserRepository:
                     username=None, 
                     user_id=None, 
                     streaming_status=None,
-                    profile_picture=None):
+                    profile_picture=None,
+                    channel=None,
+                    video_urls=None):
         user = self.session.get(User, user_id)
         if self.session.query(User).filter(User.username == username).first() is not None:
             raise NonUniqueException(User, "username")
@@ -144,4 +161,10 @@ class UserRepository:
         user.username = username if username is not None else user.username
         user.streaming_status = streaming_status if streaming_status is not None else user.streaming_status
         user.profile_picture = profile_picture if profile_picture is not None else user.profile_picture
+        user.channel = channel if channel is not None else user.channel
+        user.video_urls = video_urls if video_urls is not None else user.video_urls
         return self._update_user(user)
+
+    def get_live_users(self):
+        users = self.session.query(User).filter(User.streaming_status == "live").order_by(func.random()).limit(5).all()
+        return users

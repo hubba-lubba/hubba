@@ -51,7 +51,6 @@ class OrganizationsRepository:
                                          image=image,
                                          description=description, 
                                          owner=owner,
-                                         moderators=[owner],
                                          users=[owner],
                                          events=[])
 
@@ -105,12 +104,14 @@ class OrganizationsRepository:
                          organization_id, 
                          name=None,
                          image=None,
-                         description=None):
+                         description=None,
+                         channel=None):
         organization = self.get_organization(organization_id=organization_id)
 
         organization.name = name if name else organization.name
         organization.image = image if image else organization.image
         organization.description = description if description else organization.description
+        organization.channel = channel if channel else organization.channel
 
         return self._update_organization(organization)
 

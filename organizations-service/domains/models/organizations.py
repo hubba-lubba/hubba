@@ -14,17 +14,6 @@ from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import ARRAY
 import uuid
 
-moderator_table = Table("organization_moderator_table",
-                        Base.metadata,
-                        Column("organization", 
-                               UUID, 
-                               ForeignKey("organizations.organization_id"), 
-                               primary_key=True),
-                        Column("moderator", 
-                               String(32), 
-                               ForeignKey("users.user_id"), 
-                               primary_key=True))
-
 user_table = Table("user_table",
                    Base.metadata,
                    Column("organization", 
@@ -67,14 +56,14 @@ class Organizations(Base):
 
     owner: Mapped[User] = relationship(back_populates="owns")
 
-    moderators: Mapped[list[User]] = relationship(secondary=moderator_table,
-                                                  back_populates="moderates")
-
     users: Mapped[list[User]] = relationship(secondary=user_table,
                                              back_populates="in_org")
 
     events: Mapped[list[Events]] = relationship(secondary=event_table,
                                                 back_populates="has_event")
+
+    channel: Mapped[str] = mapped_column(String(128),
+                                         nullable=True)
 
     def get_JSON(self):
         return Organizations.to_JSON(self)
@@ -87,7 +76,7 @@ class Organizations(Base):
             "image": organization.image,
             "description": organization.description,
             "owner": organization.owner.user_id,
-            "moderators": [moderator.user_id for moderator in organization.moderators],
             "users": [user.user_id for user in organization.users],
-            "events": [event.get_JSON() for event in organization.events]
+            "events": [event.get_JSON() for event in organization.events],
+            "channel": organization.channel
         }

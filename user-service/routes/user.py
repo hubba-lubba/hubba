@@ -43,13 +43,18 @@ def add_user():
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
     username = auth.get_user(user_id).display_name
-    streaming_status = context.get("streaming_status") if context.get(  "streaming_status") else None
+    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
+    channel = context.get("channel") if context.get("channel") else None
+    video_urls = context.get("video_urls") if context.get("video_urls") else None
 
     with Session(engine) as session:
         user_repository = UserRepository(session)
         try:
-            new_user = user_repository.add_user(username=username, user_id=user_id, 
-                                                streaming_status=streaming_status)
+            new_user = user_repository.add_user(username=username, 
+                                                user_id=user_id, 
+                                                streaming_status=streaming_status,
+                                                channel=channel,
+                                                video_urls=video_urls)
             response = jsonify({
                 "status": "success",
                 "user": new_user.get_JSON(),
@@ -110,6 +115,32 @@ def add_following():
             
             return result, 400
 
+@user_blueprint.route("/remove_following", methods=["PATCH"])
+@ensure_authorized()
+@require_json_params(["following"])
+def remove_following():
+    context = request.get_json()
+
+    curr_user_id = auth.verify_id_token(request.headers.get("id_token")).get("uid")
+    following = context.get("following")
+    with Session(engine) as session:
+        try:
+            user_repository = UserRepository(session)
+            user = user_repository.remove_following(user_id=curr_user_id,
+                                                    following=following)
+            response = jsonify({
+                "status": "success",
+                "user": user.get_JSON(),
+            })
+            return response
+        except IdMissingException as e:
+            result = jsonify({
+                "status": "failure",
+                "reason": str(e)
+            })
+            
+            return result, 400
+
 @user_blueprint.route("/get_current_user", methods=["GET"])
 @ensure_authorized()
 def get_current_user():
@@ -138,6 +169,8 @@ def patch_user():
     username = context.get("username") if context.get("username") else None
     streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
     profile_picture = context.get("profile_picture") if context.get("profile_picture") else None
+    channel = context.get("channel") if context.get("channel") else None
+    video_urls = context.get("video_urls") if context.get("video_urls") else None
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
 
@@ -147,7 +180,9 @@ def patch_user():
             updated_user = user_repository.update_user(username=username, 
                                                        user_id=user_id, 
                                                        streaming_status=streaming_status,
-                                                       profile_picture=profile_picture)
+                                                       profile_picture=profile_picture,
+                                                       channel=channel,
+                                                       video_urls=video_urls)
             response = jsonify({
                 "status": "success",
                 "user": updated_user.get_JSON(),
@@ -159,3 +194,14 @@ def patch_user():
                     "reason": str(e)
             })
             return result, 400
+
+@user_blueprint.route("/get_live_users", methods=["get"])
+def get_live_users():
+    with Session(engine) as session:
+        user_repository = UserRepository(session)
+        live_users = user_repository.get_live_users()
+        response = jsonify({
+            "status": "success",
+            "users": [user.get_JSON() for user in live_users]
+        })
+        return response
