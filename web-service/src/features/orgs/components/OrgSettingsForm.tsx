@@ -1,11 +1,3 @@
-import {
-    ChangeChannel,
-    ChangeBio,
-    ChangePassword,
-    ChangeEmail,
-    ChangeUsername,
-    ChangeProfilePicture,
-} from './settings_forms';
 import { Layout } from '@/components/layout';
 
 export const SettingsForm = () => {

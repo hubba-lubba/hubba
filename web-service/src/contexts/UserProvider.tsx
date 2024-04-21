@@ -15,6 +15,7 @@ import {
 import { get_user_orgs } from '@/features/orgs/api';
 import { get_user_events, update_event } from '@/features/events/api';
 import { editemail, editpassword, editusername } from '@/lib/auth';
+import { update_org } from '@/features/orgs/api';
 import { logger } from '@/utils/logger';
 
 interface UserContextType {
@@ -44,6 +45,17 @@ interface UserContextType {
     changePassword: (password: string, newPassword: string) => Promise<void>;
 
     setEventStreamingStatus: (event_id: string, status: 0 | 1) => Promise<void>;
+    editEventName: (event_id: string, name: string) => Promise<void>;
+    editEventThumbnail: (event_id: string, thumbnail: string) => Promise<void>;
+    editEventDesc: (event_id: string, desc: string) => Promise<void>;
+    editEventUrl: (event_id: string, url: string) => Promise<void>;
+    editEventTime: (event_id: string, time_of: Date) => Promise<void>;
+    editEventPrizes: (event_id: string, prizes: string[]) => Promise<void>;
+
+    editOrgName: (org_id: string, name: string) => Promise<void>;
+    editOrgImage: (org_id: string, image: string) => Promise<void>;
+    editOrgChannel: (org_id: string, channel: string) => Promise<void>;
+    editOrgDesc: (org_id: string, desc: string) => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextType>(null!);
@@ -141,9 +153,98 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
             ),
         );
     };
+    const editEventName = async (event_id: string, name: string) => {
+        const eventData = await update_event({
+            event_id: event_id,
+            name: name,
+        });
+        setUserEvents(
+            userEvents.map((event) =>
+                event.event_id === event_id ? eventData : event,
+            ),
+        );
+    };
+    const editEventThumbnail = async (event_id: string, thumbnail: string) => {
+        const eventData = await update_event({
+            event_id: event_id,
+            thumbnail: thumbnail,
+        });
+        setUserEvents(
+            userEvents.map((event) =>
+                event.event_id === event_id ? eventData : event,
+            ),
+        );
+    };
+    const editEventDesc = async (event_id: string, description: string) => {
+        const eventData = await update_event({
+            event_id: event_id,
+            description: description,
+        });
+        setUserEvents(
+            userEvents.map((event) =>
+                event.event_id === event_id ? eventData : event,
+            ),
+        );
+    };
+    const editEventUrl = async (event_id: string, url: string) => {
+        const eventData = await update_event({
+            event_id: event_id,
+            url: url,
+        });
+        setUserEvents(
+            userEvents.map((event) =>
+                event.event_id === event_id ? eventData : event,
+            ),
+        );
+    };
+    const editEventTime = async (event_id: string, time_of: Date) => {
+        const eventData = await update_event({
+            event_id: event_id,
+            time_of: time_of,
+        });
+        setUserEvents(
+            userEvents.map((event) =>
+                event.event_id === event_id ? eventData : event,
+            ),
+        );
+    };
+    const editEventPrizes = async (event_id: string, prizes: string[]) => {
+        const eventData = await update_event({
+            event_id: event_id,
+            prizes: prizes,
+        });
+        setUserEvents(
+            userEvents.map((event) =>
+                event.event_id === event_id ? eventData : event,
+            ),
+        );
+    };
 
     // org methods
-    // update org
+    const editOrgName = async (org_id: string, name: string) => {
+        const orgData = await update_org({ org_id: org_id, name: name });
+        setUserOrgs(
+            userOrgs.map((org) => (org.org_id === org_id ? orgData : org)),
+        );
+    };
+    const editOrgImage = async (org_id: string, image: string) => {
+        const orgData = await update_org({ org_id: org_id, image: image });
+        setUserOrgs(
+            userOrgs.map((org) => (org.org_id === org_id ? orgData : org)),
+        );
+    };
+    const editOrgChannel = async (org_id: string, channel: string) => {
+        const orgData = await update_org({ org_id: org_id, channel: channel });
+        setUserOrgs(
+            userOrgs.map((org) => (org.org_id === org_id ? orgData : org)),
+        );
+    };
+    const editOrgDesc = async (org_id: string, desc: string) => {
+        const orgData = await update_org({ org_id: org_id, description: desc });
+        setUserOrgs(
+            userOrgs.map((org) => (org.org_id === org_id ? orgData : org)),
+        );
+    };
 
     return (
         <UserContext.Provider
@@ -174,6 +275,17 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
                 changePassword,
 
                 setEventStreamingStatus,
+                editEventName,
+                editEventThumbnail,
+                editEventDesc,
+                editEventUrl,
+                editEventTime,
+                editEventPrizes,
+
+                editOrgName,
+                editOrgImage,
+                editOrgChannel,
+                editOrgDesc,
             }}
         >
             {children}

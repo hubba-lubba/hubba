@@ -13,6 +13,9 @@ export const EVENTS_API_URL = dev
 export const ORGS_API_URL = dev
     ? 'http://localhost:8002'
     : 'https://organizations-api.eddisonso.com';
+export const FILES_API_URL = dev
+    ? 'http://localhost:8003'
+    : 'https://file-api.eddisonso.com';
 
 export const DOMAIN = dev ? 'localhost' : 'hubba.eddisonso.com';
 

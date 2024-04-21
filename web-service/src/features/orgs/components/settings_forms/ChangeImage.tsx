@@ -7,25 +7,25 @@ import { AnySchema } from 'joi';
 import { UseFormSetError } from 'react-hook-form';
 import { upload_image } from '@/lib/images';
 
-type ChangeProfilePictureFields = {
+type ChangeImageFields = {
     newProfilePicture: FileList;
 };
 
-export function ChangeProfilePicture() {
-    const { userData, editProfileImage } = useContext(UserContext);
+export function ChangeImage() {
+    const { userData, editOrgImage } = useContext(UserContext);
     const [previewImage, setPreviewImage] = useState<string | ArrayBuffer>(
         null!,
     );
     const [error, setError] = useState<string | null>(null);
 
-    async function handleSubmit(data: ChangeProfilePictureFields) {
+    async function handleSubmit(data: ChangeImageFields) {
         const { newProfilePicture } = data;
         try {
             const image_url = await upload_image(
                 newProfilePicture.item(0)!,
                 'user',
             );
-            await editProfileImage(image_url);
+            await editOrgImage(image_url);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
             setError((error as Error).message);
@@ -34,7 +34,7 @@ export function ChangeProfilePicture() {
 
     const handleFileChange = (
         e: React.ChangeEvent<HTMLInputElement>,
-        setError: UseFormSetError<ChangeProfilePictureFields>,
+        setError: UseFormSetError<ChangeImageFields>,
     ) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -52,9 +52,7 @@ export function ChangeProfilePicture() {
     return (
         <div className="flex w-3/6 flex-col items-center">
             <h2 className="mb-2 text-3xl">Change Profile Picture</h2>
-            <Form<ChangeProfilePictureFields, AnySchema>
-                onSubmit={handleSubmit}
-            >
+            <Form<ChangeImageFields, AnySchema> onSubmit={handleSubmit}>
                 {({ register, formState, setError }) => (
                     <>
                         <FieldWrapper
