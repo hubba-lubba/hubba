@@ -107,7 +107,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     size={24}
                                     onClick={() => setShowCreateOrgModal(true)}
                                 />
-                                {userEvents.length > 0 && (
+                                {userEvents?.length > 0 && (
                                     <MdPlaylistAdd
                                         className="cursor-pointer"
                                         size={24}

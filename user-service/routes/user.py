@@ -43,7 +43,7 @@ def add_user():
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
     username = auth.get_user(user_id).display_name
-    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
+    streaming_status = context.get("streaming_status") if context.get(  "streaming_status") else None
 
     with Session(engine) as session:
         user_repository = UserRepository(session)

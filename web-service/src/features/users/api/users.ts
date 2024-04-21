@@ -10,6 +10,7 @@ export const create_user = async (): Promise<User> => {
     const res = await fetch(`${USER_API_URL}/`, {
         method: 'PUT',
         headers: headers,
+        body: JSON.stringify({})
     });
 
     const data = await res.json();

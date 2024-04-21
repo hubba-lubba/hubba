@@ -14,11 +14,11 @@ export const SidebarEvents = () => {
     return (
         <SidebarSection
             title="My Events"
-            collapsible={userEvents.length > collapseLength}
+            collapsible={userEvents?.length > collapseLength}
             showMoreState={[showMore, setShowMore]}
         >
-            {userEvents
-                .map((event, index) => (
+
+            {userEvents?.map((event, index) => (
                     <Button
                         key={`sidebar-event-${event.event_id}-${index}`}
                         variant="text"
@@ -30,7 +30,7 @@ export const SidebarEvents = () => {
                         {event.name}
                     </Button>
                 ))
-                .slice(0, showMore ? userEvents.length : collapseLength)}
+                .slice(0, showMore ? userEvents?.length : collapseLength)}
         </SidebarSection>
     );
 };
