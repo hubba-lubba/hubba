@@ -23,6 +23,9 @@ class User(Base):
                                           nullable=False,
                                           unique=True)
 
+    bio: Mapped[str] = mapped_column(String(256),
+                                     nullable=True)
+
     followers: Mapped[list["User"]] = relationship("User", secondary=following_table,
                                                    primaryjoin=user_id==following_table.c.follows,
                                                    secondaryjoin=user_id==following_table.c.user,
@@ -33,8 +36,7 @@ class User(Base):
                                                    secondaryjoin=user_id==following_table.c.follows,
                                                    back_populates="followers")
 
-    streaming_status: Mapped[str] = mapped_column(String(12),
-                                                  nullable=True)
+    streaming_status: Mapped[int] = mapped_column(nullable=True)
 
     profile_picture: Mapped[str] = mapped_column(String(256),
                                                  nullable=True)
