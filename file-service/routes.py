@@ -69,3 +69,25 @@ def get_organizations_upload_url():
         "status": "success",
         "url": url,
         "blob-url": f"https://storage.googleapis.com/{bucket_name}/{blob_name}"})
+
+@blob_url_generator.route("/get_events_upload_url", methods=["GET"])
+@ensure_authorized()
+def get_organizations_upload_url():
+    bucket_name = "hubba-events-pictures"
+
+    bucket = storage_client.bucket(bucket_name)
+    random_32 = ''.join(random.choices(string.ascii_lowercase + string.digits, k=32))
+    blob_name =  f"{random_32}.jpeg"
+    blob = bucket.blob(blob_name)
+
+    url = blob.generate_signed_url(
+        version="v4",
+        expiration=datetime.timedelta(minutes=15),
+        method="PUT",
+        content_type="image/jpeg"
+    )
+    logger.info(f"Generated signed URL for {blob_name} in bucket {bucket_name}")
+    return jsonify({
+        "status": "success",
+        "url": url,
+        "blob-url": f"https://storage.googleapis.com/{bucket_name}/{blob_name}"})
