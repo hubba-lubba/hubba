@@ -6,7 +6,6 @@ import Joi from 'joi';
 import { Layout } from '@/components/layout';
 import { UserContext } from '@/contexts/UserProvider';
 import { name, desc } from '@/lib/validation';
-import { Event } from '@/features/events/types';
 import { SelectField, DateField } from '@/components/form';
 import { Org } from '@/features/orgs/types';
 import { get_user_orgs } from '@/features/orgs/api';
@@ -31,9 +30,9 @@ type CreateEventValues = {
     description?: string;
     url?: string;
     time_of: Date;
-    prize1: string;
-    prize2: string;
-    prize3: string;
+    prize1?: string;
+    prize2?: string;
+    prize3?: string;
 };
 
 export const CreateEventModal = () => {
@@ -47,37 +46,36 @@ export const CreateEventModal = () => {
             const userOrgs = await get_user_orgs();
             setOrgs(userOrgs);
         };
-        if(userData) fetchData();
+        if (userData) fetchData();
     }, [userData]);
 
     const handleSubmit = async (data: CreateEventValues) => {
         const {
             name,
             host_org,
+            time_of,
             description,
             url,
-            time_of,
             prize1,
             prize2,
             prize3,
         } = data;
 
-        // TODO: what to pass in for create_org?
-        const event = new Event(
-            `id ${name}`,
-            host_org.split(' - ')[1],
+        // cringe methods TT
+        const prizes = [];
+        if (prize1) prizes.push(prize1);
+        if (prize2) prizes.push(prize2);
+        if (prize3) prizes.push(prize3);
+        const host_org_id = host_org.split(' - ')[1];
+
+        const eventData = await create_event(
             name,
-            'https://placehold.co/600x400',
-            description ?? '',
-            url ?? '',
-            'Twitch',
-            [],
+            host_org_id,
             time_of,
-            0,
-            [prize1, prize2, prize3],
-            [userData.user_id],
+            description,
+            url,
+            prizes,
         );
-        const eventData = await create_event(event);
         setUserEvents([...userEvents, eventData]);
         setShowCreateEventModal(false);
     };
@@ -98,6 +96,7 @@ export const CreateEventModal = () => {
                         <div className="flex w-full flex-row justify-center space-x-4">
                             <div className="flex w-1/4 flex-col">
                                 <SelectField
+                                    // TODO: implement having select displayed options be different from underlying value
                                     options={orgs.map(
                                         (org) => `${org.name} - ${org.org_id}`,
                                     )}

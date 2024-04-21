@@ -20,16 +20,30 @@ export const get_event = async (event_id: string): Promise<Event> => {
     return event;
 };
 
-// TODO: figure out which fields are needed in PUT/PATCH for update and create.
-export const create_event = async (event: Event): Promise<Event> => {
+export const create_event = async (
+    name: string,
+    host_org: string,
+    time_of: Date,
+    description?: string,
+    url?: string,
+    prizes?: string[],
+): Promise<Event> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
+    const body = {
+        name: name,
+        host_org: host_org,
+        description: description,
+        url: url,
+        time_of: time_of,
+        prizes: prizes,
+    };
     const res = await fetch(`${EVENTS_API_URL}/`, {
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify({ ...event }),
+        body: JSON.stringify(body),
     });
 
     const data = await res.json();
@@ -40,6 +54,8 @@ export const create_event = async (event: Event): Promise<Event> => {
     const new_event = data.event as Event;
     return new_event;
 };
+
+// TODO: figure out which fields are needed in PATCH for update.
 
 export const update_event = async (
     event_id: string,

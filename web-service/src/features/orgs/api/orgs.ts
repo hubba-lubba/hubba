@@ -20,16 +20,20 @@ export const get_org = async (org_id: string): Promise<Org> => {
     return org;
 };
 
-// TODO: set specific fields for create and update
-export const create_org = async (org: Org): Promise<Org> => {
+export const create_org = async (name: string, description?: string, channel?: string): Promise<Org> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
+    const body = {
+        name: name,
+        description: description,
+        channel: channel,
+    };
     const res = await fetch(`${ORGS_API_URL}/`, {
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify({ ...org }),
+        body: JSON.stringify(body),
     });
 
     const data = await res.json();
@@ -41,15 +45,23 @@ export const create_org = async (org: Org): Promise<Org> => {
     return new_org;
 };
 
+// TODO: set specific fields for update
 export const update_org = async (org_id: string, org: Org): Promise<Org> => {
+    const { name, description, channel, image } = org;
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
+    const body = {
+        name: name,
+        description: description,
+        channel: channel,
+        image: image,
+    };
     const res = await fetch(`${ORGS_API_URL}/?org_id=${org_id}`, {
         method: 'PATCH',
         headers: headers,
-        body: JSON.stringify({ ...org }),
+        body: JSON.stringify(body),
     });
 
     const data = await res.json();
@@ -148,7 +160,7 @@ export const get_random_orgs = async (): Promise<Org[]> => {
 
     const data = await res.json();
     console.log(`get_random_orgs ${JSON.stringify(data)}`);
-    
+
     if (res.status !== 200) throw res;
 
     const orgs = data.orgs as Org[];
