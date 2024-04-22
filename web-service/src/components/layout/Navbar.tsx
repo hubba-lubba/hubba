@@ -72,7 +72,6 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
         setShowCreateEventModal,
     } = useContext(ModalContext);
     const { userData, userEvents } = useContext(UserContext);
-    const user = useContext(AuthContext);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -137,7 +136,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                             className="pfp cursor-pointer"
                             onClick={() => setToggleDropdown(!toggleDropdown)}
                         >
-                            <Pfp image={userData.profile_image} />
+                            <Pfp image={userData?.profile_image} />
                             {toggleDropdown && <NavDropdown />}
                         </div>
                     </div>
