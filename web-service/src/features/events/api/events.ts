@@ -46,14 +46,21 @@ export const get_event = async (event_id: string): Promise<Event> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_event ${JSON.stringify(data)}`);
+    logger(`get_event`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventData = data.event as EventServiceType;
-    const event = extort(eventData);
-    return event;
+        if (res.status !== 200) throw res;
+
+        const eventData = data.event as EventServiceType;
+        const event = extort(eventData);
+        return event;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const create_event = async (
@@ -82,14 +89,21 @@ export const create_event = async (
         body: JSON.stringify(body),
     });
 
-    const data = await res.json();
-    logger(`create_event ${JSON.stringify(data)}`);
+    logger(`create_event`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventData = data.event as EventServiceType;
-    const event = extort(eventData);
-    return event;
+        if (res.status !== 200) throw res;
+
+        const eventData = data.event as EventServiceType;
+        const event = extort(eventData);
+        return event;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const update_event = async ({
@@ -130,14 +144,21 @@ export const update_event = async ({
         body: JSON.stringify(body),
     });
 
-    const data = await res.json();
-    logger(`update_event ${JSON.stringify(data)}`);
+    logger(`update_event`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventData = data.event as EventServiceType;
-    const event = extort(eventData);
-    return event;
+        if (res.status !== 200) throw res;
+
+        const eventData = data.event as EventServiceType;
+        const event = extort(eventData);
+        return event;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const delete_event = async (event_id: string): Promise<string> => {
@@ -150,13 +171,20 @@ export const delete_event = async (event_id: string): Promise<string> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`delete_event ${JSON.stringify(data)}`);
+    logger(`delete_event`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const deleted_event_id = data.event_id as string;
-    return deleted_event_id;
+        if (res.status !== 200) throw res;
+
+        const deleted_event_id = data.event_id as string;
+        return deleted_event_id;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_user_events = async (): Promise<Event[]> => {
@@ -169,14 +197,21 @@ export const get_user_events = async (): Promise<Event[]> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_user_events ${JSON.stringify(data)}`);
+    logger(`get_user_events`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventsData = data.events as EventServiceType[];
-    const events = extort_many(eventsData);
-    return events;
+        if (res.status !== 200) throw res;
+
+        const eventsData = data.events as EventServiceType[];
+        const events = extort_many(eventsData);
+        return events;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const add_user_to_event = async (event_id: string): Promise<Event> => {
@@ -189,14 +224,21 @@ export const add_user_to_event = async (event_id: string): Promise<Event> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`add_user_to_event ${JSON.stringify(data)}`);
+    logger(`add_user_to_event`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventData = data.event as EventServiceType;
-    const event = extort(eventData);
-    return event;
+        if (res.status !== 200) throw res;
+
+        const eventData = data.event as EventServiceType;
+        const event = extort(eventData);
+        return event;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const remove_user_from_event = async (
@@ -214,13 +256,20 @@ export const remove_user_from_event = async (
         },
     );
 
-    const data = await res.json();
-    logger(`remove_user_from_event ${JSON.stringify(data)}`);
+    logger(`remove_user_from_event`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const deleted_event_id = data.event_id as string;
-    return deleted_event_id;
+        if (res.status !== 200) throw res;
+
+        const deleted_event_id = data.event_id as string;
+        return deleted_event_id;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_random_events = async (): Promise<Event[]> => {
@@ -232,14 +281,21 @@ export const get_random_events = async (): Promise<Event[]> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_random_events ${JSON.stringify(data)}`);
+    logger(`get_random_events`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventsData = data.events as EventServiceType[];
-    const events = extort_many(eventsData);
-    return events;
+        if (res.status !== 200) throw res;
+
+        const eventsData = data.events as EventServiceType[];
+        const events = extort_many(eventsData);
+        return events;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_upcoming_events = async (): Promise<Event[]> => {
@@ -251,14 +307,21 @@ export const get_upcoming_events = async (): Promise<Event[]> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_upcoming_events ${JSON.stringify(data)}`);
+    logger(`get_upcoming_events`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventsData = data.events as EventServiceType[];
-    const events = extort_many(eventsData);
-    return events;
+        if (res.status !== 200) throw res;
+
+        const eventsData = data.events as EventServiceType[];
+        const events = extort_many(eventsData);
+        return events;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_current_events = async (): Promise<Event[]> => {
@@ -270,12 +333,19 @@ export const get_current_events = async (): Promise<Event[]> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_current_events ${JSON.stringify(data)}`);
+    logger(`get_current_events`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const eventsData = data.events as EventServiceType[];
-    const events = extort_many(eventsData);
-    return events;
+        if (res.status !== 200) throw res;
+
+        const eventsData = data.events as EventServiceType[];
+        const events = extort_many(eventsData);
+        return events;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };

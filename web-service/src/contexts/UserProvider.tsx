@@ -131,6 +131,8 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     // auth methods
     const editUsername = async (username: string) => {
         await editusername(username);
+        const user = await update_user({ username: username });
+        setUserData(user);
     };
 
     const editEmail = async (email: string) => {

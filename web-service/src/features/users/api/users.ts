@@ -47,14 +47,21 @@ export const create_user = async (): Promise<User> => {
         body: JSON.stringify({}),
     });
 
-    const data = await res.json();
-    logger(`create ${JSON.stringify(data)}`);
+    logger(`create`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const userData = data.user as UserServiceType;
-    const user = extort(userData);
-    return user as User;
+        if (res.status !== 200) throw res;
+
+        const userData = data.user as UserServiceType;
+        const user = extort(userData);
+        return user as User;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_current_user = async (): Promise<User> => {
@@ -67,14 +74,21 @@ export const get_current_user = async (): Promise<User> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_current_user ${JSON.stringify(data)}`);
+    logger('get_current_user');
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const userData = data.user as UserServiceType;
-    const user = extort(userData);
-    return user;
+        if (res.status !== 200) throw res;
+
+        const userData = data.user as UserServiceType;
+        const user = extort(userData);
+        return user;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_user = async (user_id: string): Promise<User> => {
@@ -86,14 +100,21 @@ export const get_user = async (user_id: string): Promise<User> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get ${JSON.stringify(data)}`);
+    logger(`get_user`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const userData = data.user as UserServiceType;
-    const user = extort(userData);
-    return user;
+        if (res.status !== 200) throw res;
+
+        const userData = data.user as UserServiceType;
+        const user = extort(userData);
+        return user;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_live_users = async (): Promise<User[]> => {
@@ -105,14 +126,21 @@ export const get_live_users = async (): Promise<User[]> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get live ${JSON.stringify(data)}`);
+    logger(`get live`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const usersData = data.users as UserServiceType[];
-    const users = extort_many(usersData);
-    return users;
+        if (res.status !== 200) throw res;
+
+        const usersData = data.users as UserServiceType[];
+        const users = extort_many(usersData);
+        return users;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const follow_user = async (user_id: string): Promise<User> => {
@@ -131,14 +159,21 @@ export const follow_user = async (user_id: string): Promise<User> => {
         body: JSON.stringify(body),
     });
 
-    const data = await res.json();
-    logger(`follow ${JSON.stringify(data)}`);
+    logger(`follow`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const userData = data.user as UserServiceType;
-    const user = extort(userData);
-    return user;
+        if (res.status !== 200) throw res;
+
+        const userData = data.user as UserServiceType;
+        const user = extort(userData);
+        return user;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const unfollow_user = async (user_id: string): Promise<User> => {
@@ -157,22 +192,31 @@ export const unfollow_user = async (user_id: string): Promise<User> => {
         body: JSON.stringify(body),
     });
 
-    const data = await res.json();
-    logger(`unfollow ${JSON.stringify(data)}`);
+    logger(`unfollow`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const userData = data.user as UserServiceType;
-    const user = extort(userData);
-    return user;
+        if (res.status !== 200) throw res;
+
+        const userData = data.user as UserServiceType;
+        const user = extort(userData);
+        return user;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const update_user = async ({
+    username,
     channel,
     bio,
     profile_image,
     streaming_status,
 }: {
+    username?: string;
     channel?: string;
     bio?: string;
     profile_image?: string;
@@ -183,7 +227,9 @@ export const update_user = async ({
         id_token: await getidtoken(),
     };
 
+    // undefined fields aren't included in stringified object
     const body = {
+        username: username,
         channel: channel,
         bio: bio,
         profile_image: profile_image,
@@ -196,14 +242,21 @@ export const update_user = async ({
         body: JSON.stringify(body),
     });
 
-    const data = await res.json();
-    logger(`update ${JSON.stringify(data)}`);
+    logger(`update`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const userData = data.user as UserServiceType;
-    const user = extort(userData);
-    return user;
+        if (res.status !== 200) throw res;
+
+        const userData = data.user as UserServiceType;
+        const user = extort(userData);
+        return user;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const add_video = async (video_url: string): Promise<User> => {
@@ -218,14 +271,21 @@ export const add_video = async (video_url: string): Promise<User> => {
         body: JSON.stringify({ video_url }),
     });
 
-    const data = await res.json();
-    logger(`add video ${JSON.stringify(data)}`);
+    logger(`add video`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const userData = data.user as UserServiceType;
-    const user = extort(userData);
-    return user;
+        if (res.status !== 200) throw res;
+
+        const userData = data.user as UserServiceType;
+        const user = extort(userData);
+        return user;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_videos = async (user: User): Promise<Video[]> => {

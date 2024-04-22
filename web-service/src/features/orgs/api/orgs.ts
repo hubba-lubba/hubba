@@ -42,14 +42,21 @@ export const get_org = async (org_id: string): Promise<Org> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_org ${JSON.stringify(data)}`);
+    logger(`get_org`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const orgData = data.organization as OrgServiceType;
-    const org = extort(orgData);
-    return org;
+        if (res.status !== 200) throw res;
+
+        const orgData = data.organization as OrgServiceType;
+        const org = extort(orgData);
+        return org;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const create_org = async (
@@ -72,14 +79,21 @@ export const create_org = async (
         body: JSON.stringify(body),
     });
 
-    const data = await res.json();
-    logger(`create_org ${JSON.stringify(data)}`);
+    logger(`create_org`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const orgData = data.organization as OrgServiceType;
-    const org = extort(orgData);
-    return org;
+        if (res.status !== 200) throw res;
+
+        const orgData = data.organization as OrgServiceType;
+        const org = extort(orgData);
+        return org;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const update_org = async ({
@@ -111,14 +125,21 @@ export const update_org = async ({
         body: JSON.stringify(body),
     });
 
-    const data = await res.json();
-    logger(`update_org ${JSON.stringify(data)}`);
+    logger(`update_org`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const orgData = data.organization as OrgServiceType;
-    const org = extort(orgData);
-    return org;
+        if (res.status !== 200) throw res;
+
+        const orgData = data.organization as OrgServiceType;
+        const org = extort(orgData);
+        return org;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const delete_org = async (org_id: string): Promise<string> => {
@@ -131,13 +152,20 @@ export const delete_org = async (org_id: string): Promise<string> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`delete_org ${JSON.stringify(data)}`);
+    logger(`delete_org`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const deleted_org_id = data.organization_id as string;
-    return deleted_org_id;
+        if (res.status !== 200) throw res;
+
+        const deleted_org_id = data.organization_id as string;
+        return deleted_org_id;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_user_orgs = async (): Promise<Org[]> => {
@@ -150,14 +178,21 @@ export const get_user_orgs = async (): Promise<Org[]> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_user_orgs ${JSON.stringify(data)}`);
+    logger(`get_user_orgs`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const orgsData = data.organizations as OrgServiceType[];
-    const orgs = extort_many(orgsData);
-    return orgs;
+        if (res.status !== 200) throw res;
+
+        const orgsData = data.organizations as OrgServiceType[];
+        const orgs = extort_many(orgsData);
+        return orgs;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const add_user_to_org = async (org_id: string): Promise<Org> => {
@@ -170,14 +205,21 @@ export const add_user_to_org = async (org_id: string): Promise<Org> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`add_user_to_org ${JSON.stringify(data)}`);
+    logger(`add_user_to_org`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const orgData = data.organization as OrgServiceType;
-    const org = extort(orgData);
-    return org;
+        if (res.status !== 200) throw res;
+
+        const orgData = data.organization as OrgServiceType;
+        const org = extort(orgData);
+        return org;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const remove_user_from_org = async (org_id: string): Promise<string> => {
@@ -190,13 +232,20 @@ export const remove_user_from_org = async (org_id: string): Promise<string> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`remove_user_from_org ${JSON.stringify(data)}`);
+    logger(`remove_user_from_org`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const deleted_org_id = data.organization_id as string;
-    return deleted_org_id;
+        if (res.status !== 200) throw res;
+
+        const deleted_org_id = data.organization_id as string;
+        return deleted_org_id;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };
 
 export const get_random_orgs = async (): Promise<Org[]> => {
@@ -208,12 +257,19 @@ export const get_random_orgs = async (): Promise<Org[]> => {
         headers: headers,
     });
 
-    const data = await res.json();
-    logger(`get_random_orgs ${JSON.stringify(data)}`);
+    logger(`get_random_orgs`);
 
-    if (res.status !== 200) throw res;
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
 
-    const orgsData = data.organizations as OrgServiceType[];
-    const orgs = extort_many(orgsData);
-    return orgs;
+        if (res.status !== 200) throw res;
+
+        const orgsData = data.organizations as OrgServiceType[];
+        const orgs = extort_many(orgsData);
+        return orgs;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
 };

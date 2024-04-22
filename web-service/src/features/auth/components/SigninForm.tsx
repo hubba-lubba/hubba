@@ -49,12 +49,14 @@ export const SigninForm = ({ onSuccess }: SigninFormProps) => {
                             label="Email Address"
                             error={formState.errors['email']}
                             registration={register('email')}
+                            autoComplete="email"
                         />
                         <TextField
                             type="password"
                             label="Password"
                             error={formState.errors['password']}
                             registration={register('password')}
+                            autoComplete='current-password'
                         />
                         <SubmitButton text="Sign In" />
                     </>

@@ -39,6 +39,7 @@ export const ForgotPasswordForm = ({ onSuccess }: ForgotFormProps) => {
                             label="Email Address"
                             error={formState.errors['email']}
                             registration={register('email')}
+                            autoComplete="email"
                         />
                         <SubmitButton text="Send Code" />
                     </>

@@ -54,18 +54,21 @@ export const SignupForm = ({ onSuccess }: SignupFormProps) => {
                             label="Email Address"
                             error={formState.errors['email']}
                             registration={register('email')}
+                            autoComplete="email"
                         />
                         <TextField
                             type="text"
                             label="Username"
                             error={formState.errors['username']}
                             registration={register('username')}
+                            autoComplete="username"
                         />
                         <TextField
                             type="password"
                             label="Password"
                             error={formState.errors['password']}
                             registration={register('password')}
+                            autoComplete="new-password"
                         />
                         <TextField
                             type="password"
