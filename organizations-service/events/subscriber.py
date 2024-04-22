@@ -47,11 +47,14 @@ class EventSubscriber():
                 user_repository.delete_user(user_id=data.uuid)
 
     def handle_event(self, event):
-        match event.domain:
-            case "user":
-                self.handle_user_event(event)
-            case _:
-                pass
+        try:
+            match event.domain:
+                case "user":
+                    self.handle_user_event(event)
+                case _:
+                    pass
+        except:
+            pass
 
     def callback(self, message):
         event = Event()
