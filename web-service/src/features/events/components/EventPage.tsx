@@ -17,8 +17,14 @@ export const EventPage = () => {
     const [event, setEvent] = useState<Event>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { userData, userEvents, setUserEvents, userHasEvent, userHasOrg, setEventStreamingStatus } =
-        useContext(UserContext);
+    const {
+        userData,
+        userEvents,
+        setUserEvents,
+        userHasEvent,
+        userHasOrg,
+        setEventStreamingStatus,
+    } = useContext(UserContext);
     // const [tags, setTags] = useState<React.ReactElement[]>([]);
 
     useEffect(() => {
@@ -60,7 +66,9 @@ export const EventPage = () => {
 
     const leaveEvent = async (event: Event) => {
         const event_id = await remove_user_from_event(event.event_id);
-        setUserEvents(userEvents.filter((event) => event.event_id !== event_id));
+        setUserEvents(
+            userEvents.filter((event) => event.event_id !== event_id),
+        );
     };
 
     if (!id) return <div>Event not found</div>; //do smt else abt this i think

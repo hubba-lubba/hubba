@@ -17,7 +17,6 @@ export const AppRoutes = () => {
     // log current location
     logger(`location ${window.location.pathname}`);
 
-    // TODO: reroute to /signin for user protected routes when not signed in
     const commonRoutes = [
         {
             path: '/',

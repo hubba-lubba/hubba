@@ -17,8 +17,8 @@ export const SidebarEvents = () => {
             collapsible={userEvents?.length > collapseLength}
             showMoreState={[showMore, setShowMore]}
         >
-
-            {userEvents?.map((event, index) => (
+            {userEvents
+                ?.map((event, index) => (
                     <Button
                         key={`sidebar-event-${event.event_id}-${index}`}
                         variant="text"

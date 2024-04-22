@@ -137,8 +137,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                             className="pfp cursor-pointer"
                             onClick={() => setToggleDropdown(!toggleDropdown)}
                         >
-                            {/* TODO: use UserContext for navbar */}
-                            <Pfp image={user?.photoURL || undefined} />
+                            <Pfp image={userData.profile_image} />
                             {toggleDropdown && <NavDropdown />}
                         </div>
                     </div>

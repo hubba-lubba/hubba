@@ -19,7 +19,6 @@ export const Home = () => {
 
     // put this into each feature as a component
     useEffect(() => {
-        // TODO: will need get attending events, joined orgs, followed users functions
         const fetchData = async () => {
             const currentEventsData = await get_current_events();
             setCurrentEvents(currentEventsData ?? currentEvents);
