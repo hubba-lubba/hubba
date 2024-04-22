@@ -2,38 +2,36 @@ import { Layout } from '@/components/layout';
 import { Shelf } from '@/components/library';
 import { EventCard } from '@/features/events/components/EventCard';
 import { ChannelCard } from '@/features/users/components/ChannelCard';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Event } from '@/features/events/types';
 import { User } from '@/features/users/types';
 import { Org } from '@/features/orgs/types';
 import { OrgCard } from '@/features/orgs/components/OrgCard';
-import { UsersContext } from '@/contexts/UsersProvider';
-import { OrgsContext } from '@/contexts/OrgsProvider';
-import { EventsContext } from '@/contexts/EventsProvider';
+import { get_upcoming_events } from '@/features/events/api';
+import { get_live_users } from '@/features/users/api';
+import { get_random_orgs } from '@/features/orgs/api';
 
 export const DiscoverFeed = () => {
     const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
     const [liveUsers, setLiveUsers] = useState<User[]>([]);
     const [discoverOrgs, setDiscoverOrgs] = useState<Org[]>([]);
-    const { getLiveUsers } = useContext(UsersContext);
-    const { getDiscoverOrgs } = useContext(OrgsContext);
-    const { getUpcomingEvents } = useContext(EventsContext);
+
     // put this into each feature as a component
     useEffect(() => {
         // once this is complete, move into individual features as a component
         const fetchData = async () => {
-            const upcomingEventsData = await getUpcomingEvents();
-            setUpcomingEvents(upcomingEventsData.events);
+            const upcomingEventsData = await get_upcoming_events();
+            setUpcomingEvents(upcomingEventsData ?? upcomingEvents);
 
-            const liveUsersData = await getLiveUsers();
-            setLiveUsers(liveUsersData.users);
+            const liveUsersData = await get_live_users();
+            setLiveUsers(liveUsersData ?? liveUsers);
 
-            const discoverOrgsData = await getDiscoverOrgs();
-            setDiscoverOrgs(discoverOrgsData.orgs);
+            const discoverOrgsData = await get_random_orgs();
+            setDiscoverOrgs(discoverOrgsData ?? discoverOrgs);
         };
 
         fetchData();
-    }, [getUpcomingEvents, getLiveUsers, getDiscoverOrgs]);
+    }, [discoverOrgs, liveUsers, upcomingEvents]);
 
     return (
         <Layout style="w-full flex-col">

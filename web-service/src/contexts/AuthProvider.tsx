@@ -2,20 +2,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from './UserProvider';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
-import { UsersContext } from './UsersProvider';
+import { get_current_user } from '@/features/users/api';
 
 export const AuthContext = React.createContext<firebase.User>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
-    const [user, setUser] = useState<firebase.User>(null!);
+    const [currentUser, setCurrentUser] = useState<firebase.User>(null!);
     const [loadingUser, setLoadingUser] = useState<boolean>(true);
     const { setUserData, createUser } = useContext(UserContext);
-    const { usersData, setUsersData } = useContext(UsersContext);
 
     const auth = getAuth();
     useEffect(() => {
         const myListener = onAuthStateChanged(auth, (user) => {
-            setUser(user as firebase.User);
+            setCurrentUser(user as firebase.User);
             setLoadingUser(false);
         });
         return () => {
@@ -24,18 +23,11 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
     }, [auth]);
 
     useEffect(() => {
-        console.log('load user data');
         const loadUserData = async () => {
-            if (user) {
+            if (currentUser) {
                 try {
-                    // TODO: replace with getUser
-                    const userData = await createUser(
-                        user.uid,
-                        user.displayName ?? 'User',
-                        user.email ?? '',
-                    );
+                    const userData = await get_current_user();
                     setUserData(userData);
-                    setUsersData([...usersData, userData]);
                 } catch (error) {
                     console.log(error);
                     throw error;
@@ -54,12 +46,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
                     error.status === 400
                 ) {
                     try {
-                        await createUser(
-                            user.uid,
-                            user.displayName ?? 'User',
-                            user.email ?? '',
-                        );
-                        await loadUserData();
+                        await createUser();
                         return;
                     } catch (error) {
                         console.log('Error creating first user data');
@@ -73,7 +60,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         };
         load();
         // NOTE: adding createUser and setUserData to dependencies causes infinite loop. ts throws a warning for it tho; ignore it.
-    }, [user]);
+    }, [currentUser]);
 
     if (loadingUser) {
         return (
@@ -83,5 +70,5 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<object>) => {
         );
     }
 
-    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>;
 };

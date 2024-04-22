@@ -2,7 +2,7 @@ export class User {
     constructor(
         public user_id: string,
         public username: string,
-        public email: string,
+        // public email: string,
         public profile_image: string | undefined = undefined,
         public bio: string = 'No bio.',
         public followers: string[] = [],
@@ -10,16 +10,16 @@ export class User {
         public streaming_status: 0 | 1 = 0,
         public channel: string = '',
         public video_urls: string[] = [],
-        public joined_events: string[] = [],
-        public past_events: string[] = [],
-        public joined_orgs: string[] = [],
-        public owned_orgs: string[] = [],
-        public platforms: string[] = [],
+        // public joined_events: string[] = [],
+        // public past_events: string[] = [],
+        // public joined_orgs: string[] = [],
+        // public owned_orgs: string[] = [],
+        // public platforms: string[] = [],
         // public inbox: Message[] = [],
     ) {
         this.user_id = user_id;
         this.username = username;
-        this.email = email;
+        // this.email = email;
         this.profile_image = profile_image;
         this.bio = bio;
         this.followers = followers;
@@ -27,11 +27,11 @@ export class User {
         this.streaming_status = streaming_status;
         this.channel = channel; //may not need if connect platforms
         this.video_urls = video_urls;
-        this.joined_events = joined_events;
-        this.past_events = past_events;
-        this.joined_orgs = joined_orgs;
-        this.owned_orgs = owned_orgs;
-        this.platforms = platforms;
+        // this.joined_events = joined_events;
+        // this.past_events = past_events;
+        // this.joined_orgs = joined_orgs;
+        // this.owned_orgs = owned_orgs;
+        // this.platforms = platforms;
         // this.inbox = inbox;
     }
 }

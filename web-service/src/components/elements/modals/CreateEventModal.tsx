@@ -5,12 +5,11 @@ import { ModalContext } from '@/contexts/ModalProvider';
 import Joi from 'joi';
 import { Layout } from '@/components/layout';
 import { UserContext } from '@/contexts/UserProvider';
-import { name, channel, desc } from '@/lib/validation';
-import { Event } from '@/features/events/types';
+import { name, desc } from '@/lib/validation';
 import { SelectField, DateField } from '@/components/form';
-import { EventsContext } from '@/contexts/EventsProvider';
-import { OrgsContext } from '@/contexts/OrgsProvider';
 import { Org } from '@/features/orgs/types';
+import { get_user_orgs } from '@/features/orgs/api';
+import { create_event } from '@/features/events/api';
 
 const prize = Joi.string().min(3).max(30).allow('');
 
@@ -18,7 +17,6 @@ const schema = Joi.object({
     name: name,
     host_org: Joi.required(),
     description: desc,
-    channel: channel,
     url: Joi.string().uri().allow(''),
     time_of: Joi.date().required(),
     prize1: prize,
@@ -30,63 +28,55 @@ type CreateEventValues = {
     name: string;
     host_org: string;
     description?: string;
-    channel?: string;
     url?: string;
     time_of: Date;
-    prize1: string;
-    prize2: string;
-    prize3: string;
+    prize1?: string;
+    prize2?: string;
+    prize3?: string;
 };
 
 export const CreateEventModal = () => {
     const [orgs, setOrgs] = useState<Org[]>([]);
     const { showCreateEventModal, setShowCreateEventModal } =
         useContext(ModalContext);
-    const { userData, addEventToUser } = useContext(UserContext);
-    const { getMockOrgs } = useContext(OrgsContext);
-    const { createEvent } = useContext(EventsContext);
+    const { userData, userEvents, setUserEvents } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
-            const userOrgs = await getMockOrgs(userData.owned_orgs);
+            const userOrgs = await get_user_orgs();
             setOrgs(userOrgs);
         };
-        fetchData();
-    }, [getMockOrgs, userData]);
+        if (userData) fetchData();
+    }, [userData]);
 
     const handleSubmit = async (data: CreateEventValues) => {
         const {
             name,
             host_org,
-            description,
-            channel,
-            url,
             time_of,
+            description,
+            url,
             prize1,
             prize2,
             prize3,
         } = data;
 
-        console.log(data);
+        // cringe methods TT
+        const prizes = [];
+        if (prize1) prizes.push(prize1);
+        if (prize2) prizes.push(prize2);
+        if (prize3) prizes.push(prize3);
+        const host_org_id = host_org.split(' - ')[1];
 
-        const event = new Event(
-            `id ${name}`,
-            host_org.split(' - ')[1],
+        const eventData = await create_event(
             name,
-            'https://placehold.co/600x400',
-            description ?? '',
-            channel ?? '',
-            url ?? '',
-            'Twitch',
-            [],
+            host_org_id,
             time_of,
-            0,
-            [prize1, prize2, prize3],
-            [userData.user_id],
+            description,
+            url,
+            prizes,
         );
-        await createEvent(event);
-        await addEventToUser(event.event_id);
-
+        setUserEvents([...userEvents, eventData]);
         setShowCreateEventModal(false);
     };
 
@@ -106,6 +96,7 @@ export const CreateEventModal = () => {
                         <div className="flex w-full flex-row justify-center space-x-4">
                             <div className="flex w-1/4 flex-col">
                                 <SelectField
+                                    // TODO: implement having select displayed options be different from underlying value
                                     options={orgs.map(
                                         (org) => `${org.name} - ${org.org_id}`,
                                     )}
@@ -124,12 +115,6 @@ export const CreateEventModal = () => {
                                     label="Description"
                                     error={formState.errors['description']}
                                     registration={register('description')}
-                                />
-                                <TextField
-                                    type="text"
-                                    label="Channel"
-                                    error={formState.errors['channel']}
-                                    registration={register('channel')}
                                 />
                                 <TextField
                                     type="url"

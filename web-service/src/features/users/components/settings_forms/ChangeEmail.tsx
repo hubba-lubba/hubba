@@ -17,9 +17,8 @@ export function ChangeEmail() {
 
     async function handleSubmit(data: ChangeEmailFields) {
         const { newEmail } = data;
-        // TODO: implement (w/ async)
         try {
-            editEmail(newEmail);
+            await editEmail(newEmail);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }

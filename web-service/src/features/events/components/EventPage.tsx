@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 import { PageLayout } from '@/components/layout';
 import { formatTime } from '@/utils/time';
 import { UserContext } from '@/contexts/UserProvider';
-import { EventsContext } from '@/contexts/EventsProvider';
 import { statuses } from '@/lib/constants';
-import { OrgsContext } from '@/contexts/OrgsProvider';
 import { Org } from '@/features/orgs/types';
+import { get_event, remove_user_from_event } from '../api';
+import { get_org } from '@/features/orgs/api';
+import { add_user_to_event } from '../api';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -16,26 +17,25 @@ export const EventPage = () => {
     const [event, setEvent] = useState<Event>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { userData, addEventToUser, removeEventFromUser } =
-        useContext(UserContext);
     const {
-        getMockEvent,
-        addUserToEvent,
-        removeUserFromEvent,
+        userData,
+        userEvents,
+        setUserEvents,
+        userHasEvent,
+        userHasOrg,
         setEventStreamingStatus,
-    } = useContext(EventsContext);
-    const { getMockOrg } = useContext(OrgsContext);
+    } = useContext(UserContext);
     // const [tags, setTags] = useState<React.ReactElement[]>([]);
 
     useEffect(() => {
         if (!id) return; //do smt else abt this (but safer)
 
         const fetchEventData = async (id: string) => {
-            const eventData = (await getMockEvent(id)).event;
+            const eventData = await get_event(id);
             setEvent(eventData);
 
-            const orgData = await getMockOrg(eventData.host_org);
-            setOrg(orgData.org);
+            const orgData = await get_org(eventData.host_org);
+            setOrg(orgData);
 
             //make Tag feature and component
             // const tags = [];
@@ -57,16 +57,18 @@ export const EventPage = () => {
         fetchEventData(id).catch((err) =>
             setError('Error loading page: ' + err),
         );
-    }, [id, getMockEvent, getMockOrg]);
+    }, [id]);
 
     const joinEvent = async (event: Event) => {
-        await addUserToEvent(event.event_id);
-        await addEventToUser(event.event_id);
+        const eventData = await add_user_to_event(event.event_id);
+        setUserEvents([...userEvents, eventData]);
     };
 
     const leaveEvent = async (event: Event) => {
-        await removeUserFromEvent(event.event_id);
-        await removeEventFromUser(event.event_id);
+        const event_id = await remove_user_from_event(event.event_id);
+        setUserEvents(
+            userEvents.filter((event) => event.event_id !== event_id),
+        );
     };
 
     if (!id) return <div>Event not found</div>; //do smt else abt this i think
@@ -101,23 +103,17 @@ export const EventPage = () => {
                                 <button
                                     className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
                                     onClick={() =>
-                                        userData.joined_events.includes(
-                                            event.event_id,
-                                        )
+                                        userHasEvent(event.event_id)
                                             ? leaveEvent(event)
                                             : joinEvent(event)
                                     }
                                 >
-                                    {userData.joined_events.includes(
-                                        event.event_id,
-                                    )
+                                    {userHasEvent(event.event_id)
                                         ? 'LEAVE'
                                         : 'ENTER'}
                                 </button>
-                                {/* TODO: API INTEGRATION - add this as a route */}
-                                {userData.owned_orgs.includes(
-                                    event.host_org,
-                                ) && (
+
+                                {userHasOrg(event.host_org) && (
                                     <button
                                         className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
                                         onClick={() =>

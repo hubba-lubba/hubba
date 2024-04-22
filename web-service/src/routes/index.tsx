@@ -10,13 +10,13 @@ import { OrgRoutes } from '@/features/orgs';
 import { UserCommonRoutes } from '@/features/users';
 import { DiscoverRoutes } from '@/features/discover';
 import { App } from './App';
+import { logger } from '@/utils/logger';
 
 export const AppRoutes = () => {
     const user = useContext(AuthContext);
     // log current location
-    console.log('location', window.location.pathname);
+    logger(`location ${window.location.pathname}`);
 
-    // TODO: reroute to /signin for user protected routes when not signed in
     const commonRoutes = [
         {
             path: '/',

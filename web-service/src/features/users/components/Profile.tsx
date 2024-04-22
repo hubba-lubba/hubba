@@ -9,7 +9,7 @@ import { User, Video } from '../types';
 import { Pfp } from '@/components/elements';
 import { statuses } from '@/lib/constants';
 import { ChannelCard } from './ChannelCard';
-import { UsersContext } from '@/contexts/UsersProvider';
+import { get_user, get_videos } from '../api';
 
 export const Profile = () => {
     const { id } = useParams<{ id: string }>();
@@ -18,13 +18,12 @@ export const Profile = () => {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const { userData, followUser, unfollowUser } = useContext(UserContext);
-    const { getMockUser, getVideos } = useContext(UsersContext);
 
     useEffect(() => {
         const fetchData = async () => {
             // if id is specified, gather information about a different user
             if (id) {
-                const data = (await getMockUser(id)).user;
+                const data = await get_user(id);
                 if (data) setUser(data);
                 else setError('User not found');
             } else {
@@ -33,16 +32,16 @@ export const Profile = () => {
             setLoading(false);
         };
         fetchData();
-    }, [id, userData, getMockUser]);
+    }, [id, userData]);
 
     useEffect(() => {
         const fetchData = async () => {
             if (!user) return;
-            const videosData = await getVideos(user);
+            const videosData = await get_videos(user);
             setVideos(videosData);
         };
         fetchData();
-    }, [user, getVideos]);
+    }, [user]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -56,7 +55,10 @@ export const Profile = () => {
                     <p className="text-lg font-bold">{user.username}</p>
                     <div className="flex flex-row space-x-2">
                         <p>{`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}</p>
-                        <p>| {statuses[user.streaming_status]}</p>
+                        <p>
+                            {' | '}
+                            {statuses[user.streaming_status]}
+                        </p>
                     </div>
                     <p>{user.bio}</p>
                     {userData && user.user_id != userData.user_id && (

@@ -21,9 +21,8 @@ export function ChangePassword() {
     async function handleSubmit(data: ChangePasswordValues) {
         const { password, newPassword } = data;
 
-        // TODO: implement (w/ async)
         try {
-            changePassword(password, newPassword);
+            await changePassword(password, newPassword);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -39,17 +38,26 @@ export function ChangePassword() {
             >
                 {({ register, formState }) => (
                     <>
+                        {/* hidden username field for password manager purposes */}
+                        <input
+                            type="text"
+                            name="username"
+                            className="hidden"
+                            autoComplete="off"
+                        />
                         <TextField
                             type="password"
                             label="Password"
                             error={formState.errors['password']}
                             registration={register('password')}
+                            autoComplete="current-password"
                         />
                         <TextField
                             type="password"
                             label="New Password"
                             error={formState.errors['newPassword']}
                             registration={register('newPassword')}
+                            autoComplete="new-password"
                         />
                         <TextField
                             type="password"

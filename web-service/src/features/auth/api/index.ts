@@ -16,6 +16,7 @@ import {
     browserSessionPersistence,
     browserLocalPersistence,
     checkActionCode,
+    updateEmail,
 } from 'firebase/auth';
 
 // import { createUserData } from "./user"; // getting user data is done in AuthContext
@@ -63,12 +64,23 @@ export const signin = async (
     console.log(`Signin successful for ${email}`);
 };
 
+export const changeusername = async (username: string) => {
+    const auth = getAuth() as Auth;
+
+    const user = auth.currentUser;
+    if (!user) throw new Error('Error updating username');
+
+    await updateProfile(user, { displayName: username });
+
+    console.log(`Username updated for ${user.email}`);
+}
+
 export const changepassword = async (
-    email: string,
     oldPassword: string,
     newPassword: string,
 ) => {
     const auth = getAuth() as Auth;
+    const email = auth.currentUser?.email ?? ""; //email is required for users should never be null
 
     const credential = EmailAuthProvider.credential(email, oldPassword);
 
@@ -81,6 +93,17 @@ export const changepassword = async (
     console.log(`Password changed for ${email}`);
     await logout();
 };
+
+export const changeemail = async (email: string) => {
+    const auth = getAuth() as Auth;
+
+    const user = auth.currentUser;
+    if (!user) throw new Error('Error updating email');
+
+    await updateEmail(user, email);
+
+    console.log(`Email updated for ${user.email}`);
+}
 
 export const forgotpassword = async (email: string) => {
     const auth = getAuth();

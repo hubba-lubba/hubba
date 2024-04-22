@@ -5,6 +5,7 @@ import { Pfp } from '@/components/elements';
 import { statuses } from '@/lib/constants';
 
 export const ChannelCard = ({ user }: { user: User }) => {
+    
     return (
         <Card
             url={`/user/${user.user_id}`}
