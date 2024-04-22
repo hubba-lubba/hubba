@@ -50,14 +50,16 @@ class UserRepository:
                  streaming_status=None,
                  profile_picture=None,
                  channel=None,
-                 video_urls=None):
+                 video_urls=None,
+                 bio=None):
 
         new_user = User(username=username, 
                         user_id=user_id, 
                         streaming_status=streaming_status,
                         profile_picture=profile_picture,
                         channel=channel,
-                        video_urls=video_urls)
+                        video_urls=video_urls,
+                        bio=bio)
         return self._add_user(new_user)
 
     """
@@ -151,7 +153,8 @@ class UserRepository:
                     streaming_status=None,
                     profile_picture=None,
                     channel=None,
-                    video_urls=None):
+                    video_urls=None,
+                    bio=None):
         user = self.session.get(User, user_id)
         if self.session.query(User).filter(User.username == username).first() is not None:
             raise NonUniqueException(User, "username")
@@ -163,8 +166,9 @@ class UserRepository:
         user.profile_picture = profile_picture if profile_picture is not None else user.profile_picture
         user.channel = channel if channel is not None else user.channel
         user.video_urls = video_urls if video_urls is not None else user.video_urls
+        user.bio = bio if bio is not None else user.bio
         return self._update_user(user)
 
     def get_live_users(self):
-        users = self.session.query(User).filter(User.streaming_status == "live").order_by(func.random()).limit(5).all()
+        users = self.session.query(User).filter(User.streaming_status == 1).order_by(func.random()).limit(5).all()
         return users

@@ -277,17 +277,9 @@ def get_current_events():
 
 @events_blueprint.route("/get_user_events", methods=["GET"])
 @ensure_authorized()
-@require_query_params(["user_id"])
 def get_user_events():
-    user_id = request.args.get("user_id")
-    if not user_id:
-        response = jsonify({
-            "status": "error",
-            "message": "user_id is required"
-        })
-        response.status_code = 400
-        return response
-
+    user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+    
     with Session(engine) as session:
         events_repository = EventsRepository(session)
         events = events_repository.get_user_events(user_id=user_id)
