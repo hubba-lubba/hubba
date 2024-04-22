@@ -55,22 +55,22 @@ class EventSubscriber():
         self.logger.info(f"organization_event:\n {data}")
         with Session(engine) as session:
             organization_repository = OrganizationRepository(session)
-            try:
-                if data.action:
-                    organization_repository.add_organization(organization_id=UUID(data.uuid))
-                else:
-                    organization_repository.delete_organization(organization_id=UUID(data.uuid))
-            except:
-                pass
+            if data.action:
+                organization_repository.add_organization(organization_id=UUID(data.uuid))
+            else:
+                organization_repository.delete_organization(organization_id=UUID(data.uuid))
 
     def handle_event(self, event):
-        match event.domain:
-            case "user":
-                self.handle_user_event(event)
-            case "organizations":
-                self.handle_organization_event(event)
-            case _:
-                pass
+        try:
+            match event.domain:
+                case "user":
+                    self.handle_user_event(event)
+                case "organizations":
+                    self.handle_organization_event(event)
+                case _:
+                    pass
+        except:
+            pass
 
     def callback(self, message):
         event = Event()
