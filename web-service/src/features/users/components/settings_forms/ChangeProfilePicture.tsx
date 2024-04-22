@@ -8,7 +8,7 @@ import { UseFormSetError } from 'react-hook-form';
 import { upload_image } from '@/lib/images';
 
 type ChangeProfilePictureFields = {
-    newProfilePicture: FileList;
+    newProfilePicture: File;
 };
 
 export function ChangeProfilePicture() {
@@ -16,19 +16,16 @@ export function ChangeProfilePicture() {
     const [previewImage, setPreviewImage] = useState<string | ArrayBuffer>(
         null!,
     );
-    const [error, setError] = useState<string | null>(null);
+    const [reqError, setReqError] = useState<string | null>(null);
 
     async function handleSubmit(data: ChangeProfilePictureFields) {
         const { newProfilePicture } = data;
         try {
-            const image_url = await upload_image(
-                newProfilePicture.item(0)!,
-                'user',
-            );
+            const image_url = await upload_image(newProfilePicture, 'user');
             await editProfileImage(image_url);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
-            setError((error as Error).message);
+            setReqError((error as Error).message);
         }
     }
 
@@ -89,7 +86,7 @@ export function ChangeProfilePicture() {
                     </>
                 )}
             </Form>
-            {error && <p className="text-red-500">{error}</p>}
+            {reqError && <p className="text-red-500">{reqError}</p>}
         </div>
     );
 }

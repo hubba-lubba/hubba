@@ -85,7 +85,7 @@ export const OrgPage = () => {
 
     if (!id) return <div>Org not found</div>;
     if (!org) return <div>Org not found</div>;
-    if (loading) return <p>Loading events...</p>;
+    if (loading) return <p>Loading org...</p>;
     if (error) return <div>{error}</div>;
 
     return (
@@ -116,19 +116,32 @@ export const OrgPage = () => {
                                 {org.description}
                             </Linkify>
                             {userData && (
-                                <div className="flex w-full items-center justify-center">
-                                    <button
-                                        className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
-                                        onClick={() =>
-                                            userHasOrg(org.org_id)
-                                                ? leaveOrg(org)
-                                                : joinOrg(org)
-                                        }
-                                    >
-                                        {userHasOrg(org.org_id)
-                                            ? 'LEAVE'
-                                            : 'JOIN'}
-                                    </button>
+                                <div className="flex w-full items-center justify-center space-x-4">
+                                    {userData.user_id === org.owner ? (
+                                        <button
+                                            className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                            onClick={() =>
+                                                navigate(
+                                                    `/orgs/${org.org_id}/settings`,
+                                                )
+                                            }
+                                        >
+                                            SETTINGS
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                            onClick={() =>
+                                                userHasOrg(org.org_id)
+                                                    ? leaveOrg(org)
+                                                    : joinOrg(org)
+                                            }
+                                        >
+                                            {userHasOrg(org.org_id)
+                                                ? 'LEAVE'
+                                                : 'JOIN'}
+                                        </button>
+                                    )}
                                 </div>
                             )}
                         </div>

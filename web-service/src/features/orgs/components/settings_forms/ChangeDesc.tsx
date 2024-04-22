@@ -3,22 +3,23 @@ import { desc } from '@/lib/validation';
 import Joi from 'joi';
 import { useContext } from 'react';
 import { UserContext } from '@/contexts/UserProvider';
+import { Org } from '../../types';
 
 const schema = Joi.object({
-    bio: desc,
+    desc: desc,
 });
 
-type ChangeBioValues = {
-    bio: string;
+type ChangeDescValues = {
+    desc: string;
 };
 
-export function ChangeBio() {
-    const { editBio } = useContext(UserContext);
+export function ChangeDesc({ org }: { org: Org }) {
+    const { editOrgDesc } = useContext(UserContext);
 
-    async function handleSubmit(data: ChangeBioValues) {
-        const { bio } = data;
+    async function handleSubmit(data: ChangeDescValues) {
+        const { desc } = data;
         try {
-            await editBio(bio);
+            await editOrgDesc(org.org_id, desc);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -27,7 +28,7 @@ export function ChangeBio() {
     return (
         <div>
             <h2 className="mb-2 text-3xl">Update Bio</h2>
-            <Form<ChangeBioValues, typeof schema>
+            <Form<ChangeDescValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
                 style="!w-1/2"
@@ -37,8 +38,8 @@ export function ChangeBio() {
                         <TextField
                             type="text"
                             label="Bio"
-                            error={formState.errors['bio']}
-                            registration={register('bio')}
+                            error={formState.errors['desc']}
+                            registration={register('desc')}
                         />
                         <SubmitButton text="Submit" />
                     </>

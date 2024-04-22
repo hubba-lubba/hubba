@@ -1,5 +1,6 @@
 import { FILES_API_URL } from '@/config';
 import { logger } from '@/utils/logger';
+import { getidtoken } from '@/features/auth/api';
 
 type FileURLs = {
     upload_url: string;
@@ -11,6 +12,7 @@ const get_image_upload_url = async (
 ): Promise<FileURLs> => {
     const headers = {
         'Content-Type': 'application/json',
+        'id_token': await getidtoken(),
     };
     const routes = {
         user: 'get_profile_upload_url',

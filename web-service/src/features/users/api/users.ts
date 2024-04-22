@@ -4,6 +4,7 @@ import { USER_API_URL } from '@/config';
 import { logger } from '@/utils/logger';
 
 type UserServiceType = {
+    username: string;
     user_id: string;
     followers: string[];
     following: string[];
@@ -17,6 +18,7 @@ type UserServiceType = {
 // yuh we extortin
 const extort = (userData: UserServiceType): User => {
     return new User(
+        userData.username,
         userData.user_id,
         userData.profile_picture,
         userData.bio,

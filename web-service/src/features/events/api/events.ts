@@ -6,8 +6,9 @@ import { logger } from '@/utils/logger';
 type EventServiceType = {
     event_id: string;
     name: string;
-    thumbnail: string;  
+    thumbnail: string;
     description: string;
+    url: string;
     time_of: Date;
     host_id: string;
     attendees: string[];
@@ -22,6 +23,7 @@ const extort = (eventData: EventServiceType): Event => {
         eventData.name,
         eventData.thumbnail,
         eventData.description,
+        eventData.url,
         eventData.time_of,
         eventData.status,
         eventData.prizes,

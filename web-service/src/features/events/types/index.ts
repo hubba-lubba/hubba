@@ -6,7 +6,7 @@ export class Event {
         public thumbnail: string,
         public description: string,
         // public channel: string,
-        // public url: string,
+        public url: string,
         // public platform: string,
         // public tags: string[],
         public time_of: Date,
@@ -20,7 +20,7 @@ export class Event {
         this.thumbnail = thumbnail;
         this.description = description;
         // this.channel = channel;
-        // this.url = url;
+        this.url = url;
         // this.platform = platform;
         // this.tags = tags;
         this.time_of = time_of;

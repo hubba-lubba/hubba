@@ -3,7 +3,7 @@ import { UserContext } from '@/contexts/UserProvider';
 import { name } from '@/lib/validation';
 import Joi from 'joi';
 import { useContext } from 'react';
-import { Org } from '../../types';
+import { Event } from '../../types';
 
 const schema = Joi.object({
     newName: name,
@@ -13,13 +13,13 @@ type ChangeNameFields = {
     newName: string;
 };
 
-export function ChangeName({ org }: { org: Org }) {
-    const { editOrgName } = useContext(UserContext);
+export function ChangeName({ event }: { event: Event }) {
+    const { editEventName } = useContext(UserContext);
 
     async function handleSubmit(data: ChangeNameFields) {
         const { newName } = data;
         try {
-            await editOrgName(org.org_id, newName);
+            await editEventName(event.event_id, newName);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -27,7 +27,7 @@ export function ChangeName({ org }: { org: Org }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Org Name</h2>
+            <h2 className="mb-2 text-3xl">Change Event Name</h2>
             <Form<ChangeNameFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
@@ -36,6 +36,7 @@ export function ChangeName({ org }: { org: Org }) {
                 {({ register, formState }) => (
                     <>
                         <TextField
+                            value={event.name}
                             type="text"
                             label="New Name"
                             error={formState.errors['newName']}

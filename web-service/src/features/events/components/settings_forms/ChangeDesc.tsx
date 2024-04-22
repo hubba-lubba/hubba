@@ -1,25 +1,25 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
-import { channel } from '@/lib/validation';
+import { desc } from '@/lib/validation';
 import Joi from 'joi';
 import { useContext } from 'react';
 import { UserContext } from '@/contexts/UserProvider';
-import { Org } from '../../types';
+import { Event } from '../../types';
 
 const schema = Joi.object({
-    channel: channel,
+    desc: desc,
 });
 
-type ChangeChannelValues = {
-    channel: string;
+type ChangeDescValues = {
+    desc: string;
 };
 
-export function ChangeChannel({ org }: { org: Org }) {
-    const { editOrgChannel } = useContext(UserContext);
+export function ChangeDesc({ event }: { event: Event }) {
+    const { editEventDesc } = useContext(UserContext);
 
-    async function handleSubmit(data: ChangeChannelValues) {
-        const { channel } = data;
+    async function handleSubmit(data: ChangeDescValues) {
+        const { desc } = data;
         try {
-            await editOrgChannel(org.org_id, channel);
+            await editEventDesc(event.event_id, desc);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -27,8 +27,8 @@ export function ChangeChannel({ org }: { org: Org }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Update Channel</h2>
-            <Form<ChangeChannelValues, typeof schema>
+            <h2 className="mb-2 text-3xl">Update Bio</h2>
+            <Form<ChangeDescValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
                 style="!w-1/2"
@@ -36,10 +36,11 @@ export function ChangeChannel({ org }: { org: Org }) {
                 {({ register, formState }) => (
                     <>
                         <TextField
+                            value={event.description}
                             type="text"
-                            label="Channel"
-                            error={formState.errors['channel']}
-                            registration={register('channel')}
+                            label="Desc"
+                            error={formState.errors['desc']}
+                            registration={register('desc')}
                         />
                         <SubmitButton text="Submit" />
                     </>

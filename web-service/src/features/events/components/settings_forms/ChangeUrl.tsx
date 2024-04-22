@@ -1,25 +1,24 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
 import { UserContext } from '@/contexts/UserProvider';
-import { name } from '@/lib/validation';
 import Joi from 'joi';
 import { useContext } from 'react';
-import { Org } from '../../types';
+import { Event } from '../../types';
 
 const schema = Joi.object({
-    newName: name,
+    newUrl: Joi.string().uri().required(),
 });
 
-type ChangeNameFields = {
-    newName: string;
+type ChangeUrlFields = {
+    newUrl: string;
 };
 
-export function ChangeName({ org }: { org: Org }) {
-    const { editOrgName } = useContext(UserContext);
+export function ChangeUrl({ event }: { event: Event }) {
+    const { editEventUrl } = useContext(UserContext);
 
-    async function handleSubmit(data: ChangeNameFields) {
-        const { newName } = data;
+    async function handleSubmit(data: ChangeUrlFields) {
+        const { newUrl } = data;
         try {
-            await editOrgName(org.org_id, newName);
+            await editEventUrl(event.event_id, newUrl);
         } catch (error) {
             console.log(`Error: ${(error as Error).message}`);
         }
@@ -27,8 +26,8 @@ export function ChangeName({ org }: { org: Org }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Org Name</h2>
-            <Form<ChangeNameFields, typeof schema>
+            <h2 className="mb-2 text-3xl">Change Event Url</h2>
+            <Form<ChangeUrlFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
                 style="!w-1/2"
@@ -37,9 +36,9 @@ export function ChangeName({ org }: { org: Org }) {
                     <>
                         <TextField
                             type="text"
-                            label="New Name"
-                            error={formState.errors['newName']}
-                            registration={register('newName')}
+                            label="New Url"
+                            error={formState.errors['newUrl']}
+                            registration={register('newUrl')}
                         />
                         <SubmitButton text="Submit" />
                     </>

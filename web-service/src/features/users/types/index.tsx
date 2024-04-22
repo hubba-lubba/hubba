@@ -1,7 +1,7 @@
 export class User {
     constructor(
         public user_id: string,
-        // public username: string,
+        public username: string,
         // public email: string,
         public profile_image: string | undefined = undefined,
         public bio: string = 'No bio.',
@@ -18,7 +18,7 @@ export class User {
         // public inbox: Message[] = [],
     ) {
         this.user_id = user_id;
-        // this.username = username;
+        this.username = username;
         // this.email = email;
         this.profile_image = profile_image;
         this.bio = bio;
