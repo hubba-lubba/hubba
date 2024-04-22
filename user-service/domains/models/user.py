@@ -70,5 +70,6 @@ class User(Base):
             "num_followers": len(user.followers),
             "profile_picture": user.profile_picture,
             "channel": user.channel,
-            "video_urls": user.video_urls
+            "video_urls": user.video_urls,
+            "bio": user.bio
         }
