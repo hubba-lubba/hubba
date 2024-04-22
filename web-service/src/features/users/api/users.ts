@@ -242,7 +242,7 @@ export const update_user = async ({
         body: JSON.stringify(body),
     });
 
-    logger(`update`);
+    logger(`update ${JSON.stringify(body)}`);
 
     try {
         const data = await res.json();

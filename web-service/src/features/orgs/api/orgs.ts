@@ -125,7 +125,7 @@ export const update_org = async ({
         body: JSON.stringify(body),
     });
 
-    logger(`update_org`);
+    logger(`update_org ${JSON.stringify(body)}`);
 
     try {
         const data = await res.json();

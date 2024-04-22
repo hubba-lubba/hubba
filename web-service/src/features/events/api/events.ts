@@ -144,7 +144,7 @@ export const update_event = async ({
         body: JSON.stringify(body),
     });
 
-    logger(`update_event`);
+    logger(`update_event ${JSON.stringify(body)}`);
 
     try {
         const data = await res.json();
