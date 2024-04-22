@@ -34,7 +34,7 @@ export const Home = () => {
         };
 
         fetchData();
-    }, [currentEvents, discoverOrgs, liveUsers, upcomingEvents]);
+    }, []); // adding states as dependencies causes infinite loop. ignore lint.
 
     return (
         <Layout style="w-full flex-col">
