@@ -34,7 +34,7 @@ def add_event():
     context = request.get_json()
 
     name = context.get("name") if context.get("name") else None
-    thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
+    thumbnail = context.get("thumbnail") if context.get("thumbnail") else "https://via.placeholder.com/600x400"
     description = context.get("description") if context.get("description") else None
     url = context.get("url") if context.get("url") else None
     platform = context.get("platform") if context.get("platform") else None

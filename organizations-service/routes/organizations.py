@@ -34,7 +34,7 @@ def add_organization():
     context = request.get_json()
 
     name = context.get("name") if context.get("name") else None
-    image = context.get("image") if context.get("image") else None
+    image = context.get("image") if context.get("image") else "https://via.placeholder.com/400"
     description = context.get("description") if context.get("description") else None
     channel = context.get("channel") if context.get("channel") else None
     owner = auth.verify_id_token(request.headers.get("id_token"))["uid"]

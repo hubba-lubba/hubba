@@ -37,7 +37,7 @@ export const get_org = async (org_id: string): Promise<Org> => {
     const headers = {
         'Content-Type': 'application/json',
     };
-    const res = await fetch(`${ORGS_API_URL}/?org_id=${org_id}`, {
+    const res = await fetch(`${ORGS_API_URL}/?organization_id=${org_id}`, {
         method: 'GET',
         headers: headers,
     });
@@ -119,7 +119,7 @@ export const update_org = async ({
         description: description,
         channel: channel,
     };
-    const res = await fetch(`${ORGS_API_URL}/?org_id=${org_id}`, {
+    const res = await fetch(`${ORGS_API_URL}/?organization_id=${org_id}`, {
         method: 'PATCH',
         headers: headers,
         body: JSON.stringify(body),
@@ -147,7 +147,7 @@ export const delete_org = async (org_id: string): Promise<string> => {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
-    const res = await fetch(`${ORGS_API_URL}/?org_id=${org_id}`, {
+    const res = await fetch(`${ORGS_API_URL}/?organization_id=${org_id}`, {
         method: 'DELETE',
         headers: headers,
     });
@@ -200,7 +200,7 @@ export const add_user_to_org = async (org_id: string): Promise<Org> => {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
-    const res = await fetch(`${ORGS_API_URL}/add_user?org_id=${org_id}`, {
+    const res = await fetch(`${ORGS_API_URL}/add_user?organization_id=${org_id}`, {
         method: 'PUT',
         headers: headers,
     });
@@ -227,7 +227,7 @@ export const remove_user_from_org = async (org_id: string): Promise<string> => {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
-    const res = await fetch(`${ORGS_API_URL}/delete_user?org_id=${org_id}`, {
+    const res = await fetch(`${ORGS_API_URL}/delete_user?organization_id=${org_id}`, {
         method: 'DELETE',
         headers: headers,
     });
