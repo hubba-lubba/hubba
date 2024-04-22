@@ -8,7 +8,7 @@ import { upload_image } from '@/lib/images';
 import { Org } from '../../types';
 
 type ChangeImageFields = {
-    newImage: File;
+    newImage: FileList;
 };
 
 export function ChangeImage({ org }: { org: Org }) {

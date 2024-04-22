@@ -8,7 +8,7 @@ import { UseFormSetError } from 'react-hook-form';
 import { upload_image } from '@/lib/images';
 
 type ChangeProfilePictureFields = {
-    newProfilePicture: File;
+    newProfilePicture: FileList;
 };
 
 export function ChangeProfilePicture() {

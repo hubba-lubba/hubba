@@ -13,7 +13,7 @@ type EventServiceType = {
     host_id: string;
     attendees: string[];
     status: 0 | 1;
-    prizes: string[]; //does not yet have
+    prizes: string[];
 };
 
 const extort = (eventData: EventServiceType): Event => {

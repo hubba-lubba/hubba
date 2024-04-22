@@ -31,7 +31,7 @@ export const DiscoverFeed = () => {
         };
 
         fetchData();
-    }, []);
+    }, [discoverOrgs, liveUsers, upcomingEvents]);
 
     return (
         <Layout style="w-full flex-col">

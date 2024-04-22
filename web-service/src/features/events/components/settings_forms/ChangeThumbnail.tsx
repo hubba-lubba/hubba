@@ -8,7 +8,7 @@ import { upload_image } from '@/lib/images';
 import { Event } from '../../types';
 
 type ChangeThumbnailFields = {
-    newThumbnail: File;
+    newThumbnail: FileList;
 };
 
 export function ChangeThumbnail({ event }: { event: Event }) {

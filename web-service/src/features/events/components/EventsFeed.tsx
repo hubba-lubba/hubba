@@ -29,7 +29,7 @@ export const EventsFeed = () => {
 
         fetchData();
         setLoading(false);
-    }, []);
+    }, [currentEvents, discoverEvents, upcomingEvents]);
 
     if (typeof loading === 'string')
         //error

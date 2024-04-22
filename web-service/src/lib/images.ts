@@ -12,7 +12,7 @@ const get_image_upload_url = async (
 ): Promise<FileURLs> => {
     const headers = {
         'Content-Type': 'application/json',
-        'id_token': await getidtoken(),
+        id_token: await getidtoken(),
     };
     const routes = {
         user: 'get_profile_upload_url',
@@ -37,20 +37,23 @@ const get_image_upload_url = async (
 };
 
 export const upload_image = async (
-    file: File,
+    files: FileList,
     feature: 'user' | 'org' | 'event',
 ): Promise<string> => {
     const { upload_url, blob_url } = await get_image_upload_url(feature);
+    const file = files[0];
 
     const headers = {
         'Content-Type': 'image/jpeg',
     };
+    
     const res = await fetch(`${upload_url}`, {
         method: 'PUT',
         headers: headers,
         body: file,
     });
 
+    console.log(res);
     const data = await res.text();
     logger(`upload_image ${feature} ${JSON.stringify(data)}`);
 

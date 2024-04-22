@@ -8,7 +8,7 @@ type UserServiceType = {
     user_id: string;
     followers: string[];
     following: string[];
-    streaming_status: 0 | 1; //currently string
+    streaming_status: 0 | 1;
     bio: string; //does not yet have
     profile_picture: string;
     channel: string;
@@ -18,8 +18,8 @@ type UserServiceType = {
 // yuh we extortin
 const extort = (userData: UserServiceType): User => {
     return new User(
-        userData.username,
         userData.user_id,
+        userData.username,
         userData.profile_picture,
         userData.bio,
         userData.followers,
@@ -232,7 +232,7 @@ export const update_user = async ({
         username: username,
         channel: channel,
         bio: bio,
-        profile_image: profile_image,
+        profile_picture: profile_image,
         streaming_status: streaming_status,
     };
 

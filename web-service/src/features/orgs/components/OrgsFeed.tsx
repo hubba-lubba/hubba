@@ -17,7 +17,7 @@ export const OrgsFeed = () => {
         };
 
         fetchData();
-    }, []);
+    }, [discoverOrgs]);
     return (
         <Layout style="w-full flex-col">
             <Grid title="Orgs">

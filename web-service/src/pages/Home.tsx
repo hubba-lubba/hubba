@@ -35,7 +35,7 @@ export const Home = () => {
         };
 
         fetchData();
-    }, []);
+    }, [currentEvents, discoverOrgs, liveUsers, upcomingEvents]);
 
     return (
         <Layout style="w-full flex-col">
