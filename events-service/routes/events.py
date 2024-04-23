@@ -137,13 +137,13 @@ def delete_event():
 
 @events_blueprint.route("/", methods=["PATCH"])
 @ensure_authorized()
-@require_json_params(["event_id"])
+@require_query_params(["event_id"])
 @ensure_UUID("event_id")
 def patch_event():
     context = request.get_json()
-    event_id = context.get("event_id")
+    event_id = request.args.get("event_id")
 
-    name= context.get("name") if context.get("name") else None
+    name = context.get("name") if context.get("name") else None
     thumbnail = context.get("thumbnail") if context.get("thumbnail") else None
     description = context.get("description") if context.get("description") else None
     url = context.get("url") if context.get("url") else None
