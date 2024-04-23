@@ -15,8 +15,8 @@ export function Grid({ children, title }: GridProps) {
                 </div>
             )}
             {children.length === 0 ? (
-                <p className="flex h-[95%] flex-1 w-full items-center justify-center">
-                    Chirp... this grid is empty :&#40;
+                <p className="flex h-[95%] w-full flex-1 items-center justify-center">
+                    Chirp... {title} is empty :&#40;
                 </p>
             ) : (
                 <div className="grid-autofill h-[95%] flex-1 gap-3">

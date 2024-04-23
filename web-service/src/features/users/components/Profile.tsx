@@ -79,11 +79,11 @@ export const Profile = () => {
                 </div>
             </div>
             {user.streaming_status === 1 && (
-                <Grid title="live">
+                <Grid title="Live">
                     {[<ChannelCard user={user} />]}
                 </Grid>
             )}
-            <Grid title="videos">
+            <Grid title="Videos">
                 {videos.map((video, index) => (
                     <VideoCard
                         key={`${video.video_id}-${index}`}

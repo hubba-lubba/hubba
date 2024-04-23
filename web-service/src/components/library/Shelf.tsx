@@ -41,7 +41,7 @@ export const Shelf = ({ children, title, variant = 'medium' }: ShelfProps) => {
             )}
             {children.length === 0 ? (
                 <p className="flex h-[95%] w-full items-center justify-center">
-                    Chirp... this shelf is empty :&#40;
+                    Chirp... {title} is empty :&#40;
                 </p>
             ) : (
                 <div className="flex h-[95%] flex-row space-x-3">
