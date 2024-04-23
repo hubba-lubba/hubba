@@ -150,10 +150,10 @@ export const follow_user = async (user_id: string): Promise<User> => {
     };
 
     const body = {
-        user_id: user_id,
+        following: user_id,
     };
 
-    const res = await fetch(`${USER_API_URL}/follow`, {
+    const res = await fetch(`${USER_API_URL}/add_following`, {
         method: 'PATCH',
         headers: headers,
         body: JSON.stringify(body),
