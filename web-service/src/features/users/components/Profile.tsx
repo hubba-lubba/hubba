@@ -80,7 +80,7 @@ export const Profile = () => {
             </div>
             {user.streaming_status === 1 && (
                 <Grid title="live">
-                    <ChannelCard user={user} />
+                    {[<ChannelCard user={user} />]}
                 </Grid>
             )}
             <Grid title="videos">

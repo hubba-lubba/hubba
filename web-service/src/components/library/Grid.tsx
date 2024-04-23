@@ -1,5 +1,5 @@
 interface GridProps {
-    children?: React.ReactNode;
+    children: React.ReactNode[];
     title?: string | undefined;
 }
 
@@ -14,7 +14,15 @@ export function Grid({ children, title }: GridProps) {
                     <span className="absolute left-0 top-[0.5rem] z-0 inline-block w-full border-t-[1px] border-solid border-hubba-600" />
                 </div>
             )}
-            <div className="grid-autofill h-[95%] flex-1 gap-3">{children}</div>
+            {children.length === 0 ? (
+                <p className="flex h-[95%] flex-1 w-full items-center justify-center">
+                    Chirp... this grid is empty :&#40;
+                </p>
+            ) : (
+                <div className="grid-autofill h-[95%] flex-1 gap-3">
+                    {children}
+                </div>
+            )}
         </section>
     );
 }

@@ -39,9 +39,15 @@ export const Shelf = ({ children, title, variant = 'medium' }: ShelfProps) => {
                     <span className="absolute left-0 top-[0.5rem] z-0 inline-block w-full border-t-[1px] border-solid border-hubba-600" />
                 </div>
             )}
-            <div className="flex h-[95%] flex-row space-x-3">
-                {children.slice(0, numCards)}
-            </div>
+            {children.length === 0 ? (
+                <p className="flex h-[95%] w-full items-center justify-center">
+                    Chirp... this shelf is empty :&#40;
+                </p>
+            ) : (
+                <div className="flex h-[95%] flex-row space-x-3">
+                    {children.slice(0, numCards)}
+                </div>
+            )}
         </section>
     );
 };
