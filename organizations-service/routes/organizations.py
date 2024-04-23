@@ -219,3 +219,17 @@ def get_user_organizations():
         })
         return response
 
+
+@organizations_blueprint.route("/get_owned_organizations", methods=["GET"])
+@ensure_authorized()
+def get_owned_organizations():
+    user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
+
+    with Session(engine) as session:
+        organizations_repository = OrganizationsRepository(session)
+        organizations = organizations_repository.get_owned_organizations(user_id=user_id)
+        response = jsonify({
+            "status": "success",
+            "organizations": [organization.get_JSON() for organization in organizations]
+        })
+        return response
