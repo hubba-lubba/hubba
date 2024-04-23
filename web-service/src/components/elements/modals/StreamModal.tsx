@@ -34,7 +34,7 @@ export const StreamModal = () => {
                         <button
                             onClick={() =>
                                 handleClick(
-                                    userData.streaming_status === 0 ? 1 : 0, //gotta do this bc i set status to type 0 | 1 zzz
+                                    userData?.streaming_status === 0 ? 1 : 0, //gotta do this bc i set status to type 0 | 1 zzz
                                 )
                             }
                             className="h-11 w-5/12 cursor-pointer rounded-md bg-hubba-500 hover:bg-hubba-400"

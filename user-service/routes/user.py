@@ -43,7 +43,7 @@ def add_user():
     id_token = request.headers.get("id_token")
     user_id = auth.verify_id_token(id_token)["uid"]
     username = auth.get_user(user_id).display_name
-    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
+    streaming_status = context.get("streaming_status") if context.get("streaming_status") else 0
     channel = context.get("channel") if context.get("channel") else None
     video_urls = context.get("video_urls") if context.get("video_urls") else []
     bio = context.get("bio") if context.get("bio") else None

@@ -26,7 +26,7 @@ export function ChangeChannel() {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Update Channel</h2>
+            <h2 className="mb-2 text-3xl">Update Channel (Name)</h2>
             <Form<ChangeChannelValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
