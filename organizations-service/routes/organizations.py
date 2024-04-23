@@ -109,13 +109,14 @@ def delete_organization():
             response.status_code = 404
             return response
 
+
 @organizations_blueprint.route("/", methods=["PATCH"])
 @ensure_authorized()
-@require_json_params(["organization_id"])
+@require_query_params(["organization_id"])
 @ensure_UUID("organization_id")
 def patch_organization():
     context = request.get_json()
-    organization_id = context.get("organization_id")
+    organization_id = request.args.get("organization_id")
 
     name = context.get("name") if context.get("name") else None
     image = context.get("image") if context.get("image") else None
