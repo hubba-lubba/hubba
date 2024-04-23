@@ -243,7 +243,7 @@ export const add_user_to_event = async (event_id: string): Promise<Event> => {
 
 export const remove_user_from_event = async (
     event_id: string,
-): Promise<string> => {
+): Promise<Event> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
@@ -264,8 +264,9 @@ export const remove_user_from_event = async (
 
         if (res.status !== 200) throw res;
 
-        const deleted_event_id = data.event_id as string;
-        return deleted_event_id;
+        const eventData = data.event as EventServiceType;
+        const event = extort(eventData);
+        return event;
     } catch (e) {
         logger(`${e}`);
         throw e;

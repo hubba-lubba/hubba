@@ -92,10 +92,12 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     const followUser = async (user_id: string) => {
         const user = await follow_user(user_id);
         setUserData(user);
+        setUserChannels([...userChannels, user]);
     };
     const unfollowUser = async (user_id: string) => {
         const user = await unfollow_user(user_id);
         setUserData(user);
+        setUserChannels(userChannels.filter((channel) => channel.user_id !== user_id));
     };
     const userHasEvent = (event_id: string) => {
         return userEvents.some((event) => event.event_id === event_id);

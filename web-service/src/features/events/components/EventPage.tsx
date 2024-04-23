@@ -58,7 +58,7 @@ export const EventPage = () => {
         fetchEventData(id).catch((err) =>
             setError('Error loading page: ' + err),
         );
-    }, [id]);
+    }, [id, userEvents]);
 
     const joinEvent = async (event: Event) => {
         const eventData = await add_user_to_event(event.event_id);
@@ -66,9 +66,9 @@ export const EventPage = () => {
     };
 
     const leaveEvent = async (event: Event) => {
-        const event_id = await remove_user_from_event(event.event_id);
+        const eventData = await remove_user_from_event(event.event_id);
         setUserEvents(
-            userEvents.filter((event) => event.event_id !== event_id),
+            userEvents.filter((event) => event.event_id !== eventData.event_id),
         );
     };
 

@@ -60,7 +60,7 @@ export const OrgPage = () => {
         };
 
         fetchData().catch((err) => setError('Error loading page: ' + err));
-    }, [id]);
+    }, [id, userOrgs]);
 
     useEffect(() => {
         if (!org) return;
@@ -79,8 +79,8 @@ export const OrgPage = () => {
         setUserOrgs([...userOrgs, orgData]);
     };
     const leaveOrg = async (org: Org) => {
-        const org_id = await remove_user_from_org(org.org_id);
-        setUserOrgs(userOrgs.filter((org) => org.org_id !== org_id));
+        const orgData = await remove_user_from_org(org.org_id);
+        setUserOrgs(userOrgs.filter((org) => org.org_id !== orgData.org_id));
     };
 
     if (!id) return <div>Org not found</div>;

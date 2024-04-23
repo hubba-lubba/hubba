@@ -254,7 +254,7 @@ export const add_user_to_org = async (org_id: string): Promise<Org> => {
     }
 };
 
-export const remove_user_from_org = async (org_id: string): Promise<string> => {
+export const remove_user_from_org = async (org_id: string): Promise<Org> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
@@ -275,8 +275,9 @@ export const remove_user_from_org = async (org_id: string): Promise<string> => {
 
         if (res.status !== 200) throw res;
 
-        const deleted_org_id = data.organization_id as string;
-        return deleted_org_id;
+        const orgData = data.organization as OrgServiceType;
+        const org = extort(orgData);
+        return org;
     } catch (e) {
         logger(`${e}`);
         throw e;

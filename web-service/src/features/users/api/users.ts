@@ -183,10 +183,10 @@ export const unfollow_user = async (user_id: string): Promise<User> => {
     };
 
     const body = {
-        user_id: user_id,
+        following: user_id,
     };
 
-    const res = await fetch(`${USER_API_URL}/unfollow`, {
+    const res = await fetch(`${USER_API_URL}/remove_following`, {
         method: 'PATCH',
         headers: headers,
         body: JSON.stringify(body),
