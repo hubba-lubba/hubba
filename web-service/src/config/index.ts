@@ -18,6 +18,7 @@ export const FILES_API_URL = dev
     : 'https://file-api.eddisonso.com';
 
 export const DOMAIN = dev ? 'localhost' : 'hubba.eddisonso.com';
+// export const DOMAIN = dev ? 'hubba.eddisonso.com' : 'localhost';
 
 // export const LOG_LEVEL = dev ? 'debug' : 'info';
 export const LOG_LEVEL = dev ? 'info' : 'debug';
