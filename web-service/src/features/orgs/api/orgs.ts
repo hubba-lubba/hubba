@@ -262,7 +262,7 @@ export const remove_user_from_org = async (org_id: string): Promise<string> => {
     const res = await fetch(
         `${ORGS_API_URL}/delete_user?organization_id=${org_id}`,
         {
-            method: 'DELETE',
+            method: 'PATCH',
             headers: headers,
         },
     );

@@ -73,8 +73,8 @@ export const EventPage = () => {
     };
 
     if (!id) return <div>Event not found</div>; //do smt else abt this i think
-    if (!event) return <div>Event not found</div>;
     if (loading) return <p>Loading events...</p>;
+    if (!event) return <div>Event not found</div>;
     if (error) return <div>error</div>;
 
     return (

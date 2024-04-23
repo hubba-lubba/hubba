@@ -251,7 +251,7 @@ export const remove_user_from_event = async (
     const res = await fetch(
         `${EVENTS_API_URL}/delete_user?event_id=${event_id}`,
         {
-            method: 'POST',
+            method: 'PATCH',
             headers: headers,
         },
     );

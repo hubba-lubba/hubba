@@ -84,8 +84,8 @@ export const OrgPage = () => {
     };
 
     if (!id) return <div>Org not found</div>;
-    if (!org) return <div>Org not found</div>;
     if (loading) return <p>Loading org...</p>;
+    if (!org) return <div>Org not found</div>;
     if (error) return <div>{error}</div>;
 
     return (
