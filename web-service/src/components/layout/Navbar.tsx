@@ -137,6 +137,11 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                         className="cursor-pointer"
                                         size={24}
                                         onClick={() => setShowStreamModal(true)}
+                                        color={
+                                            userData.streaming_status === 1
+                                                ? 'green'
+                                                : 'white'
+                                        }
                                     />
                                 )}
                                 {/* <Link to="/inbox">
