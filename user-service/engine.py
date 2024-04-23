@@ -12,12 +12,4 @@ engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_
                        echo=True, pool_pre_ping=True)
 if not database_exists(engine.url): create_database(engine.url)
 
-if RESET_DB:
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
-
-    with Session(engine) as session:
-
-        #TODO: Write a script to populate the database with some users
-
-        session.commit()
+Base.metadata.create_all(engine)
