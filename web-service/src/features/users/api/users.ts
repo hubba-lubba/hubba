@@ -288,6 +288,23 @@ export const add_video = async (video_url: string): Promise<User> => {
     }
 };
 
+type Noembed = {
+    width: number;
+    author_name: string;
+    author_url: string;
+    version: string;
+    provider_url: string;
+    provider_name: string;
+    thumbnail_width: number;
+    thumbnail_url: string;
+    height: number;
+    thumbnail_height: number;
+    html: string;
+    url: string;
+    type: string;
+    title: string;
+};
+
 export const get_videos = async (user: User): Promise<Video[]> => {
     // https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
     const ytidParser = (url: string): string => {
@@ -297,15 +314,24 @@ export const get_videos = async (user: User): Promise<Video[]> => {
         return match && match[7].length == 11 ? match[7] : '';
     };
 
+    const getNoembedData = async (url: string): Promise<Noembed> => {
+        const noembedUrl = `https://noembed.com/embed?dataType=json&url=${url}`;
+        const res = await fetch(noembedUrl);
+        const data = await res.json();
+        return data;
+    };
     const getVideo = async (url: string): Promise<{ video: Video }> => {
         const video_id = ytidParser(url);
         if (!video_id) throw new Error('no video id found in url');
+
+        const noembedData = await getNoembedData(url);
 
         const data = {
             video: {
                 video_id: video_id,
                 url: url,
-                title: video_id,
+                title: noembedData.title,
+                author: noembedData.author_name,
                 thumbnail: `https://img.youtube.com/vi/${video_id}/maxresdefault.jpg`,
             } as Video,
         };

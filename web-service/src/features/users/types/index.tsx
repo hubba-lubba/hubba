@@ -61,11 +61,13 @@ export class Video {
     constructor(
         public video_id: string,
         public url: string,
+        public author: string,
         public title: string,
         public thumbnail: string,
     ) {
         this.video_id = video_id;
         this.url = url;
+        this.author = author;
         this.title = title;
         this.thumbnail = thumbnail;
     }
