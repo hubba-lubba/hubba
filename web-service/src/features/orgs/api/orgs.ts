@@ -201,7 +201,7 @@ export const add_user_to_org = async (org_id: string): Promise<Org> => {
         id_token: await getidtoken(),
     };
     const res = await fetch(`${ORGS_API_URL}/add_user?organization_id=${org_id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: headers,
     });
 
