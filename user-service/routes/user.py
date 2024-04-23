@@ -169,7 +169,7 @@ def get_current_user():
 def patch_user():
     context = request.get_json()
     username = context.get("username") if context.get("username") else None
-    streaming_status = context.get("streaming_status") if context.get("streaming_status") else None
+    streaming_status = context.get("streaming_status") if context.get("streaming_status") is not None else None
     profile_picture = context.get("profile_picture") if context.get("profile_picture") else None
     channel = context.get("channel") if context.get("channel") else None
     video_urls = context.get("video_urls") if context.get("video_urls") else None
