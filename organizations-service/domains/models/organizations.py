@@ -36,20 +36,21 @@ event_table = Table("event_table",
                            ForeignKey("events.event_id"), 
                            primary_key=True))
 
+
 class Organizations(Base):
     __tablename__ = "organizations"
 
     organization_id: Mapped[UUID] = mapped_column(UUID(as_uuid=True),
                                                   primary_key=True,
                                                   default=uuid.uuid4)
-                            
+
     name: Mapped[str] = mapped_column(String(32),
                                       nullable=True)
 
-    image: Mapped[str] = mapped_column(String(128), 
+    image: Mapped[str] = mapped_column(String(128),
                                        nullable=True)
 
-    description: Mapped[str] = mapped_column(String(128), 
+    description: Mapped[str] = mapped_column(String(128),
                                              nullable=True)
 
     owner_id: Mapped[str] = mapped_column(ForeignKey("users.user_id"))
