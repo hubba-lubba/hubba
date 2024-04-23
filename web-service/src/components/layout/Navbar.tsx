@@ -12,6 +12,8 @@ import { MdPlaylistAdd } from 'react-icons/md';
 import { DevTool } from '../dev';
 import { signout } from '@/lib/auth';
 import { Pfp } from '../elements/Pfp';
+import { Org } from '@/features/orgs/types';
+import { get_owned_organizations } from '@/features/orgs/api';
 // import { BsInbox } from 'react-icons/bs';
 
 type DropdownOptionProps = {
@@ -71,7 +73,17 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
         setShowCreateOrgModal,
         setShowCreateEventModal,
     } = useContext(ModalContext);
-    const { userData, userEvents } = useContext(UserContext);
+    const { userData } = useContext(UserContext);
+    const [ownedOrgs, setOwnedOrgs] = useState<Org[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const ownedOrgsData = await get_owned_organizations();
+            setOwnedOrgs(ownedOrgsData);
+        };
+
+        if (userData) fetchData();
+    }, [userData]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -106,7 +118,7 @@ export const Navbar = ({ bare = false }: NavbarProps) => {
                                     size={24}
                                     onClick={() => setShowCreateOrgModal(true)}
                                 />
-                                {userEvents?.length > 0 && (
+                                {ownedOrgs?.length > 0 && (
                                     <MdPlaylistAdd
                                         className="cursor-pointer"
                                         size={24}

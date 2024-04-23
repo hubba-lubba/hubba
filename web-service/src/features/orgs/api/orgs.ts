@@ -8,7 +8,7 @@ type OrgServiceType = {
     name: string;
     image: string;
     description: string;
-    owner_id: string;
+    owner: string;
     users: string[];
     events: string[];
     channel: string;
@@ -21,7 +21,7 @@ const extort = (orgData: OrgServiceType): Org => {
         orgData.image,
         orgData.description,
         orgData.channel,
-        orgData.owner_id,
+        orgData.owner,
         orgData.users,
         orgData.events,
     );
@@ -51,7 +51,9 @@ export const get_org = async (org_id: string): Promise<Org> => {
         if (res.status !== 200) throw res;
 
         const orgData = data.organization as OrgServiceType;
+        console.log(orgData);
         const org = extort(orgData);
+        console.log(org);
         return org;
     } catch (e) {
         logger(`${e}`);
@@ -195,15 +197,45 @@ export const get_user_orgs = async (): Promise<Org[]> => {
     }
 };
 
+export const get_owned_organizations = async (): Promise<Org[]> => {
+    const headers = {
+        'Content-Type': 'application/json',
+        id_token: await getidtoken(),
+    };
+    const res = await fetch(`${ORGS_API_URL}/get_user_owned_organizations`, {
+        method: 'GET',
+        headers: headers,
+    });
+
+    logger(`get_owned_organizations`);
+
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
+
+        if (res.status !== 200) throw res;
+
+        const orgsData = data.organizations as OrgServiceType[];
+        const orgs = extort_many(orgsData);
+        return orgs;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
+}
+
 export const add_user_to_org = async (org_id: string): Promise<Org> => {
     const headers = {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
-    const res = await fetch(`${ORGS_API_URL}/add_user?organization_id=${org_id}`, {
-        method: 'PATCH',
-        headers: headers,
-    });
+    const res = await fetch(
+        `${ORGS_API_URL}/add_user?organization_id=${org_id}`,
+        {
+            method: 'PATCH',
+            headers: headers,
+        },
+    );
 
     logger(`add_user_to_org`);
 
@@ -227,10 +259,13 @@ export const remove_user_from_org = async (org_id: string): Promise<string> => {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
-    const res = await fetch(`${ORGS_API_URL}/delete_user?organization_id=${org_id}`, {
-        method: 'DELETE',
-        headers: headers,
-    });
+    const res = await fetch(
+        `${ORGS_API_URL}/delete_user?organization_id=${org_id}`,
+        {
+            method: 'DELETE',
+            headers: headers,
+        },
+    );
 
     logger(`remove_user_from_org`);
 

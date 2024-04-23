@@ -10,6 +10,7 @@ import { Org } from '@/features/orgs/types';
 import { get_event, remove_user_from_event } from '../api';
 import { get_org } from '@/features/orgs/api';
 import { add_user_to_event } from '../api';
+import { useNavigate } from 'react-router-dom';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -22,10 +23,10 @@ export const EventPage = () => {
         userEvents,
         setUserEvents,
         userHasEvent,
-        userHasOrg,
         setEventStreamingStatus,
     } = useContext(UserContext);
     // const [tags, setTags] = useState<React.ReactElement[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!id) return; //do smt else abt this (but safer)
@@ -100,35 +101,49 @@ export const EventPage = () => {
                         <p className="">{formatTime(event.time_of)}</p>
                         {userData && (
                             <div className="flex w-full items-center justify-center space-x-4">
-                                <button
-                                    className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
-                                    onClick={() =>
-                                        userHasEvent(event.event_id)
-                                            ? leaveEvent(event)
-                                            : joinEvent(event)
-                                    }
-                                >
-                                    {userHasEvent(event.event_id)
-                                        ? 'LEAVE'
-                                        : 'ENTER'}
-                                </button>
-
-                                {userHasOrg(event.host_org) && (
+                                {userData.user_id === org?.owner ? (
+                                    <>
+                                        <button
+                                            className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                            onClick={() =>
+                                                navigate(
+                                                    `/events/${event.event_id}/settings`,
+                                                )
+                                            }
+                                        >
+                                            SETTINGS
+                                        </button>
+                                        <button
+                                            className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
+                                            onClick={() =>
+                                                event.status == 0
+                                                    ? setEventStreamingStatus(
+                                                          event.event_id,
+                                                          1,
+                                                      )
+                                                    : setEventStreamingStatus(
+                                                          event.event_id,
+                                                          0,
+                                                      )
+                                            }
+                                        >
+                                            {event.status == 0
+                                                ? 'START'
+                                                : 'STOP'}
+                                        </button>
+                                    </>
+                                ) : (
                                     <button
                                         className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
                                         onClick={() =>
-                                            event.status == 0
-                                                ? setEventStreamingStatus(
-                                                      event.event_id,
-                                                      1,
-                                                  )
-                                                : setEventStreamingStatus(
-                                                      event.event_id,
-                                                      0,
-                                                  )
+                                            userHasEvent(event.event_id)
+                                                ? leaveEvent(event)
+                                                : joinEvent(event)
                                         }
                                     >
-                                        {event.status == 0 ? 'START' : 'STOP'}
+                                        {userHasEvent(event.event_id)
+                                            ? 'LEAVE'
+                                            : 'ENTER'}
                                     </button>
                                 )}
                             </div>

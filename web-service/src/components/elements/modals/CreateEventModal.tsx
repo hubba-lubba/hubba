@@ -8,8 +8,8 @@ import { UserContext } from '@/contexts/UserProvider';
 import { name, desc } from '@/lib/validation';
 import { SelectField, DateField } from '@/components/form';
 import { Org } from '@/features/orgs/types';
-import { get_user_orgs } from '@/features/orgs/api';
 import { create_event } from '@/features/events/api';
+import { get_owned_organizations } from '@/features/orgs/api';
 
 const prize = Joi.string().min(3).max(30).allow('');
 
@@ -36,15 +36,15 @@ type CreateEventValues = {
 };
 
 export const CreateEventModal = () => {
-    const [orgs, setOrgs] = useState<Org[]>([]);
+    const [ownedOrgs, setOwnedOrgs] = useState<Org[]>([]);
     const { showCreateEventModal, setShowCreateEventModal } =
         useContext(ModalContext);
     const { userData, userEvents, setUserEvents } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
-            const userOrgs = await get_user_orgs();
-            setOrgs(userOrgs);
+            const ownedOrgsData = await get_owned_organizations();
+            setOwnedOrgs(ownedOrgsData);
         };
         if (userData) fetchData();
     }, [userData]);
@@ -97,7 +97,7 @@ export const CreateEventModal = () => {
                             <div className="flex w-1/4 flex-col">
                                 <SelectField
                                     // TODO: implement having select displayed options be different from underlying value
-                                    options={orgs.map(
+                                    options={ownedOrgs.map(
                                         (org) => `${org.name} - ${org.org_id}`,
                                     )}
                                     label="Organization"
