@@ -27,7 +27,7 @@ export function ChangeChannel({ org }: { org: Org }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Update Channel</h2>
+            <h2 className="mb-2 text-xl">Org Channel</h2>
             <Form<ChangeChannelValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
@@ -36,7 +36,7 @@ export function ChangeChannel({ org }: { org: Org }) {
                     <>
                         <TextField
                             type="text"
-                            label="Channel"
+                            label="Channel (name only)"
                             error={formState.errors['channel']}
                             registration={register('channel')}
                         />

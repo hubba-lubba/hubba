@@ -26,7 +26,7 @@ export function ChangeUsername() {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Username</h2>
+            <h2 className="mb-2 text-xl">Username</h2>
             <Form<ChangeUsernameFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
@@ -35,7 +35,8 @@ export function ChangeUsername() {
                     <>
                         <TextField
                             type="text"
-                            label="New Username"
+                            // TODO: add 'New' to all these after componentize
+                            label="Username"
                             error={formState.errors['newUsername']}
                             registration={register('newUsername')}
                         />

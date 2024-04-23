@@ -33,7 +33,7 @@ export function ChangePrizes({ event }: { event: Event }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Event Prizes</h2>
+            <h2 className="mb-2 text-xl">Event Prizes</h2>
             <Form<ChangePrizesFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}

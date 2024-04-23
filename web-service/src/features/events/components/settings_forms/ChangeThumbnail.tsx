@@ -48,16 +48,21 @@ export function ChangeThumbnail({ event }: { event: Event }) {
 
     return (
         <div className="flex w-3/6 flex-col items-center">
-            <h2 className="mb-2 text-3xl">Change Event Thumbnail</h2>
-            <Form<ChangeThumbnailFields, AnySchema> onSubmit={handleSubmit}>
+            <h2 className="mb-2 text-xl">Event Thumbnail</h2>
+            <Form<ChangeThumbnailFields, AnySchema>
+                onSubmit={handleSubmit}
+                style="w-full flex flex-col justify-center items-center"
+            >
                 {({ register, formState, setError }) => (
                     <>
                         <FieldWrapper
-                            style="w-[300px] h-[300px] rounded-full cursor-pointer flex justify-center items-center"
+                            style="w-[200px] h-[200px] rounded-full cursor-pointer flex justify-center items-center"
                             error={formState.errors['newThumbnail']}
                         >
                             <img
-                                src={(previewImage as string) ?? event.thumbnail}
+                                src={
+                                    (previewImage as string) ?? event.thumbnail
+                                }
                                 alt={event.name}
                             />
                             <input
@@ -72,7 +77,10 @@ export function ChangeThumbnail({ event }: { event: Event }) {
                                 })}
                             />
                         </FieldWrapper>
-                        <SubmitButton text="Submit" />
+                        <SubmitButton
+                            layoutStyle="flex w-full justify-center"
+                            text="Submit"
+                        />
                     </>
                 )}
             </Form>

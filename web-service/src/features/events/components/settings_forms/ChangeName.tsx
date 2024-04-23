@@ -27,7 +27,7 @@ export function ChangeName({ event }: { event: Event }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Event Name</h2>
+            <h2 className="mb-2 text-xl">Event Name</h2>
             <Form<ChangeNameFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
@@ -37,7 +37,7 @@ export function ChangeName({ event }: { event: Event }) {
                         <TextField
                             value={event.name}
                             type="text"
-                            label="New Name"
+                            label="Name"
                             error={formState.errors['newName']}
                             registration={register('newName')}
                         />

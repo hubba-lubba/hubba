@@ -26,7 +26,7 @@ export function ChangeBio() {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Update Bio</h2>
+            <h2 className="mb-2 text-xl">Bio</h2>
             <Form<ChangeBioValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}

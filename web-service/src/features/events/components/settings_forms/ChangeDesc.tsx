@@ -27,7 +27,7 @@ export function ChangeDesc({ event }: { event: Event }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Update Bio</h2>
+            <h2 className="mb-2 text-xl">Description</h2>
             <Form<ChangeDescValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
@@ -37,7 +37,7 @@ export function ChangeDesc({ event }: { event: Event }) {
                         <TextField
                             value={event.description}
                             type="text"
-                            label="Desc"
+                            label="Description"
                             error={formState.errors['desc']}
                             registration={register('desc')}
                         />

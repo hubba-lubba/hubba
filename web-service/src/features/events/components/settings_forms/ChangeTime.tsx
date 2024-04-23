@@ -26,7 +26,7 @@ export function ChangeTime({ event }: { event: Event }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Event Time</h2>
+            <h2 className="mb-2 text-xl">Event Time</h2>
             <Form<ChangeTimeFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}

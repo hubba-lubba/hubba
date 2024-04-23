@@ -19,7 +19,7 @@ export const FieldWrapper = ({
     children,
 }: FieldWrapperProps) => {
     return (
-        <div>
+        <>
             <label
                 className={clsx(
                     'text-sm block font-medium text-hubba-100',
@@ -38,6 +38,6 @@ export const FieldWrapper = ({
                     {error.message}
                 </div>
             )}
-        </div>
+        </>
     );
 };

@@ -30,7 +30,7 @@ export function ChangePassword() {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Password</h2>
+            <h2 className="mb-2 text-xl">Password</h2>
             <Form<ChangePasswordValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}

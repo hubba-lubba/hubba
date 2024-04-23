@@ -26,7 +26,7 @@ export function ChangeUrl({ event }: { event: Event }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-3xl">Change Event Url</h2>
+            <h2 className="mb-2 text-xl">Event Url</h2>
             <Form<ChangeUrlFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}

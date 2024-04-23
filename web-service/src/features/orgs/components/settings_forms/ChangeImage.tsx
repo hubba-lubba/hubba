@@ -48,12 +48,13 @@ export function ChangeImage({ org }: { org: Org }) {
 
     return (
         <div className="flex w-3/6 flex-col items-center">
-            <h2 className="mb-2 text-3xl">Change Org Image</h2>
-            <Form<ChangeImageFields, AnySchema> onSubmit={handleSubmit}>
+            <h2 className="mb-2 text-xl">Org Image</h2>
+            <Form<ChangeImageFields, AnySchema> onSubmit={handleSubmit}
+            style="w-full flex flex-col justify-center items-center">
                 {({ register, formState, setError }) => (
                     <>
                         <FieldWrapper
-                            style="w-[300px] h-[300px] rounded-full cursor-pointer flex justify-center items-center"
+                            style="w-[200px] h-[200px] rounded-full cursor-pointer flex justify-center items-center"
                             error={formState.errors['newImage']}
                         >
                             <img
@@ -72,7 +73,7 @@ export function ChangeImage({ org }: { org: Org }) {
                                 })}
                             />
                         </FieldWrapper>
-                        <SubmitButton text="Submit" />
+                        <SubmitButton layoutStyle="flex w-full justify-center" text="Submit" />
                     </>
                 )}
             </Form>
