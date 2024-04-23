@@ -209,3 +209,27 @@ def get_live_users():
             "users": [user.get_JSON() for user in live_users]
         })
         return response
+
+@user_blueprint.route("/add_video", methods=["PATCH"])
+@require_json_params(["video_url"])
+@ensure_authorized()
+def add_video():
+    context = request.get_json()
+    video_url = context.get("video_url")
+    user_id = auth.verify_id_token(request.headers.get("id_token")).get("uid")
+
+    with Session(engine) as session:
+        user_repository = UserRepository(session)
+        try:
+            user = user_repository.add_video(user_id=user_id, video_url=video_url)
+            response = jsonify({
+                "status": "success",
+                "user": user.get_JSON(),
+            })
+            return response
+        except IdMissingException as e:
+            result = jsonify({
+                "status": "failure",
+                "reason": str(e)
+            })
+            return result, 400

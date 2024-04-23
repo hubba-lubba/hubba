@@ -172,3 +172,10 @@ class UserRepository:
     def get_live_users(self):
         users = self.session.query(User).filter(User.streaming_status == 1).order_by(func.random()).limit(5).all()
         return users
+
+    @check_id_exists(User, ["user_id"])
+    def add_video(self, user_id, video_url):
+        user = self.session.get(User, user_id)
+        user.video_urls = user.video_urls + [video_url]
+        self._update_user(user)
+        return user
