@@ -36,7 +36,7 @@ export const EventSettingsForm = () => {
             {error && <div>{error}</div>}
             <h1 className="text-5xl font-bold">Settings</h1>
 
-            <section className="flex h-[90%] w-5/6 flex-row pt-6">
+            <section className="flex h-[90%] w-5/6 flex-row pt-6 space-x-16">
                 <ChangeThumbnail event={event} />
                 <div className="scroll-gutter flex h-full w-5/6 flex-col gap-16 overflow-y-auto">
                     <ChangeName event={event} />

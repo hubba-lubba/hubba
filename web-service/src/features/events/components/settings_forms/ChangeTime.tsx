@@ -30,7 +30,6 @@ export function ChangeTime({ event }: { event: Event }) {
             <Form<ChangeTimeFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
-                style="!w-1/2"
             >
                 {({ register, formState }) => (
                     <>

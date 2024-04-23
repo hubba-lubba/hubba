@@ -30,7 +30,6 @@ export function ChangeUrl({ event }: { event: Event }) {
             <Form<ChangeUrlFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
-                style="!w-1/2"
             >
                 {({ register, formState }) => (
                     <>

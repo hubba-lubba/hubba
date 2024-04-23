@@ -31,7 +31,6 @@ export function ChangeChannel({ org }: { org: Org }) {
             <Form<ChangeChannelValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
-                style="!w-1/2"
             >
                 {({ register, formState }) => (
                     <>

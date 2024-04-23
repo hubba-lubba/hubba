@@ -53,15 +53,12 @@ export function ChangeThumbnail({ event }: { event: Event }) {
                 {({ register, formState, setError }) => (
                     <>
                         <FieldWrapper
-                            style="w-[300px] h-[300px] rounded-full cursor-pointer"
+                            style="w-[300px] h-[300px] rounded-full cursor-pointer flex justify-center items-center"
                             error={formState.errors['newThumbnail']}
                         >
                             <img
-                                src={
-                                    (previewImage as string) ?? event.thumbnail
-                                }
-                                alt="profile picture"
-                                className="h-[300px] w-[300px] rounded-full"
+                                src={(previewImage as string) ?? event.thumbnail}
+                                alt={event.name}
                             />
                             <input
                                 type="file"

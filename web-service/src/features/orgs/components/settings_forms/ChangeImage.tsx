@@ -53,13 +53,12 @@ export function ChangeImage({ org }: { org: Org }) {
                 {({ register, formState, setError }) => (
                     <>
                         <FieldWrapper
-                            style="w-[300px] h-[300px] rounded-full cursor-pointer"
+                            style="w-[300px] h-[300px] rounded-full cursor-pointer flex justify-center items-center"
                             error={formState.errors['newImage']}
                         >
                             <img
                                 src={(previewImage as string) ?? org.image}
                                 alt={org.name}
-                                className="h-[300px] w-[300px] rounded-full"
                             />
                             <input
                                 type="file"

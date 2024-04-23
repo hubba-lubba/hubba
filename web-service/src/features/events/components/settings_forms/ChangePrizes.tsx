@@ -37,7 +37,6 @@ export function ChangePrizes({ event }: { event: Event }) {
             <Form<ChangePrizesFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
-                style="!w-1/2"
             >
                 {({ register, formState }) => (
                     <>

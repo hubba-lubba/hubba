@@ -30,7 +30,6 @@ export function ChangeEmail() {
             <Form<ChangeEmailFields, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
-                style="!w-1/2"
             >
                 {({ register, formState }) => (
                     <>
