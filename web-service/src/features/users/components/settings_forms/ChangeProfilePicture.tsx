@@ -55,14 +55,14 @@ export function ChangeProfilePicture() {
                 {({ register, formState, setError }) => (
                     <>
                         <FieldWrapper
-                            style="w-[300px] h-[300px] rounded-full cursor-pointer"
+                            style="w-[300px] h-[300px] rounded-full cursor-pointer flex justify-center items-center"
                             error={formState.errors['newProfilePicture']}
                         >
                             {previewImage ? (
                                 <img
                                     src={previewImage as string}
                                     alt="profile picture"
-                                    className="h-[300px] w-[300px] rounded-full"
+                                    className="rounded-full"
                                 />
                             ) : (
                                 <Pfp

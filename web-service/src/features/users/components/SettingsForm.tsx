@@ -8,6 +8,7 @@ import {
 } from './settings_forms';
 import { Layout } from '@/components/layout';
 
+// TODO: componentize for user orgs and events
 export const SettingsForm = () => {
     return (
         <Layout style="flex-col items-center h-full">
