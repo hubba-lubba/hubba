@@ -288,3 +288,19 @@ def get_user_events():
             "events": [event.get_JSON() for event in events]
         })
         return response
+
+@events_blueprint.route("/get_organization_events", methods=["GET"])
+@require_query_params(["organization_id"])
+@ensure_UUID("organization_id")
+def get_organization_events():
+    organization_id = request.args.get("organization_id")
+
+    with Session(engine) as session:
+        events_repository = EventsRepository(session)
+        events = events_repository.get_organization_events(organization_id=UUID(organization_id))
+        response = jsonify({
+            "status": "success",
+            "events": [event.get_JSON() for event in events]
+        })
+        return response
+
