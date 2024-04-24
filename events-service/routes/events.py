@@ -154,7 +154,7 @@ def patch_event():
     host = context.get("host") if context.get("host") else None
     entry_fee = context.get("entry_fee") if context.get("entry_fee") else None
     prizes = context.get("prizes") if context.get("prizes") else []
-    status = context.get("status") if context.get("status") else None
+    status = context.get("status") if context.get("status") is not None else None
 
     with Session(engine) as session:
         events_repository = EventsRepository(session)
