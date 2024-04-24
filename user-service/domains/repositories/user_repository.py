@@ -43,7 +43,6 @@ class UserRepository:
     :return: User of added user
     """
     @check_id_not_exists(User, ["user_id"])
-    @check_unique(User, User.username, ["username"])
     def add_user(self, 
                  username=None, 
                  user_id=None, 
