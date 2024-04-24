@@ -153,4 +153,4 @@ class OrganizationsRepository:
     def get_owned_organization(self, user_id=None):
         user = self.session.get(User, user_id)
 
-        return self.session.query(Organizations).filter(Organizations.owner == user_id).all()
+        return self.session.query(Organizations).filter(Organizations.owner == user).all()
