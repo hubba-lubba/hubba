@@ -11,6 +11,7 @@ import { get_event, remove_user_from_event } from '../api';
 import { get_org } from '@/features/orgs/api';
 import { add_user_to_event } from '../api';
 import { useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
 
 export const EventPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -114,24 +115,31 @@ export const EventPage = () => {
                                         >
                                             SETTINGS
                                         </button>
-                                        <button
-                                            className="w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold"
-                                            onClick={() =>
-                                                event.status == 0
-                                                    ? setEventStreamingStatus(
-                                                          event.event_id,
-                                                          1,
-                                                      )
-                                                    : setEventStreamingStatus(
-                                                          event.event_id,
-                                                          0,
-                                                      )
-                                            }
-                                        >
-                                            {event.status == 0
-                                                ? 'START'
-                                                : 'STOP'}
-                                        </button>
+                                        {org.channel && (
+                                            <button
+                                                className={clsx(
+                                                    'w-[150px] rounded-2xl bg-hubba-500 px-3 py-2 font-bold',
+                                                    event.status === 0
+                                                        ? 'text-green-500'
+                                                        : 'text-red-500',
+                                                )}
+                                                onClick={() =>
+                                                    event.status == 0
+                                                        ? setEventStreamingStatus(
+                                                              event.event_id,
+                                                              1,
+                                                          )
+                                                        : setEventStreamingStatus(
+                                                              event.event_id,
+                                                              0,
+                                                          )
+                                                }
+                                            >
+                                                {event.status == 0
+                                                    ? 'START'
+                                                    : 'STOP'}
+                                            </button>
+                                        )}
                                     </>
                                 ) : (
                                     <button

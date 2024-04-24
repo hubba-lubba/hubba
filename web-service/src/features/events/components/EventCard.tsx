@@ -34,8 +34,8 @@ export const EventCard = ({ event }: { event: Event }) => {
             footer={
                 <div className="flex w-full flex-row">
                     <div className="flex w-1/2 flex-row">
-                        <Pfp image={org?.image} variant="org" />
-                        <div className="flex flex-col ml-4">
+                        <Pfp image={org?.image} variant="org" size={48} />
+                        <div className="ml-4 flex flex-col">
                             <span className="truncate">{event.name}</span>
                             <span className="truncate">{org?.name}</span>
                         </div>
