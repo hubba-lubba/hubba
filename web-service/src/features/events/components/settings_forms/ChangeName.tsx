@@ -35,7 +35,7 @@ export function ChangeName({ event }: { event: Event }) {
                 {({ register, formState }) => (
                     <>
                         <TextField
-                            value={event.name}
+                            defaultValue={event.name}
                             type="text"
                             label="Name"
                             error={formState.errors['newName']}

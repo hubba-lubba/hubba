@@ -13,7 +13,7 @@ type ChangeBioValues = {
 };
 
 export function ChangeBio() {
-    const { editBio } = useContext(UserContext);
+    const { userData, editBio } = useContext(UserContext);
 
     async function handleSubmit(data: ChangeBioValues) {
         const { bio } = data;
@@ -36,6 +36,7 @@ export function ChangeBio() {
                         <TextField
                             type="text"
                             label="Bio"
+                            defaultValue={userData.bio}
                             error={formState.errors['bio']}
                             registration={register('bio')}
                         />

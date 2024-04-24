@@ -6,6 +6,7 @@ import { Org } from '@/features/orgs/types';
 import { TwitchLiveEmbed } from '@/components/external';
 import { formatTime } from '@/utils/time';
 import { get_org } from '@/features/orgs/api';
+import { Pfp } from '@/components/elements';
 
 export const EventCard = ({ event }: { event: Event }) => {
     const [org, setOrg] = useState<Org>();
@@ -32,9 +33,12 @@ export const EventCard = ({ event }: { event: Event }) => {
             }
             footer={
                 <div className="flex w-full flex-row">
-                    <div className="flex w-1/2 flex-col">
-                        <span className='truncate'>{event.name}</span>
-                        <span className='truncate'>{org?.name}</span>
+                    <div className="flex w-1/2 flex-row">
+                        <Pfp image={org?.image} variant="org" />
+                        <div className="flex flex-col ml-4">
+                            <span className="truncate">{event.name}</span>
+                            <span className="truncate">{org?.name}</span>
+                        </div>
                     </div>
                     <div className="flex w-1/2 flex-col items-end">
                         <span>{statuses[event.status]}</span>

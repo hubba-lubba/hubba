@@ -13,9 +13,15 @@ import { statuses } from '@/lib/constants';
 import { formatTime } from '@/utils/time';
 import { get_user } from '@/features/users/api';
 import { add_user_to_org, get_org, remove_user_from_org } from '../api';
-import { get_event } from '@/features/events/api';
+import { get_org_events } from '@/features/events/api';
 
-const MemberCard = ({ user_id, owner }: { user_id: string, owner: boolean }) => {
+const MemberCard = ({
+    user_id,
+    owner,
+}: {
+    user_id: string;
+    owner: boolean;
+}) => {
     const [user, setUser] = useState<User>();
     const navigate = useNavigate();
 
@@ -45,7 +51,8 @@ export const OrgPage = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { userData, userOrgs, setUserOrgs, userHasOrg } =
+    // userEvents to refresh org when user creates an event
+    const { userData, userOrgs, userEvents, setUserOrgs, userHasOrg } =
         useContext(UserContext);
     const navigate = useNavigate();
 
@@ -60,14 +67,12 @@ export const OrgPage = () => {
         };
 
         fetchData().catch((err) => setError('Error loading page: ' + err));
-    }, [id, userOrgs]);
+    }, [id, userOrgs, userEvents]);
 
     useEffect(() => {
         if (!org) return;
         const fetchEvents = async () => {
-            const eventsData = await Promise.all(
-                org.events.map(async (event_id) => await get_event(event_id)),
-            );
+            const eventsData = await get_org_events(org.org_id);
             setEvents(eventsData);
         };
 
@@ -99,6 +104,10 @@ export const OrgPage = () => {
                                 src={org.image}
                                 alt={org.name}
                                 width={250}
+                                style={{
+                                    maxHeight: '250px',
+                                    objectFit: 'cover',
+                                }}
                             />
                         </div>
                         <div className="space-y-6 px-4">
@@ -147,21 +156,36 @@ export const OrgPage = () => {
                         </div>
                     </div>
                     <div className="flex flex-col space-y-4 py-4">
-                        <h1 className="text-2xl">Events</h1>
-                        {events.map((event, index) => (
-                            <div
-                                key={`event-${org.org_id}-${index}`}
-                                className="flex w-full cursor-pointer justify-between rounded bg-hubba-800 p-4"
-                                onClick={() =>
-                                    navigate(`/events/${event.event_id}`)
-                                }
-                            >
-                                <span>
-                                    [{statuses[event.status]}] {event.name}
-                                </span>
-                                <span>{formatTime(event.time_of)}</span>
-                            </div>
-                        ))}
+                        {events.length > 0 && (
+                            <>
+                                <h1 className="text-2xl">Events</h1>
+                                {events.map((event, index) => (
+                                    <div
+                                        key={`event-${org.org_id}-${index}`}
+                                        className="flex w-full cursor-pointer justify-between rounded bg-hubba-800 p-4"
+                                        onClick={() =>
+                                            navigate(
+                                                `/events/${event.event_id}`,
+                                            )
+                                        }
+                                    >
+                                        <div className="flex flex-row items-center justify-center">
+                                            <Pfp
+                                                image={event.thumbnail}
+                                                variant="event"
+                                            />
+                                            <span className='ml-4'>
+                                                [{statuses[event.status]}]{' '}
+                                                {event.name}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center">
+                                            {formatTime(event.time_of)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </>
+                        )}
                     </div>
                 </div>
                 <div className="scroll-gutter mt-6 flex w-full min-w-[300px] flex-col items-center justify-start space-y-4 overflow-y-auto lg:mt-0 lg:w-4/12 lg:px-8">

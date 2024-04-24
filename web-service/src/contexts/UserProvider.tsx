@@ -12,8 +12,12 @@ import {
     update_user,
     get_user,
 } from '@/features/users/api';
-import { get_user_orgs } from '@/features/orgs/api';
-import { get_user_events, update_event } from '@/features/events/api';
+import { get_owned_organizations, get_user_orgs } from '@/features/orgs/api';
+import {
+    get_org_events,
+    get_user_events,
+    update_event,
+} from '@/features/events/api';
 import { editemail, editpassword, editusername } from '@/lib/auth';
 import { update_org } from '@/features/orgs/api';
 import { logger } from '@/utils/logger';
@@ -73,10 +77,13 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
                 userData.following.map((user_id) => get_user(user_id)),
             );
             setUserChannels(channels);
-            const events = await get_user_events();
-            setUserEvents(events);
             const orgs = await get_user_orgs();
             setUserOrgs(orgs);
+
+            const joined_events = await get_user_events();
+            const owned_events = await getOwnedEvents();
+            const events = [...joined_events, ...owned_events];
+            setUserEvents(events);
         };
 
         if (userData) {
@@ -97,7 +104,9 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
     const unfollowUser = async (user_id: string) => {
         const user = await unfollow_user(user_id);
         setUserData(user);
-        setUserChannels(userChannels.filter((channel) => channel.user_id !== user_id));
+        setUserChannels(
+            userChannels.filter((channel) => channel.user_id !== user_id),
+        );
     };
     const userHasEvent = (event_id: string) => {
         return userEvents.some((event) => event.event_id === event_id);
@@ -222,6 +231,15 @@ export const UserProvider = ({ children }: React.PropsWithChildren<object>) => {
                 event.event_id === event_id ? eventData : event,
             ),
         );
+    };
+    const getOwnedEvents = async () => {
+        const ownedOrgs = await get_owned_organizations();
+        const org_owned_events = await Promise.all(
+            ownedOrgs.map(async (org) => {
+                return await get_org_events(org.org_id);
+            }),
+        );
+        return org_owned_events.flat();
     };
 
     // org methods

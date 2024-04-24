@@ -9,7 +9,7 @@ export class Org {
         public owner: string,
         // public moderators: string[],
         public users: string[],
-        public events: string[],
+        // public events: string[],
         // public created: Date,
     ) {
         this.org_id = org_id;
@@ -21,7 +21,7 @@ export class Org {
         this.owner = owner;
         // this.moderators = moderators;
         this.users = users;
-        this.events = events;
+        // this.events = events;
         // this.created = created;
     }
 }

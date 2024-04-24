@@ -34,7 +34,7 @@ export function ChangeTime({ event }: { event: Event }) {
                 {({ register, formState }) => (
                     <>
                         <DateField
-                            value={event.time_of}
+                            defaultValue={event.time_of}
                             label="New Time (UTC)"
                             error={formState.errors['time_of']}
                             registration={register('time_of')}

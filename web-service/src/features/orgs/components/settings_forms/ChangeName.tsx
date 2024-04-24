@@ -37,6 +37,7 @@ export function ChangeName({ org }: { org: Org }) {
                         <TextField
                             type="text"
                             label="Name"
+                            defaultValue={org.name}
                             error={formState.errors['newName']}
                             registration={register('newName')}
                         />

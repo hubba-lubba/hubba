@@ -36,6 +36,7 @@ export function ChangeUrl({ event }: { event: Event }) {
                         <TextField
                             type="text"
                             label="New Url"
+                            defaultValue={event.url}
                             error={formState.errors['newUrl']}
                             registration={register('newUrl')}
                         />

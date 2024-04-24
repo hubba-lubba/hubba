@@ -3,6 +3,7 @@ import { SidebarSection } from '@/components/layout';
 import { useState, useContext } from 'react';
 import { UserContext } from '@/contexts/UserProvider';
 import { useNavigate } from 'react-router-dom';
+import { Pfp } from '@/components/elements';
 
 export const SidebarEvents = () => {
     const [showMore, setShowMore] = useState<boolean>(false);
@@ -22,6 +23,7 @@ export const SidebarEvents = () => {
                     <Button
                         key={`sidebar-event-${event.event_id}-${index}`}
                         variant="text"
+                        icon={<Pfp image={event.thumbnail} variant="event" />}
                         handleClick={() =>
                             navigate(`/events/${event.event_id}`)
                         }
