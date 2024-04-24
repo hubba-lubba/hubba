@@ -162,7 +162,7 @@ class EventsRepository:
         return self.session.query(Events).order_by(Events.time_of).limit(5).all()
 
     def get_current_events(self):
-        return self.session.query(Events).filter(Events.time_of> func.now()).order_by(Events.time_of).limit(5).all()
+        return self.session.query(Events).filter(Events.time_of > func.now() and Events.status == 1).order_by(Events.time_of).limit(5).all()
 
     @check_id_exists(User, ["user_id"])
     def get_user_events(self, user_id=None):
