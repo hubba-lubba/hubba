@@ -3,6 +3,7 @@ import { SidebarSection } from '@/components/layout';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@/contexts/UserProvider';
+import { Pfp } from '@/components/elements';
 
 export const SidebarOrgs = () => {
     const [showMore, setShowMore] = useState<boolean>(false);
@@ -22,6 +23,7 @@ export const SidebarOrgs = () => {
                     <Button
                         key={`sidebar-org-${org.org_id}-${index}`}
                         variant="text"
+                        icon={<Pfp image={org.image} variant="org"/>}
                         handleClick={() => navigate(`/orgs/${org.org_id}`)}
                     >
                         {org.name}

@@ -1,4 +1,5 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
+import { AuthContext } from '@/contexts/AuthProvider';
 import { UserContext } from '@/contexts/UserProvider';
 import { email } from '@/lib/validation';
 import Joi from 'joi';
@@ -13,6 +14,7 @@ type ChangeEmailFields = {
 };
 
 export function ChangeEmail() {
+    const currentUser = useContext(AuthContext);
     const { editEmail } = useContext(UserContext);
 
     async function handleSubmit(data: ChangeEmailFields) {
@@ -36,6 +38,7 @@ export function ChangeEmail() {
                         <TextField
                             type="email"
                             label="New Email"
+                            defaultValue={currentUser.email ?? ''}
                             error={formState.errors['newEmail']}
                             registration={register('newEmail')}
                         />

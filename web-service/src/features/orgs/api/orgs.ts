@@ -10,7 +10,6 @@ type OrgServiceType = {
     description: string;
     owner: string;
     users: string[];
-    events: string[];
     channel: string;
 };
 
@@ -23,7 +22,6 @@ const extort = (orgData: OrgServiceType): Org => {
         orgData.channel,
         orgData.owner,
         orgData.users,
-        orgData.events,
     );
 };
 

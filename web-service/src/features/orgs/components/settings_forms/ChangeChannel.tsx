@@ -37,6 +37,7 @@ export function ChangeChannel({ org }: { org: Org }) {
                         <TextField
                             type="text"
                             label="Channel (name only)"
+                            defaultValue={org.channel}
                             error={formState.errors['channel']}
                             registration={register('channel')}
                         />

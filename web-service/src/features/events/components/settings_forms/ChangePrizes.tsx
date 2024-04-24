@@ -41,21 +41,21 @@ export function ChangePrizes({ event }: { event: Event }) {
                 {({ register, formState }) => (
                     <>
                         <TextField
-                            value={event.prizes?.[0]}
+                            defaultValue={event.prizes?.[0]}
                             type="text"
                             label="Prize 1"
                             error={formState.errors['prize1']}
                             registration={register('prize1')}
                         />
                         <TextField
-                            value={event.prizes?.[1]}
+                            defaultValue={event.prizes?.[1]}
                             type="text"
                             label="Prize 2"
                             error={formState.errors['prize2']}
                             registration={register('prize2')}
                         />
                         <TextField
-                            value={event.prizes?.[2]}
+                            defaultValue={event.prizes?.[2]}
                             type="text"
                             label="Prize 3"
                             error={formState.errors['prize3']}

@@ -81,13 +81,14 @@ export const EventPage = () => {
         <PageLayout>
             <div className="flex flex-col">
                 <section className="flex flex-row items-center space-x-4">
-                    <Link to={event.url} className="w-[500px]">
+                    <Link to={event.url} target="_blank" className="w-[500px]">
                         <img
                             src={
                                 event.thumbnail || '/public/image_not_found.jpg'
                             }
                             className="rounded"
-                            width={500}
+                            width={400}
+                            style={{ maxHeight: '400px', objectFit: 'cover' }}
                         />
                     </Link>
 

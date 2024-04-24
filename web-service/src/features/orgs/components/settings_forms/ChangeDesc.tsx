@@ -27,7 +27,7 @@ export function ChangeDesc({ org }: { org: Org }) {
 
     return (
         <div>
-            <h2 className="mb-2 text-xl">Bio</h2>
+            <h2 className="mb-2 text-xl">Description</h2>
             <Form<ChangeDescValues, typeof schema>
                 onSubmit={handleSubmit}
                 schema={schema}
@@ -36,7 +36,8 @@ export function ChangeDesc({ org }: { org: Org }) {
                     <>
                         <TextField
                             type="text"
-                            label="Bio"
+                            label="Description"
+                            defaultValue={org.description}
                             error={formState.errors['desc']}
                             registration={register('desc')}
                         />

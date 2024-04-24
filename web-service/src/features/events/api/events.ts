@@ -63,6 +63,32 @@ export const get_event = async (event_id: string): Promise<Event> => {
     }
 };
 
+export const get_org_events = async (org_id: string): Promise<Event[]> => {
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+    const res = await fetch(`${EVENTS_API_URL}/get_organization_events?organization_id=${org_id}`, {
+        method: 'GET',
+        headers: headers,
+    });
+
+    logger(`get_org_events`);
+
+    try {
+        const data = await res.json();
+        logger(JSON.stringify(data));
+
+        if (res.status !== 200) throw res;
+
+        const eventsData = data.events as EventServiceType[];
+        const events = extort_many(eventsData);
+        return events;
+    } catch (e) {
+        logger(`${e}`);
+        throw e;
+    }
+}
+
 export const create_event = async (
     name: string,
     host_org: string,

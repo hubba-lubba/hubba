@@ -13,7 +13,7 @@ type ChangeChannelValues = {
 };
 
 export function ChangeChannel() {
-    const { editChannel } = useContext(UserContext);
+    const { userData, editChannel } = useContext(UserContext);
 
     async function handleSubmit(data: ChangeChannelValues) {
         const { channel } = data;
@@ -36,6 +36,7 @@ export function ChangeChannel() {
                         <TextField
                             type="text"
                             label="Channel (name only)"
+                            defaultValue={userData.channel}
                             error={formState.errors['channel']}
                             registration={register('channel')}
                         />

@@ -35,7 +35,7 @@ export function ChangeDesc({ event }: { event: Event }) {
                 {({ register, formState }) => (
                     <>
                         <TextField
-                            value={event.description}
+                            defaultValue={event.description}
                             type="text"
                             label="Description"
                             error={formState.errors['desc']}

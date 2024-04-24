@@ -1,4 +1,5 @@
 import { Form, TextField, SubmitButton } from '@/components/form';
+import { AuthContext } from '@/contexts/AuthProvider';
 import { UserContext } from '@/contexts/UserProvider';
 import { username } from '@/lib/validation';
 import Joi from 'joi';
@@ -13,7 +14,8 @@ type ChangeUsernameFields = {
 };
 
 export function ChangeUsername() {
-    const { editUsername } = useContext(UserContext);
+    const currentUser = useContext(AuthContext);
+    const { userData, editUsername } = useContext(UserContext);
 
     async function handleSubmit(data: ChangeUsernameFields) {
         const { newUsername } = data;
@@ -37,6 +39,9 @@ export function ChangeUsername() {
                             type="text"
                             // TODO: add 'New' to all these after componentize
                             label="Username"
+                            defaultValue={
+                                userData.username ?? currentUser.displayName
+                            }
                             error={formState.errors['newUsername']}
                             registration={register('newUsername')}
                         />
