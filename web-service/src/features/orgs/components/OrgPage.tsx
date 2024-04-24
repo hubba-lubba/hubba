@@ -15,7 +15,7 @@ import { get_user } from '@/features/users/api';
 import { add_user_to_org, get_org, remove_user_from_org } from '../api';
 import { get_event } from '@/features/events/api';
 
-const MemberCard = ({ user_id }: { user_id: string }) => {
+const MemberCard = ({ user_id, owner }: { user_id: string, owner: boolean }) => {
     const [user, setUser] = useState<User>();
     const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ const MemberCard = ({ user_id }: { user_id: string }) => {
             handleClick={() => navigate(`/user/${user_id}`)}
             style="w-[225px] p-2 !h-12 flex align-center rounded bg-hubba-800"
         >
-            {user?.username ?? `User ${user_id}`}
+            {user?.username ?? `User ${user_id}`} {owner ? '(Owner)' : ''}
         </Button>
     );
 };
@@ -168,6 +168,7 @@ export const OrgPage = () => {
                     {org.users.map((user_id, index) => (
                         <MemberCard
                             key={`member-${org.org_id}-${index}`}
+                            owner={user_id === org.owner}
                             user_id={user_id}
                         />
                     ))}

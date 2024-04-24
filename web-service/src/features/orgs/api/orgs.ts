@@ -202,7 +202,7 @@ export const get_owned_organizations = async (): Promise<Org[]> => {
         'Content-Type': 'application/json',
         id_token: await getidtoken(),
     };
-    const res = await fetch(`${ORGS_API_URL}/get_user_owned_organizations`, {
+    const res = await fetch(`${ORGS_API_URL}/get_owned_organizations`, {
         method: 'GET',
         headers: headers,
     });
