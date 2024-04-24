@@ -20,8 +20,7 @@ class User(Base):
                                          default=uuid.uuid4)
 
     username: Mapped[str] = mapped_column(String(64),
-                                          nullable=False,
-                                          unique=True)
+                                          nullable=False)
 
     bio: Mapped[str] = mapped_column(String(256),
                                      nullable=True)
