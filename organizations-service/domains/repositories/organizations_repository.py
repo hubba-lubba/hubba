@@ -150,7 +150,7 @@ class OrganizationsRepository:
         return [org.Organizations for org in orgs]
 
     @check_id_exists(User, ["user_id"])
-    def get_owned_organization(self, user_id=None):
+    def get_owned_organizations(self, user_id=None):
         user = self.session.get(User, user_id)
 
         return self.session.query(Organizations).filter(Organizations.owner == user).all()
