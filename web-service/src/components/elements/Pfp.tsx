@@ -15,7 +15,7 @@ export const Pfp = ({ image, variant = 'user', size = 40 }: PfpProps) => {
             alt="image"
             width={size}
             className={clsx(
-                'object-cover',
+                `h-[${size}px] object-cover`,
                 variant === 'user' ? 'rounded-full' : '',
             )}
         />
