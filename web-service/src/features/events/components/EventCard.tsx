@@ -41,8 +41,8 @@ export const EventCard = ({ event }: { event: Event }) => {
                         </div>
                     </div>
                     <div className="flex w-1/2 flex-col items-end">
-                        <span>{statuses[event.status]}</span>
-                        <span>{formatTime(event.time_of)}</span>
+                        <span className="truncate">{statuses[event.status]}</span>
+                        <span className="truncate">{formatTime(event.time_of)}</span>
                     </div>
                 </div>
             }
