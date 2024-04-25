@@ -173,7 +173,7 @@ class EventsRepository:
 
         events = self.session.query(Events, attendees_table).filter(attendees_table.c.event == Events.event_id).filter(attendees_table.c.attendee == user_id).all()
 
-        return [events.Events for event in events]
+        return [event.Events for event in events]
 
     @check_id_exists(Organizations, ["organization_id"])
     def get_organization_events(self, organization_id=None):
