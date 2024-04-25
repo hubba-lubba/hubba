@@ -67,10 +67,13 @@ export const get_org_events = async (org_id: string): Promise<Event[]> => {
     const headers = {
         'Content-Type': 'application/json',
     };
-    const res = await fetch(`${EVENTS_API_URL}/get_organization_events?organization_id=${org_id}`, {
-        method: 'GET',
-        headers: headers,
-    });
+    const res = await fetch(
+        `${EVENTS_API_URL}/get_organization_events?organization_id=${org_id}`,
+        {
+            method: 'GET',
+            headers: headers,
+        },
+    );
 
     logger(`get_org_events`);
 
@@ -87,7 +90,7 @@ export const get_org_events = async (org_id: string): Promise<Event[]> => {
         logger(`${e}`);
         throw e;
     }
-}
+};
 
 export const create_event = async (
     name: string,
@@ -246,7 +249,7 @@ export const add_user_to_event = async (event_id: string): Promise<Event> => {
         id_token: await getidtoken(),
     };
     const res = await fetch(`${EVENTS_API_URL}/add_user?event_id=${event_id}`, {
-        method: 'POST',
+        method: 'PATCH',
         headers: headers,
     });
 

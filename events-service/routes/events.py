@@ -188,10 +188,10 @@ def patch_event():
 
 @events_blueprint.route("/add_user", methods=["PATCH"])
 @ensure_authorized()
-@require_json_params(["event_id"])
+@require_query_params(["event_id"])
 @ensure_UUID("event_id")
 def add_user():
-    event_id = request.get_json().get("event_id")
+    event_id = request.args.get("event_id")
     user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
 
     with Session(engine) as session:
@@ -216,10 +216,10 @@ def add_user():
 
 @events_blueprint.route("/delete_user", methods=["PATCH"])
 @ensure_authorized()
-@require_json_params(["event_id"])
+@require_query_params(["event_id"])
 @ensure_UUID("event_id")
 def delete_user():
-    event_id = request.get_json().get("event_id")
+    event_id = request.args.get("event_id")
     user_id = auth.verify_id_token(request.headers.get("id_token"))["uid"]
 
     with Session(engine) as session:
