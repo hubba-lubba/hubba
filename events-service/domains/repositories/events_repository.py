@@ -132,7 +132,7 @@ class EventsRepository:
         event.host = host if host else event.host
         event.entry_fee = entry_fee if entry_fee else event.entry_fee
         event.attendees = attendees if attendees else event.attendees
-        event.status = status if status else event.status
+        event.status = status if status is not None else event.status
         event.prizes = prizes if prizes else event.prizes
 
         return self._update_event(event)
