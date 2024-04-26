@@ -1,8 +1,8 @@
 // clientside secrets
 
 // set dev to import.meta.env.DEV when local server issues are fixed
-// const dev = import.meta.env.DEV;
-const dev = false;
+const dev = import.meta.env.DEV;
+// const dev = false;
 
 export const USER_API_URL = dev
     ? 'http://localhost:8000'
@@ -20,5 +20,5 @@ export const FILES_API_URL = dev
 export const DOMAIN = dev ? 'localhost' : 'hubba.eddisonso.com';
 // export const DOMAIN = dev ? 'hubba.eddisonso.com' : 'localhost';
 
-// export const LOG_LEVEL = dev ? 'debug' : 'info';
-export const LOG_LEVEL = dev ? 'info' : 'debug';
+export const LOG_LEVEL = dev ? 'debug' : 'info';
+// export const LOG_LEVEL = dev ? 'info' : 'debug';
