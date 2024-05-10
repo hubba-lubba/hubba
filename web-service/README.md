@@ -6,7 +6,6 @@ The project is built with:
 
 -   Vite React
 -   TailwindCSS
--   Chakra UI
 
 ## Table of Contents
 
@@ -40,7 +39,7 @@ Then visit the url printed in the terminal. Default is [http://localhost:5173/](
 
 -   [React](https://react.dev/reference/react)
 -   [Tailwind](https://tailwindcss.com/docs) [[Cheatsheet](https://nerdcave.com/tailwind-cheat-sheet)]
--   [ChakraUI](https://chakra-ui.com/docs/components)
+-   [Firebase](https://firebase.google.com/docs/auth)
 
 ## Coding Standards
 
@@ -90,4 +89,26 @@ In short:
 
 Our theme variables are specified in `tailwind.config.js`. Use those instead of hardcoding colors.
 
-Please ask Jackey for further tailwind questions :D
+### Twitch and Youtube "Integration"
+
+We didn't bother integrating Twitch and YouTube API for our MVP (costs and keys). Currently, we simply utilize Twitch embeds and a third-party YouTube thumbnail and title service called "Noembed." 
+Please Integrate the Twitch and Youtube API for authorization, extended capabilities, and more features. Should prolly all be done in the backend though.
+
+### Closing Notes From Your Previous Developers
+
+Our primary goal was a fully functional website fulfilling the 'discovery' aspect of the business value proposition, with passable UI design. There will be shitty looking pages and some UI bugs (I think pfps can be non-circular rn) that I'll leave to our dear successors. Also, several TODOs can be found within the project code that should be addressed, as well as shitty repeated code that I couldn't bother to modularize due to time constraints, like the settings pages or api calls.
+Please develop your own environment variables and api keys. For this app, we only use the Firebase API for Auth.
+Here is an example `.env.local` file:
+```
+VITE_FIREBASE_CONFIG='{
+    "apiKey": "your api key",
+    "authDomain": "your auth domain",
+    "projectId": "your project id",
+    "storageBucket": "your storage bucket",
+    "messagingSenderId": "some numbers",
+    "appId": "some letters and numbers"
+}'
+```
+
+That's it. Good luck.
+
